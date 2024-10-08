@@ -23,7 +23,7 @@ const Dashboard: React.FC = () => {
   const [allActivities, setAllActivities] = useState<Activity[]>([]);
   const [conversations, setConversations] = useState<Conversation[]>(generateConversations());
   const [prospects, setProspects] = useState<Prospect[]>(generateProspects());
-  const [monthlyTarget, setMonthlyTarget] = useState({ current: 2477, total: 3000 });
+  const [monthlyTarget, setMonthlyTarget] = useState({ current: 1815, total: 3000 });
 
   useEffect(() => {
     // Fetch data once on component mount
@@ -148,7 +148,7 @@ const Dashboard: React.FC = () => {
               {/* Messages Pending Approval Card */}
               <div 
                 className="bg-white rounded-2xl p-3 h-12 flex items-center justify-between hover:bg-gray-50 transition-colors duration-150 cursor-pointer mb-4"
-                onClick={() => setActiveTab('approveMessages')}
+                onClick={() => setActiveTab('pendingApproval')}
               >
                 <div className="flex items-center">
                   <svg className="w-5 h-5 text-[#fe5000] mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">

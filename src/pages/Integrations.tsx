@@ -105,7 +105,7 @@ const Integrations: React.FC = () => {
                   )}
                 </>
               ) : (
-                <button className="px-4 py-2 bg-[#fff4e4] hover:bg-[#ffe8cc] text-[#fe5000] text-sm font-medium rounded-md hover:bg-blue-700 transition duration-150 ease-in-out">
+                <button className="px-4 py-2 bg-[#fff4e4] hover:bg-[#fff4e4] text-[#fe5000] text-sm font-medium rounded-md hover:bg-blue-700 transition duration-150 ease-in-out">
                   Link your account
                 </button>
               )}

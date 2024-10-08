@@ -41,8 +41,11 @@ const ProspectDetails: React.FC<ProspectDetailsProps> = ({ prospect }) => {
         </div>
 
         <div>
-          <h3 className="text-sm font-semibold mb-1.5">{prospect.company}</h3>
           <div className="bg-gray-50 rounded-lg p-3 space-y-1.5">
+          <div className="flex items-center">
+              <span className="text-gray-600 w-20 text-xs">Company:</span>
+              <span className="text-xs">{prospect.company}</span>
+            </div>
             <div className="flex items-center">
               <span className="text-gray-600 w-20 text-xs">Industry:</span>
               <span className="text-xs">{prospect.industry}</span>
