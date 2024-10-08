@@ -4,6 +4,12 @@ import { ChevronDown, ChevronUp } from 'lucide-react';
 const Integrations: React.FC = () => {
   const [expandedAccount, setExpandedAccount] = useState<string | null>(null);
 
+  const emailAccounts = [
+    { email: 'louis@trywave.co', inboxHealth: 98, dailySendLimit: 200, sentToday: 75 },
+    { email: 'louis@hirejune.com', inboxHealth: 85, dailySendLimit: 150, sentToday: 120 },
+    { email: 'louis.db@trywave.co', inboxHealth: 92, dailySendLimit: 180, sentToday: 50 },
+  ];
+
   const connectedAccounts = [
     { 
       id: 'gmail',
@@ -80,7 +86,7 @@ const Integrations: React.FC = () => {
       <div className="space-y-6">
         <div className="space-y-4">
           {connectedAccounts.map((account) => (
-            <div key={account.id} className="bg-white rounded-lg shadow overflow-hidden">
+            <div key={account.id} className="bg-white rounded-lg shadow">
               <div 
                 className="p-4 flex items-center justify-between cursor-pointer"
                 onClick={() => setExpandedAccount(expandedAccount === account.id ? null : account.id)}
@@ -112,14 +118,41 @@ const Integrations: React.FC = () => {
                   )}
                 </div>
               </div>
-              {expandedAccount === account.id && account.details.length > 0 && (
-                <div className="px-4 pb-4 space-y-2">
-                  {account.details.map((detail, index) => (
-                    <div key={index} className="flex justify-between text-sm">
-                      <span className="text-gray-600">{detail.label}:</span>
-                      <span className="font-medium">{detail.value}</span>
-                    </div>
-                  ))}
+              {expandedAccount === account.id && account.id === 'gmail' && (
+                <div className="p-4 bg-white rounded-lg shadow">
+                  <div className="space-y-4">
+                    {emailAccounts.map((emailAccount, index) => (
+                      <div key={index} className="p-4 bg-white rounded-lg shadow">
+                        <div className="flex justify-between items-center mb-3">
+                          <span className="font-medium text-lg">{emailAccount.email}</span>
+                          <span className={`px-3 py-1 rounded-full text-sm font-medium ${
+                            emailAccount.inboxHealth > 90 ? 'bg-green-100 text-green-800' :
+                            emailAccount.inboxHealth > 80 ? 'bg-yellow-100 text-yellow-800' :
+                            'bg-red-100 text-red-800'
+                          }`}>
+                            Inbox Health: {emailAccount.inboxHealth}%
+                          </span>
+                        </div>
+                        <div className="grid grid-cols-3 gap-4 text-sm text-gray-600">
+                          <div>
+                            <span className="font-semibold">Daily Send Limit:</span>
+                            <span className="ml-2">{emailAccount.dailySendLimit}</span>
+                          </div>
+                          <div>
+                            <span className="font-semibold">Sent Today:</span>
+                            <span className="ml-2">{emailAccount.sentToday}</span>
+                          </div>
+                          <div>
+                            <span className="font-semibold">Remaining:</span>
+                            <span className="ml-2">{emailAccount.dailySendLimit - emailAccount.sentToday}</span>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  <button className="w-full mt-4 bg-[#fff4e4] hover:bg-[#fff4e4] text-[#fe5000] font-medium py-3 px-4 rounded-lg transition duration-150 ease-in-out">
+                    Add New Email Account
+                  </button>
                 </div>
               )}
             </div>

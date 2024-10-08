@@ -85,9 +85,8 @@ const Dashboard: React.FC = () => {
 
   return (
     <div className="flex h-screen bg-[#fcf9f8]">
-      <Sidebar activeTab={activeTab} setActiveTab={setActiveTab} />
+      <Sidebar activeTab={activeTab} setActiveTab={setActiveTab} userProfilePic="/louis.jpeg" />
       <div className="flex-1 overflow-hidden">
-        <TopBar />
         <div className="p-6 overflow-auto h-[calc(100vh-64px)]">
           {activeTab === 'dashboard' && (
             <>
