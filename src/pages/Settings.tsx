@@ -9,7 +9,6 @@ const Settings: React.FC = () => {
     { id: 'profile', label: 'Profile', icon: User },
     { id: 'notifications', label: 'Notifications', icon: Bell },
     { id: 'security', label: 'Security', icon: Shield },
-    { id: 'integrations', label: 'Integrations', icon: Link },
     { id: 'email', label: 'Email Management', icon: Mail },
     { id: 'preferences', label: 'Preferences', icon: Sliders },
   ];
@@ -105,60 +104,7 @@ const Settings: React.FC = () => {
                 <input type="text" className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3" defaultValue="Wave AI" />
               </div>
             </div>
-            <button className="bg-blue-600 text-white px-4 py-2 rounded-md">Save Changes</button>
-          </div>
-        );
-      case 'integrations':
-        return (
-          <div className="space-y-6">
-            <h3 className="text-xl font-semibold">Connected Accounts</h3>
-            <div className="space-y-4">
-              {connectedAccounts.map((account) => (
-                <div key={account.id} className="bg-white rounded-lg shadow overflow-hidden">
-                  <div 
-                    className="p-4 flex items-center justify-between cursor-pointer"
-                    onClick={() => setExpandedAccount(expandedAccount === account.id ? null : account.id)}
-                  >
-                    <div className="flex items-center space-x-4">
-                      <div className="text-blue-600">{account.icon}</div>
-                      <div>
-                        <h4 className="font-semibold">{account.name}</h4>
-                        {account.connectedAddresses && (
-                          <p className="text-sm text-gray-600">{account.connectedAddresses} addresses connected</p>
-                        )}
-                      </div>
-                    </div>
-                    <div className="flex items-center space-x-4">
-                      <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                        account.status === 'connected' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'
-                      }`}>
-                        {account.status === 'connected' ? 'Connected' : 'Disconnected'}
-                      </span>
-                      <button 
-                        className={`text-sm font-medium ${
-                          account.status === 'connected' ? 'text-red-600 hover:text-red-800' : 'text-blue-600 hover:text-blue-800'
-                        }`}
-                      >
-                        {account.status === 'connected' ? 'Disconnect' : 'Connect'}
-                      </button>
-                      {account.details.length > 0 && (
-                        expandedAccount === account.id ? <ChevronUp size={20} /> : <ChevronDown size={20} />
-                      )}
-                    </div>
-                  </div>
-                  {expandedAccount === account.id && account.details.length > 0 && (
-                    <div className="px-4 pb-4 space-y-2">
-                      {account.details.map((detail, index) => (
-                        <div key={index} className="flex justify-between text-sm">
-                          <span className="text-gray-600">{detail.label}:</span>
-                          <span className="font-medium">{detail.value}</span>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              ))}
-            </div>
+            <button className="bg-[#fe5000] hover:bg-[#fe5000] text-white px-4 py-2 rounded-md">Save Changes</button>
           </div>
         );
       case 'email':
@@ -195,7 +141,7 @@ const Settings: React.FC = () => {
                 </div>
               ))}
             </div>
-            <button className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-4 rounded-lg transition duration-150 ease-in-out">
+            <button className="w-full bg-[#fff4e4] hover:bg-[#fff4e4] text-[#fe5000] font-medium py-3 px-4 rounded-lg transition duration-150 ease-in-out">
               Add New Email Account
             </button>
           </div>

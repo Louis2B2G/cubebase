@@ -27,7 +27,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ searchTerm, setSearchTerm, filter
 
   return (
     <div className="space-y-4">
-      <div className="bg-white p-4 rounded-lg shadow-sm">
+      <div className="bg-[#fcf9f8] p-4 rounded-lg">
         <div className="flex items-center space-x-4">
           <div className="flex-grow relative">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />

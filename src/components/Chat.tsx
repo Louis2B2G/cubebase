@@ -35,25 +35,52 @@ const Chat: React.FC = () => {
     }
   };
 
+  const formatTimestamp = (timestamp: string) => {
+    const date = new Date(timestamp);
+    return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  };
+
+  const formatDate = (timestamp: string) => {
+    const date = new Date(timestamp);
+    return date.toLocaleDateString([], { month: 'short', day: 'numeric' });
+  };
+
+  const shouldShowDate = (index: number, messages: Conversation[]) => {
+    if (index === 0) return true;
+    const currentDate = new Date(messages[index].timestamp).toDateString();
+    const previousDate = new Date(messages[index - 1].timestamp).toDateString();
+    return currentDate !== previousDate;
+  };
+
   return (
-    <div className="flex flex-col h-full bg-gray-100">
+    <div className="flex flex-col h-full bg-[#fcf9f8]">
       <div className="flex-1 overflow-y-auto p-4 space-y-2">
-        {messages.map((message) => (
-          <div key={message.id} className={`flex ${message.sender !== 'June' ? 'justify-end' : 'justify-start'}`}>
-            {message.sender === 'June' && (
-              <img src="./june.png" alt="June" className="w-8 h-8 rounded-full mr-2 mb-auto" />
+        {messages.map((message, index) => (
+          <React.Fragment key={message.id}>
+            {shouldShowDate(index, messages) && (
+              <div className="text-center text-sm text-gray-500 my-2">
+                {formatDate(message.timestamp)}
+              </div>
             )}
-            <div className={`flex flex-col ${message.sender !== 'June' ? 'items-end' : 'items-start'} max-w-[70%]`}>
+            <div className={`flex ${message.sender !== 'June' ? 'justify-end' : 'justify-start'}`}>
               {message.sender === 'June' && (
-                <span className="text-sm text-gray-600 mb-1">{message.sender}</span>
+                <img src="./june.png" alt="June" className="w-8 h-8 rounded-full mr-2 mb-auto" />
               )}
-              <div className={`rounded-3xl px-4 py-2 ${
-                message.sender !== 'June' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-black'
-              }`}>
-                <p className="text-sm">{message.message}</p>
+              <div className={`flex flex-col ${message.sender !== 'June' ? 'items-end' : 'items-start'} max-w-[70%]`}>
+                {message.sender === 'June' && (
+                  <span className="text-sm text-gray-600 mb-1">{message.sender}</span>
+                )}
+                <div className={`rounded-3xl px-4 py-2 ${
+                  message.sender !== 'June' ? 'bg-[#fff4e4] text-[#fe5000]' : 'bg-white text-black shadow-sm'
+                }`}>
+                  <p className="text-sm">{message.message}</p>
+                </div>
+                <span className="text-xs text-gray-500 mt-3">
+                  {formatTimestamp(message.timestamp)}
+                </span>
               </div>
             </div>
-          </div>
+          </React.Fragment>
         ))}
       </div>
       <div className="p-4 bg-white border-t w-full">
@@ -62,12 +89,12 @@ const Chat: React.FC = () => {
             type="text"
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
-            className="flex-1 border rounded-full py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-300"
+            className="flex-1 border rounded-full py-2 px-4 focus:outline-none focus:ring-2 focus:ring-[#fe5000]"
             placeholder="Type your message..."
           />
           <button
             onClick={handleSend}
-            className="ml-2 bg-blue-500 text-white rounded-full p-2 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300"
+            className="ml-2 bg-[#fe5000] text-white rounded-full p-2 hover:bg-[#e64800] focus:outline-none focus:ring-2 focus:ring-[#fe5000]"
           >
             <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
@@ -79,4 +106,4 @@ const Chat: React.FC = () => {
   );
 };
 
-export default Chat; 
+export default Chat;

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
 type DataPoint = {
@@ -7,6 +7,7 @@ type DataPoint = {
   emails: number;
 };
 
+// Move generateData outside the component
 const generateData = (): DataPoint[] => {
   const data: DataPoint[] = [];
   const currentDate = new Date();
@@ -24,52 +25,92 @@ const generateData = (): DataPoint[] => {
   return data;
 };
 
+// Generate data once outside the component
+const initialData = generateData();
+
 const OutreachChart: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<'meetings' | 'emails'>('meetings');
-  const data = generateData();
+  const [activeMetric, setActiveMetric] = useState<'meetings' | 'emails'>('meetings');
+  
+  // Use useMemo to memoize the data
+  const data = useMemo(() => initialData, []);
 
   const formatXAxis = (dateStr: string) => {
     const date = new Date(dateStr);
     return `${date.toLocaleString('default', { month: 'short' })} ${date.getDate()}`;
   };
 
+  const metrics = [
+    { 
+      key: 'meetings', 
+      label: 'Meetings Booked', 
+      icon: (
+        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+        </svg>
+      ), 
+      color: '#fe5000' 
+    },
+    { 
+      key: 'emails', 
+      label: 'Emails Sent', 
+      icon: (
+        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+        </svg>
+      ), 
+      color: '#82ca9d' 
+    },
+  ];
+
   return (
     <div className="h-full flex flex-col">
+      <div className="flex justify-between items-center mb-4">
+        <h3 className="text-lg font-semibold">Outreach Metrics</h3>
+        <div className="flex space-x-2 p-1 rounded-full">
+          {metrics.map((metric) => (
+            <button
+              key={metric.key}
+              className={`flex items-center px-3 py-1 rounded-full text-sm transition-colors duration-150 ${
+                activeMetric === metric.key
+                  ? 'bg-[#fff4e4] text-gray-800'
+                  : 'text-gray-600 hover:bg-gray-200'
+              }`}
+              onClick={() => setActiveMetric(metric.key as 'meetings' | 'emails')}
+            >
+              <span className="mr-2">{metric.icon}</span>
+              {metric.label}
+            </button>
+          ))}
+        </div>
+      </div>
       <ResponsiveContainer width="100%" height="90%">
         <LineChart data={data}>
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis 
             dataKey="date" 
             tickFormatter={formatXAxis}
-            interval={3} // Show every 4th tick (monthly)
+            interval={3}
           />
           <YAxis />
           <Tooltip 
             labelFormatter={(value) => `Week of ${formatXAxis(value as string)}`}
           />
           <Legend />
-          {activeTab === 'meetings' && (
-            <Line type="monotone" dataKey="meetings" stroke="#8884d8" name="Meetings Booked" />
-          )}
-          {activeTab === 'emails' && (
-            <Line type="monotone" dataKey="emails" stroke="#82ca9d" name="Emails Sent" />
-          )}
+          {metrics.map((metric) => (
+            <Line
+              key={metric.key}
+              type="monotone"
+              dataKey={metric.key}
+              stroke={metric.color}
+              name={metric.label}
+              dot={false}
+              strokeWidth={2}
+              activeDot={{ r: 8 }}
+              hide={activeMetric !== metric.key}
+            />
+          ))}
         </LineChart>
       </ResponsiveContainer>
-      <div className="flex justify-center mt-4">
-        <button
-          className={`px-4 py-2 mr-2 rounded ${activeTab === 'meetings' ? 'bg-black text-white' : 'bg-gray-200'}`}
-          onClick={() => setActiveTab('meetings')}
-        >
-          Meetings Booked
-        </button>
-        <button
-          className={`px-4 py-2 rounded ${activeTab === 'emails' ? 'bg-black text-white' : 'bg-gray-200'}`}
-          onClick={() => setActiveTab('emails')}
-        >
-          Emails Sent
-        </button>
-      </div>
     </div>
   );
 };

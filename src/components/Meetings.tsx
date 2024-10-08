@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Calendar, momentLocalizer, Views } from 'react-big-calendar';
 import moment from 'moment';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
-import { FiEdit2, FiX } from 'react-icons/fi'; // Make sure to install react-icons
+import { FiEdit2 } from 'react-icons/fi'; // Make sure to install react-icons
 
 // Set up the localizer for react-big-calendar
 const localizer = momentLocalizer(moment);
@@ -58,7 +58,7 @@ const MeetingPopup: React.FC<MeetingPopupProps> = ({ meeting, onClose }) => {
       <div className="bg-white rounded-lg shadow-xl p-6 max-w-md w-full">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-2xl font-bold text-gray-800">{meeting.title}</h2>
-          <button className="text-blue-500 hover:text-blue-600">
+          <button className="text-[#fe5000]">
             <FiEdit2 size={20} />
           </button>
         </div>
@@ -86,7 +86,7 @@ const MeetingPopup: React.FC<MeetingPopupProps> = ({ meeting, onClose }) => {
             Close
           </button>
           <button
-            className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition-colors duration-150"
+            className="bg-[#fe5000] text-white px-4 py-2 rounded-md hover:bg-[#fe5000] transition-colors duration-150"
           >
             Set Reminder
           </button>
@@ -104,9 +104,9 @@ const Meetings: React.FC = () => {
   };
 
   return (
-    <div className="p-6 bg-gray-100 min-h-screen">
-      <h1 className="text-4xl font-bold mb-8 text-gray-800">Meetings booked by June</h1>
-      <div className="bg-white rounded-xl shadow-2xl p-6" style={{ height: '800px' }}>
+    <div className="p-6 bg-[#fcf9f8] min-h-screen">
+      <h1 className="text-2xl font-bold mb-8 text-gray-800">Meetings booked by June</h1>
+      <div className="bg-white rounded-xl shadow p-6" style={{ height: '800px' }}>
         <Calendar
           localizer={localizer}
           events={meetings}
@@ -123,8 +123,8 @@ const Meetings: React.FC = () => {
           }}
           eventPropGetter={(event) => ({
             style: {
-              backgroundColor: '#4F46E5',
-              color: 'white',
+              backgroundColor: '#fff4e4',
+              color: '#fe5000',
               border: 'none',
               borderRadius: '6px',
               padding: '4px 8px',
@@ -132,7 +132,7 @@ const Meetings: React.FC = () => {
           })}
           dayPropGetter={(date) => ({
             style: {
-              backgroundColor: date.getDay() === 0 || date.getDay() === 6 ? '#F3F4F6' : 'white',
+              backgroundColor: date.getDay() === 0 || date.getDay() === 6 ? 'white' : 'white',
             },
           })}
           onSelectEvent={handleSelectEvent}

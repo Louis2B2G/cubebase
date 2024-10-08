@@ -8,7 +8,7 @@ interface KPICardProps {
 }
 
 const KPICard: React.FC<KPICardProps> = ({ title, value, change, isPositive }) => (
-  <div className="bg-white p-6 rounded-lg shadow">
+  <div className="bg-white p-6 rounded-xl shadow">
     <h3 className="text-sm font-semibold text-gray-500 mb-2">{title}</h3>
     <p className="text-3xl font-bold mb-2">{value}</p>
     <p className={`text-sm ${isPositive ? 'text-green-500' : 'text-red-500'}`}>
