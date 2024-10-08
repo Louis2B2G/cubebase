@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { LinkedInPost } from '@/types/types'; // Adjust this import path as needed
 
 interface LinkedInPostsProps {
@@ -7,7 +7,7 @@ interface LinkedInPostsProps {
 
 const LinkedInPosts: React.FC<LinkedInPostsProps> = ({ posts }) => {
   // Define the maximum length for post content before truncation
-  const MAX_CONTENT_LENGTH = 150;
+  const MAX_CONTENT_LENGTH = 100;
 
   // Function to truncate content and add ellipsis
   const truncateContent = (content: string) => {
@@ -16,17 +16,17 @@ const LinkedInPosts: React.FC<LinkedInPostsProps> = ({ posts }) => {
   };
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-3">
       {posts.map((post, index) => (
-        <div key={index} className="bg-gray-50 p-4 rounded-md">
-          <p className="text-sm text-gray-600 mb-2">{post.date}</p>
-          <p>{truncateContent(post.content)}</p>
+        <div key={index} className="bg-gray-50 p-1.5 rounded-md">
+          <p className="text-gray-600 mb-1 text-xs">{post.date}</p>
+          <p className="text-xs">{truncateContent(post.content)}</p>
           {post.content.length > MAX_CONTENT_LENGTH && (
             <a
               href={post.link} 
               target="_blank"
               rel="noopener noreferrer"
-              className="text-blue-600 hover:underline mt-2 inline-block"
+              className="text-blue-600 hover:underline mt-1 inline-block text-xs"
             >
               Show more
             </a>

@@ -1,5 +1,4 @@
-import { KPI, Activity, Conversation } from '@/types/types';
-import { Prospect, LinkedInPost, NewsArticle } from './types';
+import { KPI, Activity, Conversation, Prospect, LinkedInPost, NewsArticle } from '@/types/types';
 
 export const generateKPIs = (): KPI => ({
   totalProspects: Math.floor(Math.random() * 10000),
@@ -304,15 +303,17 @@ export interface PendingEmail {
   subject: string;
   body: string;
   recipientCompany: string;
+  prospectId: string; // Add this line
 }
 
 export function generatePendingEmails(): PendingEmail[] {
+  const prospects = generateProspects();
   return [
     {
       id: '1',
-      recipient: 'john.doe@techinnovators.com',
+      recipient: 'frank.wilson@techinnovators.com',
       subject: 'Revolutionize Your Sales Process with AI',
-      body: `Dear John,
+      body: `Dear Frank,
 
 I hope this email finds you well. I recently came across Tech Innovators and was impressed by your innovative approach to software development.
 
@@ -322,13 +323,14 @@ Would you be interested in a quick 15-minute call to discuss how we could potent
 
 Best regards,
 June from Wave AI`,
-      recipientCompany: 'Tech Innovators'
+      recipientCompany: 'Tech Innovators',
+      prospectId: '1' // Add this line
     },
     {
       id: '2',
-      recipient: 'sarah.smith@globalsolutions.com',
+      recipient: 'grace.taylor@globalsolutions.com',
       subject: 'Enhance Your Sales Outreach with AI',
-      body: `Hi Sarah,
+      body: `Hi Grace,
 
 I hope you're having a great week. I've been following Global Solutions' recent expansion into new markets and wanted to congratulate you on your success.
 
@@ -338,13 +340,14 @@ Would you be open to a brief demo to see how this could work for Global Solution
 
 Looking forward to hearing from you,
 June from Wave AI`,
-      recipientCompany: 'Global Solutions'
+      recipientCompany: 'Global Solutions',
+      prospectId: '2' // Add this line
     },
     {
       id: '3',
-      recipient: 'mike.johnson@futurecorp.com',
+      recipient: 'henry.davis@futurecorp.com',
       subject: 'AI-Powered Sales Outreach for Future Corp',
-      body: `Hello Mike,
+      body: `Hello Henry,
 
 I trust this email finds you in good spirits. I've been keeping an eye on Future Corp's innovative work in the finance sector and I'm truly impressed by your forward-thinking approach.
 
@@ -354,7 +357,8 @@ Would you be interested in a short call to explore how AI could revolutionize yo
 
 Best regards,
 June from Wave AI`,
-      recipientCompany: 'Future Corp'
+      recipientCompany: 'Future Corp',
+      prospectId: '3' // Add this line
     }
   ];
 }
