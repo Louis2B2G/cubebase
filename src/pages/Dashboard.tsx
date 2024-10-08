@@ -14,6 +14,8 @@ import Integrations from '@/pages/Integrations';
 import ActivityTable from '@/components/ActivityTable';
 import Mailboxes from '@/pages/Mailboxes';
 import { Sparkles } from 'lucide-react';
+import Pending from '@/pages/Pending';
+
 
 const Dashboard: React.FC = () => {
   const [activeTab, setActiveTab] = useState<string>('dashboard');
@@ -21,6 +23,7 @@ const Dashboard: React.FC = () => {
   const [allActivities, setAllActivities] = useState<Activity[]>([]);
   const [conversations, setConversations] = useState<Conversation[]>(generateConversations());
   const [prospects, setProspects] = useState<Prospect[]>(generateProspects());
+  const [monthlyTarget, setMonthlyTarget] = useState({ current: 2477, total: 3000 });
 
   useEffect(() => {
     // Fetch data once on component mount
@@ -67,6 +70,10 @@ const Dashboard: React.FC = () => {
     setAllActivities(sortedActivities);
   }, [prospects]);
 
+  const calculateProgress = (current: number, total: number) => {
+    return Math.min(100, (current / total) * 100);
+  };
+
   return (
     <div className="flex h-screen bg-[#fcf9f8] overflow-hidden">
       <Sidebar activeTab={activeTab} setActiveTab={setActiveTab} userProfilePic="/louis.jpeg" />
@@ -105,11 +112,21 @@ const Dashboard: React.FC = () => {
                     </div>
                   </div>
                   <div className="flex items-center">
-                    <span className="text-xs mr-2">2477/3000</span>
+                    <span className="text-xs mr-2">{`${monthlyTarget.current}/${monthlyTarget.total}`}</span>
                     <div className="w-6 h-6 flex items-center justify-center relative">
-                      <svg viewBox="0 0 24 24" width="20" height="20" className="text-[#fe5000]">
-                        <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" strokeWidth="2" strokeDasharray="63 63" strokeDashoffset="0"></circle>
-                        <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" strokeWidth="2" strokeDasharray="63 63" strokeDashoffset="15.75"></circle>
+                      <svg viewBox="0 0 36 36" width="24" height="24" className="text-[#fe5000]">
+                        <circle cx="18" cy="18" r="16" fill="none" stroke="#e6e6e6" strokeWidth="2"></circle>
+                        <circle
+                          cx="18"
+                          cy="18"
+                          r="16"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeDasharray="100"
+                          strokeDashoffset={100 - calculateProgress(monthlyTarget.current, monthlyTarget.total)}
+                          transform="rotate(-90 18 18)"
+                        ></circle>
                       </svg>
                     </div>
                   </div>
@@ -137,6 +154,7 @@ const Dashboard: React.FC = () => {
                   <svg className="w-5 h-5 text-[#fe5000] mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                   </svg>
+                  
                   <span className="text-sm font-semibold">Messages Pending Approval</span>
                   <span className="bg-gray-100 text-gray-800 px-2 py-1 rounded-full font-bold text-xs ml-3">12</span>
                 </div>
@@ -193,6 +211,9 @@ const Dashboard: React.FC = () => {
           )}
           {activeTab === 'mailboxes' && (
             <Mailboxes />
+          )}
+          {activeTab === 'pendingApproval' && (
+            <Pending />
           )}
         </div>
       </div>

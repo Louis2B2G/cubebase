@@ -296,3 +296,65 @@ export function generateConversationHistory(): Conversation[] {
     }
   ];
 }
+
+
+export interface PendingEmail {
+  id: string;
+  recipient: string;
+  subject: string;
+  body: string;
+  recipientCompany: string;
+}
+
+export function generatePendingEmails(): PendingEmail[] {
+  return [
+    {
+      id: '1',
+      recipient: 'john.doe@techinnovators.com',
+      subject: 'Revolutionize Your Sales Process with AI',
+      body: `Dear John,
+
+I hope this email finds you well. I recently came across Tech Innovators and was impressed by your innovative approach to software development.
+
+I'm reaching out because I believe our AI-powered Sales Development Representative (SDR) solution at Wave AI could be a game-changer for your sales team. We've helped companies like yours increase their outreach efficiency by 300% while significantly reducing costs.
+
+Would you be interested in a quick 15-minute call to discuss how we could potentially boost your sales performance?
+
+Best regards,
+June from Wave AI`,
+      recipientCompany: 'Tech Innovators'
+    },
+    {
+      id: '2',
+      recipient: 'sarah.smith@globalsolutions.com',
+      subject: 'Enhance Your Sales Outreach with AI',
+      body: `Hi Sarah,
+
+I hope you're having a great week. I've been following Global Solutions' recent expansion into new markets and wanted to congratulate you on your success.
+
+Given your growth, I thought you might be interested in learning about how AI can supercharge your sales outreach efforts. At Wave AI, we've developed an AI-powered SDR solution that can handle personalized outreach at scale, freeing up your team to focus on closing deals.
+
+Would you be open to a brief demo to see how this could work for Global Solutions?
+
+Looking forward to hearing from you,
+June from Wave AI`,
+      recipientCompany: 'Global Solutions'
+    },
+    {
+      id: '3',
+      recipient: 'mike.johnson@futurecorp.com',
+      subject: 'AI-Powered Sales Outreach for Future Corp',
+      body: `Hello Mike,
+
+I trust this email finds you in good spirits. I've been keeping an eye on Future Corp's innovative work in the finance sector and I'm truly impressed by your forward-thinking approach.
+
+I'm reaching out because I believe our AI-powered Sales Development Representative (SDR) solution at Wave AI could align perfectly with your innovative spirit. We've helped financial institutions like yours to streamline their sales processes and achieve remarkable results.
+
+Would you be interested in a short call to explore how AI could revolutionize your sales outreach?
+
+Best regards,
+June from Wave AI`,
+      recipientCompany: 'Future Corp'
+    }
+  ];
+}

@@ -104,9 +104,9 @@ const Meetings: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col h-full p-4">
-      <h1 className="text-xl font-bold text-gray-800 mb-2">Meetings booked by June</h1>
-      <div className="flex-1 min-h-0 bg-white rounded-xl shadow p-4">
+    <div className="flex flex-col h-full p-6">
+      <h1 className="text-xl font-bold text-gray-800 mb-4">Meetings booked by June</h1>
+      <div className="flex-1 min-h-0 bg-white rounded-xl shadow p-10">
         <Calendar
           localizer={localizer}
           events={meetings}
