@@ -1,14 +1,9 @@
 import React, { useState } from 'react';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 
+
 const Integrations: React.FC = () => {
   const [expandedAccount, setExpandedAccount] = useState<string | null>(null);
-
-  const emailAccounts = [
-    { email: 'louis@trywave.co', inboxHealth: 98, dailySendLimit: 200, sentToday: 75 },
-    { email: 'louis@hirejune.com', inboxHealth: 85, dailySendLimit: 150, sentToday: 120 },
-    { email: 'louis.db@trywave.co', inboxHealth: 92, dailySendLimit: 180, sentToday: 50 },
-  ];
 
   const connectedAccounts = [
     { 
@@ -21,10 +16,10 @@ const Integrations: React.FC = () => {
       ),
       connectedAddresses: 3,
       status: 'connected',
-      details: [
-        { label: 'Primary Email', value: 'louis@trywave.co' },
-        { label: 'Last Synced', value: '2 hours ago' },
-        { label: 'Total Emails Sent', value: '1,234' },
+      accounts: [
+        { email: 'louis@trywave.co' },
+        { email: 'louis@hirejune.com' },
+        { email: 'louis.db@trywave.co' },
       ]
     },
     { 
@@ -47,9 +42,8 @@ const Integrations: React.FC = () => {
         </svg>
       ),
       status: 'connected',
-      details: [
-        { label: 'Name', value: 'Louis de Benoist' },
-        { label: 'Profile', value: 'https://www.linkedin.com/in/louisdebenoist' },
+      accounts: [
+        { email: 'https://www.linkedin.com/in/louisdebenoist' },
       ]
     },
     { 
@@ -61,10 +55,8 @@ const Integrations: React.FC = () => {
         </svg>
       ),
       status: 'connected',
-      details: [
-        { label: 'Primary Calendar', value: 'louis@trywave.co' },
-        { label: 'Last Synced', value: '30 minutes ago' },
-        { label: 'Events Synced', value: '42' },
+      accounts: [
+        { email: 'louis@trywave.co' },
       ]
     },
     { 
@@ -80,83 +72,82 @@ const Integrations: React.FC = () => {
     },
   ];
 
+  const connectedIntegrations = connectedAccounts.filter(account => account.status === 'connected');
+  const disconnectedIntegrations = connectedAccounts.filter(account => account.status === 'disconnected');
+
+  const renderIntegrationGroup = (integrations: typeof connectedAccounts, isConnected: boolean) => (
+    <div className="space-y-4">
+      {integrations.map((account) => (
+        <div key={account.id} className="bg-white rounded-lg shadow">
+          <div 
+            className="p-4 flex items-center cursor-pointer"
+            onClick={() => isConnected && setExpandedAccount(expandedAccount === account.id ? null : account.id)}
+          >
+            <div className="flex items-center space-x-4 flex-grow">
+              <div className="text-blue-600">{account.icon}</div>
+              <div>
+                <h4 className="font-semibold">{account.name}</h4>
+                {account.connectedAddresses && (
+                  <p className="text-sm text-gray-600">{account.connectedAddresses} addresses connected</p>
+                )}
+              </div>
+            </div>
+            <div className="flex items-center">
+              {isConnected ? (
+                <>
+                  <span className="px-2 py-1 rounded-full text-xs font-medium w-24 text-center bg-green-100 text-green-800">
+                    Connected
+                  </span>
+                  {account.accounts && account.accounts.length > 0 && (
+                    <div className="w-8 flex justify-center">
+                      {expandedAccount === account.id ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
+                    </div>
+                  )}
+                </>
+              ) : (
+                <button className="px-4 py-2 bg-[#fff4e4] hover:bg-[#ffe8cc] text-[#fe5000] text-sm font-medium rounded-md hover:bg-blue-700 transition duration-150 ease-in-out">
+                  Link your account
+                </button>
+              )}
+            </div>
+          </div>
+          {expandedAccount === account.id && account.accounts && account.status === 'connected' && (
+            <div className="p-4 bg-whiterounded-b-lg">
+              <div className="space-y-2">
+                {account.accounts.map((connectedAccount, index) => (
+                  <div key={index} className="flex justify-between items-center p-3 rounded-xl shadow">
+                    <span className="text-sm font-medium">{connectedAccount.email}</span>
+                    <button 
+                      className="text-xs font-medium text-red-600 hover:text-red-800"
+                    >
+                      Disconnect
+                    </button>
+                  </div>
+                ))}
+              </div>
+              {account.id === 'gmail' && (
+                <button className="w-full mt-4 bg-[#fff4e4] hover:bg-[#ffe8cc] text-[#fe5000] text-sm font-medium py-2 px-4 rounded-md transition duration-150 ease-in-out">
+                  Add New Email Account
+                </button>
+              )}
+            </div>
+          )}
+        </div>
+      ))}
+    </div>
+  );
+
   return (
     <div className="container mx-auto px-4 py-8">
       <h2 className="text-2xl font-bold mb-6">Integrations</h2>
-      <div className="space-y-6">
-        <div className="space-y-4">
-          {connectedAccounts.map((account) => (
-            <div key={account.id} className="bg-white rounded-lg shadow">
-              <div 
-                className="p-4 flex items-center justify-between cursor-pointer"
-                onClick={() => setExpandedAccount(expandedAccount === account.id ? null : account.id)}
-              >
-                <div className="flex items-center space-x-4">
-                  <div className="text-blue-600">{account.icon}</div>
-                  <div>
-                    <h4 className="font-semibold">{account.name}</h4>
-                    {account.connectedAddresses && (
-                      <p className="text-sm text-gray-600">{account.connectedAddresses} addresses connected</p>
-                    )}
-                  </div>
-                </div>
-                <div className="flex items-center space-x-4">
-                  <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                    account.status === 'connected' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'
-                  }`}>
-                    {account.status === 'connected' ? 'Connected' : 'Disconnected'}
-                  </span>
-                  <button 
-                    className={`text-sm font-medium ${
-                      account.status === 'connected' ? 'text-red-600 hover:text-red-800' : 'text-blue-600 hover:text-blue-800'
-                    }`}
-                  >
-                    {account.status === 'connected' ? 'Disconnect' : 'Connect'}
-                  </button>
-                  {account.details.length > 0 && (
-                    expandedAccount === account.id ? <ChevronUp size={20} /> : <ChevronDown size={20} />
-                  )}
-                </div>
-              </div>
-              {expandedAccount === account.id && account.id === 'gmail' && (
-                <div className="p-4 bg-white rounded-lg shadow">
-                  <div className="space-y-4">
-                    {emailAccounts.map((emailAccount, index) => (
-                      <div key={index} className="p-4 bg-white rounded-lg shadow">
-                        <div className="flex justify-between items-center mb-3">
-                          <span className="font-medium text-lg">{emailAccount.email}</span>
-                          <span className={`px-3 py-1 rounded-full text-sm font-medium ${
-                            emailAccount.inboxHealth > 90 ? 'bg-green-100 text-green-800' :
-                            emailAccount.inboxHealth > 80 ? 'bg-yellow-100 text-yellow-800' :
-                            'bg-red-100 text-red-800'
-                          }`}>
-                            Inbox Health: {emailAccount.inboxHealth}%
-                          </span>
-                        </div>
-                        <div className="grid grid-cols-3 gap-4 text-sm text-gray-600">
-                          <div>
-                            <span className="font-semibold">Daily Send Limit:</span>
-                            <span className="ml-2">{emailAccount.dailySendLimit}</span>
-                          </div>
-                          <div>
-                            <span className="font-semibold">Sent Today:</span>
-                            <span className="ml-2">{emailAccount.sentToday}</span>
-                          </div>
-                          <div>
-                            <span className="font-semibold">Remaining:</span>
-                            <span className="ml-2">{emailAccount.dailySendLimit - emailAccount.sentToday}</span>
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                  <button className="w-full mt-4 bg-[#fff4e4] hover:bg-[#fff4e4] text-[#fe5000] font-medium py-3 px-4 rounded-lg transition duration-150 ease-in-out">
-                    Add New Email Account
-                  </button>
-                </div>
-              )}
-            </div>
-          ))}
+      <div className="space-y-8">
+        <div>
+          <h3 className="text-xl font-semibold mb-4">Connected Integrations</h3>
+          {renderIntegrationGroup(connectedIntegrations, true)}
+        </div>
+        <div>
+          <h3 className="text-xl font-semibold mb-4">Available Integrations</h3>
+          {renderIntegrationGroup(disconnectedIntegrations, false)}
         </div>
       </div>
     </div>

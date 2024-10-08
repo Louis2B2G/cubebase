@@ -65,12 +65,12 @@ const OutreachChart: React.FC = () => {
   return (
     <div className="h-full flex flex-col">
       <div className="flex justify-between items-center mb-4">
-        <h3 className="text-lg font-semibold">Outreach Metrics</h3>
+        <h2 className="text-base font-semibold">Outreach Metrics</h2>
         <div className="flex space-x-2 p-1 rounded-full">
           {metrics.map((metric) => (
             <button
               key={metric.key}
-              className={`flex items-center px-3 py-1 rounded-full text-sm transition-colors duration-150 ${
+              className={`flex items-center px-3 py-1 rounded-full text-xs transition-colors duration-150 ${
                 activeMetric === metric.key
                   ? 'bg-[#fff4e4] text-gray-800'
                   : 'text-gray-600 hover:bg-gray-200'
@@ -83,19 +83,26 @@ const OutreachChart: React.FC = () => {
           ))}
         </div>
       </div>
-      <ResponsiveContainer width="100%" height="90%">
+      <ResponsiveContainer width="100%" height="90%" >
         <LineChart data={data}>
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis 
             dataKey="date" 
             tickFormatter={formatXAxis}
             interval={3}
+            tick={{ fontSize: '0.75rem' }} // Add this line to make X-axis labels smaller
           />
-          <YAxis />
+          <YAxis 
+            tick={{ fontSize: '0.75rem' }} // Add this line to make Y-axis labels smaller
+          />
           <Tooltip 
             labelFormatter={(value) => `Week of ${formatXAxis(value as string)}`}
           />
-          <Legend />
+          <Legend 
+            wrapperStyle={{
+              fontSize: '0.75rem', // Adjust this value to make the text smaller
+            }}
+          />
           {metrics.map((metric) => (
             <Line
               key={metric.key}

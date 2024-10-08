@@ -104,15 +104,14 @@ const Meetings: React.FC = () => {
   };
 
   return (
-    <div className="p-6 bg-[#fcf9f8] min-h-screen">
-      <h1 className="text-2xl font-bold mb-8 text-gray-800">Meetings booked by June</h1>
-      <div className="bg-white rounded-xl shadow p-6" style={{ height: '800px' }}>
+    <div className="flex flex-col h-full p-4">
+      <h1 className="text-xl font-bold text-gray-800 mb-2">Meetings booked by June</h1>
+      <div className="flex-1 min-h-0 bg-white rounded-xl shadow p-4">
         <Calendar
           localizer={localizer}
           events={meetings}
           startAccessor="start"
           endAccessor="end"
-          style={{ height: '100%' }}
           defaultView={Views.MONTH}
           views={['month', 'week', 'day', 'agenda']}
           toolbar={true}
@@ -127,7 +126,7 @@ const Meetings: React.FC = () => {
               color: '#fe5000',
               border: 'none',
               borderRadius: '6px',
-              padding: '4px 8px',
+              padding: '2px 4px',
             },
           })}
           dayPropGetter={(date) => ({
@@ -136,6 +135,7 @@ const Meetings: React.FC = () => {
             },
           })}
           onSelectEvent={handleSelectEvent}
+          className="h-full"
         />
       </div>
       <MeetingPopup meeting={selectedMeeting} onClose={() => setSelectedMeeting(null)} />

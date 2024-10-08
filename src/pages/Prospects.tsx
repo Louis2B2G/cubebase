@@ -35,7 +35,7 @@ const Prospects: React.FC = () => {
 
   return (
     <div className="p-6">
-      <h1 className="text-2xl font-bold mb-4">Leads</h1>
+      <h1 className="text-2xl font-bold mb-4">Current Leads</h1>
       <SearchBar 
         searchTerm={searchTerm} 
         setSearchTerm={setSearchTerm}
