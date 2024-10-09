@@ -206,93 +206,250 @@ export function generateConversationHistory(): Conversation[] {
     {
       id: 1,
       sender: "June",
-      message: "Hi Louis! I'm June, an AI assistant. I understand you're the co-founder of Wave AI. Could you tell me a bit more about what Wave AI does?",
+      message: "Welcome to Cube! I'm June, your digital sales assistant. I'm here to make your sales smoother by booking you new leads. Do you have any questions or do you want to dive into the onboarding?",
       timestamp: "2024-10-01T09:00:00Z"
     },
     {
       id: 2,
       sender: "Louis",
-      message: "Hello June! Wave AI is a company that sells an AI-powered Sales Development Representative (SDR) solution. Our goal is to automate and enhance the sales outreach process.",
+      message: "Hey, yeah let's do the onboarding.",
       timestamp: "2024-10-01T09:02:00Z"
     },
     {
       id: 3,
       sender: "June",
-      message: "That sounds interesting! I've just looked up some information about Wave AI, and I see that you founded the company in 2023. What inspired you to start Wave AI?",
+      message: "From your LinkedIn profile, I see that you're associated with Cube AI. Is that correct?",
       timestamp: "2024-10-01T09:04:00Z"
     },
     {
       id: 4,
       sender: "Louis",
-      message: "We saw a gap in the market for truly intelligent sales automation. Many companies struggle with effective outreach, and we believed AI could revolutionize this process.",
+      message: "Yes",
       timestamp: "2024-10-01T09:06:00Z"
     },
     {
       id: 5,
       sender: "June",
-      message: "That's a great insight. Can you tell me more about your target market? Who are your ideal customers?",
+      message: "I see that your website is www.getcube.ai - is that still the case?",
       timestamp: "2024-10-01T09:08:00Z"
     },
     {
       id: 6,
       sender: "Louis",
-      message: "Our ideal customers are B2B companies, typically in the tech or SaaS space, with 50-500 employees. They usually have a sales team but are looking to scale their outreach efforts efficiently.",
+      message: "Yes",
       timestamp: "2024-10-01T09:10:00Z"
     },
     {
       id: 7,
       sender: "June",
-      message: "Thank you for that information. I've noted that your ICP is B2B tech/SaaS companies with 50-500 employees. What would you say is the main pain point you're solving for these customers?",
+      message: "Based on your website, it looks like you're providing an AI powered digital workforce that integrates with human teams and offers end-to-end automation. Is that correct?",
       timestamp: "2024-10-01T09:12:00Z"
     },
     {
       id: 8,
       sender: "Louis",
-      message: "The main pain point is the inefficiency and high cost of traditional SDR teams. Our AI solution can handle a much larger volume of personalized outreach at a fraction of the cost.",
+      message: "Yes",
       timestamp: "2024-10-01T09:14:00Z"
     },
     {
       id: 9,
       sender: "June",
-      message: "That's a compelling value proposition. I've just checked your website and noticed you offer a free trial. How long is the trial period, and what features are included?",
+      message: "Great, now let's start creating your campaign personas. Which countries do you want to target?",
       timestamp: "2024-10-01T09:16:00Z"
     },
     {
       id: 10,
       sender: "Louis",
-      message: "Our free trial lasts for 14 days and includes all features of our standard plan. This allows potential customers to fully experience the power of our AI SDR solution.",
+      message: "We want to target France initially",
       timestamp: "2024-10-01T09:18:00Z"
     },
     {
       id: 11,
       sender: "June",
-      message: "That's great! One last question: what sets Wave AI apart from other AI-powered sales tools in the market?",
+      message: "Thank you. The country France has been added to your campaign. We found 1,000,000 leads for this country. Next, could you tell me which job titles we should target for your campaign?",
       timestamp: "2024-10-01T09:20:00Z"
     },
     {
       id: 12,
       sender: "Louis",
-      message: "Our key differentiator is our advanced natural language processing. Our AI can understand context and nuance, leading to more human-like interactions and better conversion rates.",
+      message: "VP of sales, head of sales, head of growth marketing, CEO, chief revenue officer, CRO, growth marketing lead",
       timestamp: "2024-10-01T09:22:00Z"
     },
     {
       id: 13,
       sender: "June",
-      message: "Thank you, Louis. This information is very helpful. I've compiled a summary of Wave AI: An AI-powered SDR solution for B2B tech/SaaS companies with 50-500 employees, offering efficient and cost-effective sales outreach with advanced NLP capabilities. Is there anything you'd like to add or modify?",
+      message: "Perfect, I've added 'VP of sales, head of sales, head of growth marketing, CEO, chief revenue officer, CRO, growth marketing lead' to your campaign. This has resulted in 51,232 potential leads. Can you tell me which sectors you'd like to target?",
       timestamp: "2024-10-01T09:24:00Z"
     },
     {
       id: 14,
       sender: "Louis",
-      message: "That summary looks perfect, June. You've captured the essence of Wave AI very well. Thank you for your thorough questions and understanding of our business.",
+      message: "Tech",
       timestamp: "2024-10-01T09:26:00Z"
     },
     {
       id: 15,
       sender: "June",
-      message: "You're welcome, Louis. I'm glad I could help summarize Wave AI's offering. Is there anything else you'd like to discuss or any other information you need?",
+      message: "Great, I've added 'Tech' to your campaign. This has resulted in 11,710 potential leads. Next could you give me an employee count range?",
       timestamp: "2024-10-01T09:28:00Z"
-    }
+    },
+    {
+      id: 16,
+      sender: "Louis",
+      message: "50-500",
+      timestamp: "2024-10-01T09:30:00Z"
+    },
+    {
+      id: 17,
+      sender: "June",
+      message: "Thank you. The employee count range '50-500' has been added to your campaign. This has resulted in 7,300 potential leads. Next, could you tell me what product you are building?",
+      timestamp: "2024-10-01T09:32:00Z"
+    },
+    {
+      id: 18,
+      sender: "Louis",
+      message: "We have created June, an AI SDR that automates the entire outbound sales process.",
+      timestamp: "2024-10-01T09:34:00Z"
+    },
+    {
+      id: 19,
+      sender: "June",
+      message: "Thank you for the descirption. Next, could you tell me what your main pain points you are targetting?",
+      timestamp: "2024-10-01T09:36:00Z"
+    },
+    {
+      id: 20,
+      sender: "Louis",
+      message: "The main pain point is the inefficiency and high cost of traditional SDR teams. SDRs are expensive, you need to use many platforms to do cold email cold email requires very speciffic skills. It also takes a long time research a person to personalize an outbound message.",
+      timestamp: "2024-10-01T09:38:00Z"
+    },
+    {
+      id: 21,
+      sender: "June",
+      message: "Based on your answers, I've identified the following pain points: high cost of SDR teams, inefficiency of traditional SDR teams, time-consuming lead research, and the need for specialized skills. Is there anything else you'd like to add?",
+      timestamp: "2024-10-01T09:40:00Z"
+    },
+    {
+      id: 22,
+      sender: "Louis",
+      message: "No",
+      timestamp: "2024-10-01T09:41:00Z"
+    },
+    {
+      id: 23,
+      sender: "June",
+      message: "Now let's move on to your product's features. Please answer the following questions: What are the unique features of your product? What are the most impactful features that tackles the inefficiencies in your client's routines? Can you quantify how your product has driven real business improvements for your clients?",
+      timestamp: "2024-10-01T09:42:00Z"
+    },
+    {
+      id: 24,
+      sender: "Louis",
+      message: "We have a database of 200M leads, June does advanced research on every lead by browsing the web, looking through their website and online profiles. Jnue can send thousands of ultra-personalized emails per month. June takes 20 minutes to set up and automates the entire cold email process.",
+      timestamp: "2024-10-01T09:44:00Z"
+    },
+    {
+      id: 25,
+      sender: "June",
+      message: "Based on your answers, I've identified the following features as the most impactful: huge lead database, advanced research capabilities, personalized outreach, automated email sending, and AI powered automation. Now, do you have a any customer success stories for your product? If not we can move on. If yes, could you share it where your product quantifiably impacted a client? Can you elaborate on testimonials?",
+      timestamp: "2024-10-01T09:46:00Z"
+    },
+    {
+      id: 26,
+      sender: "Louis",
+      message: "I don't have any",
+      timestamp: "2024-10-01T09:48:00Z"
+    },
+    {
+      id: 27,
+      sender: "June",
+      message: "No worries! Let's move on to the next step. Do you have a url to book meetings? For example, a Calendly or Google Calendar link.",
+      timestamp: "2024-10-01T09:50:00Z"
+    },
+    {
+      id: 28,
+      sender: "Louis",
+      message: "Yeah, it's https://calendly.com/louis-cube/30min",
+      timestamp: "2024-10-01T09:52:00Z"
+    },
+    {
+      id: 29,
+      sender: "June",
+      message: "Cool, I've updated your meeting booking URL to https://calendly.com/louis-cube/30min. Now could you tell me what sender first name you'd like me to use when sending emails?",
+      timestamp: "2024-10-01T09:54:00Z"
+    },
+    {
+      id: 30,
+      sender: "Louis",
+      message: "Louis",
+      timestamp: "2024-10-01T09:56:00Z"
+    },
+    {
+      id: 31,
+      sender: "June",
+      message: "Thank you Louis, I've updated your sender first name to Louis. Now could you tell me what tone of voice you'd like me to use?",
+      timestamp: "2024-10-01T09:58:00Z"
+    },
+    {
+      id: 32,
+      sender: "Louis",
+      message: "Friendly and approachable",
+      timestamp: "2024-10-01T10:00:00Z"
+    },
+    {
+      id: 33,
+      sender: "June",
+      message: "Great! Your tone of voice has been updated to friendly and approachable. Now, would you like to approve emails generated from scratch before I send them? Or would you like me to operate on autopilot? You can change this setting at any time.",
+      timestamp: "2024-10-01T10:02:00Z"
+    },
+    {
+      id: 34,
+      sender: "Louis",
+      message: "Go full autopilot",
+      timestamp: "2024-10-01T10:04:00Z"
+    },
+    {
+      id: 35,
+      sender: "June",
+      message: "Thank you Louis, I've updated your settings. Now, could you go to the Mailboxes tab and connect your email accounts?",
+      timestamp: "2024-10-01T10:06:00Z"
+    },
+    {
+      id: 36,
+      sender: "Louis",
+      message: "I'm done",
+      timestamp: "2024-10-01T10:08:00Z"
+    },
+    {
+      id: 37,
+      sender: "June",
+      message: "It doesn't seem you connected any mailbox, make sure you connect at least one.",
+      timestamp: "2024-10-01T10:10:00Z"
+    },
+    {
+      id: 38,
+      sender: "Louis",
+      message: "oops my bad, ok it's done now",
+      timestamp: "2024-10-01T10:12:00Z"
+    },
+    {
+      id: 39,
+      sender: "June",
+      message: "Great, I can see your mailbox now. Are you ready to start populating leads and scheduling emails?",
+      timestamp: "2024-10-01T10:15:00Z"
+    },
+    {
+      id: 40,
+      sender: "Louis",
+      message: "Yeah, let's fucking do it",
+      timestamp: "2024-10-01T10:16:00Z"
+    },
+    {
+      id: 41,
+      sender: "June",
+      message: "I like the enthusiasm! I've started populating leads in your Leads tab. You'll be able to review emails that I've drafted in your Pending Approval tab. Keep in mind that you can always change any of your responses or provide example emails in the Campaigns tab.",
+      timestamp: "2024-10-01T10:17:00Z"
+    },
+    
   ];
 }
 

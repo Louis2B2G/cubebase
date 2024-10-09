@@ -35,33 +35,8 @@ const SidebarItem: React.FC<SidebarItemProps> = ({ icon, label, isActive, onClic
 
     return (
       <div className="w-60 bg-white shadow-lg flex flex-col h-screen">
-        <div className="p-6 flex items-center justify-between">
-          <img src="/logo512.png" alt="Logo" className="h-10" />
-          <div className="relative">
-            <div 
-              className="flex items-center cursor-pointer" 
-              onClick={toggleDropdown}
-            >
-              <img src={userProfilePic} alt="User" className="h-12 w-12 rounded-full mr-2" />
-              <ChevronDown size={16} />
-            </div>
-            {isDropdownOpen && (
-              <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-10">
-                <div className="py-1">
-                  <a 
-                    href="#" 
-                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                    onClick={() => {
-                      // Add logout logic here
-                      console.log('Logging out');
-                    }}
-                  >
-                    Log out
-                  </a>
-                </div>
-              </div>
-            )}
-          </div>
+        <div className="pl-10 pr-10 pt-4 pb-4 flex items-center justify-between">
+          <img src="/cube_modern.png" alt="Logo" className="h-14" />
         </div>
         <nav className="flex-grow overflow-y-auto ml-2">
           <SidebarItem icon={<BarChart2 />} label="Dashboard" isActive={activeTab === 'dashboard'} onClick={() => setActiveTab('dashboard')} />
