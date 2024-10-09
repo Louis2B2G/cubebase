@@ -29,13 +29,13 @@ const Prospects: React.FC = () => {
      prospect.company.toLowerCase().includes(searchTerm.toLowerCase())) &&
     (!filters.status || prospect.status === filters.status) &&
     (!filters.reachedOn || prospect.reachedOn === filters.reachedOn) &&
-    (!filters.dateFrom || new Date(prospect.lastMessageSentAt) >= new Date(filters.dateFrom)) &&
-    (!filters.dateTo || new Date(prospect.lastMessageSentAt) <= new Date(filters.dateTo))
+    (!filters.dateFrom || (prospect.lastMessageSentAt && new Date(prospect.lastMessageSentAt) >= new Date(filters.dateFrom))) &&
+    (!filters.dateTo || (prospect.lastMessageSentAt && new Date(prospect.lastMessageSentAt) <= new Date(filters.dateTo)))
   );
 
   return (
     <div className="p-6">
-      <h1 className="text-2xl font-bold mb-4">Current Leads</h1>
+      <h1 className="text-2xl font-bold mb-4">All Leads</h1>
       <SearchBar 
         searchTerm={searchTerm} 
         setSearchTerm={setSearchTerm}

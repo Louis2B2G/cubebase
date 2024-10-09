@@ -34,27 +34,37 @@ const ProspectList: React.FC<ProspectListProps> = ({
                       <p className="text-lg font-medium text-gray-900 truncate">
                         {prospect.name}
                       </p>
-                      <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                        prospect.status === 'hot' ? 'bg-red-100 text-red-800' :
-                        prospect.status === 'warm' ? 'bg-yellow-100 text-yellow-800' :
-                        'bg-blue-100 text-blue-800'
-                      }`}>
-                        {prospect.status}
-                      </span>
+                      {prospect.status && (
+                        <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                          prospect.status === 'hot' ? 'bg-red-100 text-red-800' :
+                          prospect.status === 'warm' ? 'bg-yellow-100 text-yellow-800' :
+                          'bg-blue-100 text-blue-800'
+                        }`}>
+                          {prospect.status}
+                        </span>
+                      )}
                     </div>
                     <p className="text-sm text-gray-500 truncate">{prospect.title} at {prospect.company}</p>
-                    <div className="mt-2 flex items-center text-sm text-gray-500 space-x-4">
-                      <span className="flex items-center">
-                        Reached on
-                        {prospect.reachedOn === 'linkedin' ? (
-                          <FaLinkedin className="h-4 w-4 ml-1 mr-1" />
-                        ) : (
-                          <MdEmail className="h-4 w-4 ml-1 mr-1" />
+                    {(prospect.reachedOn || prospect.messagesSent || prospect.lastMessageSentAt) && (
+                      <div className="mt-2 flex items-center text-sm text-gray-500 space-x-4">
+                        {prospect.reachedOn && (
+                          <span className="flex items-center">
+                            Reached on
+                            {prospect.reachedOn === 'linkedin' ? (
+                              <FaLinkedin className="h-4 w-4 ml-1 mr-1" />
+                            ) : (
+                              <MdEmail className="h-4 w-4 ml-1 mr-1" />
+                            )}
+                          </span>
                         )}
-                      </span>
-                      <span>Messages: {prospect.messagesSent}</span>
-                      <span>Last message: {new Date(prospect.lastMessageSentAt).toLocaleDateString()}</span>
-                    </div>
+                        {prospect.messagesSent !== undefined && (
+                          <span>Messages: {prospect.messagesSent}</span>
+                        )}
+                        {prospect.lastMessageSentAt && (
+                          <span>Last message: {new Date(prospect.lastMessageSentAt).toLocaleDateString()}</span>
+                        )}
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>

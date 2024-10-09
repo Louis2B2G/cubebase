@@ -39,10 +39,10 @@ export interface Prospect {
   linkedInPosts: LinkedInPost[];
   companyNews: NewsArticle[];
   avatar: string;
-  status: 'warm' | 'hot' | 'cold';
-  reachedOn: 'linkedin' | 'email';
-  messagesSent: number;
-  lastMessageSentAt: string;
+  status?: 'warm' | 'hot' | 'cold';
+  reachedOn?: 'linkedin' | 'email';
+  messagesSent?: number;
+  lastMessageSentAt?: string;
 }
 
 export interface LinkedInPost {

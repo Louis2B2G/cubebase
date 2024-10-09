@@ -15,7 +15,7 @@ import ActivityTable from '@/components/ActivityTable';
 import Mailboxes from '@/pages/Mailboxes';
 import { Sparkles } from 'lucide-react';
 import Pending from '@/pages/Pending';
-
+import Campaigns from '@/pages/Campaigns';
 
 const Dashboard: React.FC = () => {
   const [activeTab, setActiveTab] = useState<string>('dashboard');
@@ -36,28 +36,32 @@ const Dashboard: React.FC = () => {
     const generatedActivities = prospects.flatMap((prospect) => {
       const activities: Activity[] = [];
 
-      activities.push({
-        action: `Reached out via ${prospect.reachedOn}`,
-        prospect: prospect.name,
-        company: prospect.company, // Add company name
-        date: new Date(prospect.lastMessageSentAt).toLocaleDateString(),
-      });
-
-      if (prospect.messagesSent > 1) {
+      if (prospect.lastMessageSentAt) {
         activities.push({
-          action: `Sent ${prospect.messagesSent - 1} follow-up messages`,
+          action: `Reached out via ${prospect.reachedOn || 'unknown'}`,
           prospect: prospect.name,
-          company: prospect.company, // Add company name
+          company: prospect.company,
           date: new Date(prospect.lastMessageSentAt).toLocaleDateString(),
         });
-      }
 
-      activities.push({
-        action: `Status changed to ${prospect.status}`,
-        prospect: prospect.name,
-        company: prospect.company, // Add company name
-        date: new Date(prospect.lastMessageSentAt).toLocaleDateString(),
-      });
+        if (prospect.messagesSent && prospect.messagesSent > 1) {
+          activities.push({
+            action: `Sent ${prospect.messagesSent - 1} follow-up messages`,
+            prospect: prospect.name,
+            company: prospect.company,
+            date: new Date(prospect.lastMessageSentAt).toLocaleDateString(),
+          });
+        }
+
+        if (prospect.status) {
+          activities.push({
+            action: `Status changed to ${prospect.status}`,
+            prospect: prospect.name,
+            company: prospect.company,
+            date: new Date(prospect.lastMessageSentAt).toLocaleDateString(),
+          });
+        }
+      }
 
       return activities;
     });
@@ -135,7 +139,7 @@ const Dashboard: React.FC = () => {
                 <div className="bg-white rounded-2xl h-12 p-3 flex items-center justify-between w-1/4">
                   <div className="flex items-center">
                     <svg className="w-5 h-5 text-[#fe5000] mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                     </svg>
                     <div>
                       <span className="text-xs font-semibold">Emails in Queue</span>
@@ -214,6 +218,9 @@ const Dashboard: React.FC = () => {
           )}
           {activeTab === 'pendingApproval' && (
             <Pending />
+          )}
+          {activeTab === 'campaigns' && (
+            <Campaigns />
           )}
         </div>
       </div>

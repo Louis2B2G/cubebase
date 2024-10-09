@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { BarChart2, Users, Sparkles, Calendar, Settings, Bot, Link, Inbox, Send, Clock, Mail, ChevronDown } from 'lucide-react';
+import { BarChart2, Users, Sparkles, Calendar, Settings, Bot, Link, Inbox, Send, Clock, Mail, ChevronDown, Rocket } from 'lucide-react';
 
 interface SidebarProps {
   activeTab: string;
@@ -36,7 +36,7 @@ const SidebarItem: React.FC<SidebarItemProps> = ({ icon, label, isActive, onClic
     return (
       <div className="w-60 bg-white shadow-lg flex flex-col h-screen">
         <div className="pl-10 pr-10 pt-4 pb-4 flex items-center justify-between">
-          <img src="/cube_modern.png" alt="Logo" className="h-14" />
+          <img src="/june_new.png" alt="Logo" className="h-14" />
         </div>
         <nav className="flex-grow overflow-y-auto ml-2">
           <SidebarItem icon={<BarChart2 />} label="Dashboard" isActive={activeTab === 'dashboard'} onClick={() => setActiveTab('dashboard')} />
@@ -47,7 +47,7 @@ const SidebarItem: React.FC<SidebarItemProps> = ({ icon, label, isActive, onClic
           <div className="px-3 py-2 text-xs font-semibold text-gray-500 uppercase mt-4">Outbound</div>
           
           <SidebarItem icon={<Inbox />} label="Inbox" isActive={activeTab === 'conversations'} onClick={() => setActiveTab('conversations')} />
-          <SidebarItem icon={<Send />} label="Campaigns" isActive={activeTab === 'campaigns'} onClick={() => setActiveTab('campaigns')} />
+          <SidebarItem icon={<Rocket />} label="Campaign Setup" isActive={activeTab === 'campaigns'} onClick={() => setActiveTab('campaigns')} />
           <SidebarItem icon={<Clock />} label="Pending Approval" isActive={activeTab === 'pendingApproval'} onClick={() => setActiveTab('pendingApproval')} />
           <SidebarItem icon={<Mail />} label="Mailboxes" isActive={activeTab === 'mailboxes'} onClick={() => setActiveTab('mailboxes')} />
           <SidebarItem icon={<Calendar />} label="Calendar" isActive={activeTab === 'calendar'} onClick={() => setActiveTab('calendar')} />

@@ -479,7 +479,7 @@ I'm reaching out because I believe our AI-powered Sales Development Representati
 Would you be interested in a quick 15-minute call to discuss how we could potentially boost your sales performance?
 
 Best regards,
-June from Wave AI`,
+Louis de Benoist`,
       recipientCompany: 'Tech Innovators',
       prospectId: '1' // Add this line
     },
@@ -496,7 +496,7 @@ Given your growth, I thought you might be interested in learning about how AI ca
 Would you be open to a brief demo to see how this could work for Global Solutions?
 
 Looking forward to hearing from you,
-June from Wave AI`,
+Louis de Benoist`,
       recipientCompany: 'Global Solutions',
       prospectId: '2' // Add this line
     },
@@ -513,9 +513,99 @@ I'm reaching out because I believe our AI-powered Sales Development Representati
 Would you be interested in a short call to explore how AI could revolutionize your sales outreach?
 
 Best regards,
-June from Wave AI`,
+Louis de Benoist`,
       recipientCompany: 'Future Corp',
       prospectId: '3' // Add this line
     }
+  ];
+}
+
+export function generateCampaignProspects(): Prospect[] {
+  return [
+    {
+      id: '1',
+      name: 'Alex Johnson',
+      company: 'TechSolutions Inc.',
+      title: 'VP of Sales',
+      email: 'alex.johnson@techsolutions.com',
+      phone: '+1 (555) 123-4567',
+      linkedIn: 'https://www.linkedin.com/in/alexjohnson',
+      location: 'San Francisco, CA',
+      industry: 'Technology',
+      companySize: '500-1000 employees',
+      revenue: '$50M - $100M',
+      notes: 'Interested in AI-powered sales solutions.',
+      linkedInPosts: generateLinkedInPosts(),
+      companyNews: generateCompanyNews('TechSolutions Inc.'),
+      avatar: '/jack.png',
+    },
+    {
+      id: '2',
+      name: 'Sarah Lee',
+      company: 'GrowthMarketing Co.',
+      title: 'Head of Growth Marketing',
+      email: 'sarah.lee@growthmarketing.com',
+      phone: '+1 (555) 234-5678',
+      linkedIn: 'https://www.linkedin.com/in/sarahlee',
+      location: 'New York, NY',
+      industry: 'Marketing',
+      companySize: '100-500 employees',
+      revenue: '$10M - $50M',
+      notes: 'Looking for innovative marketing automation tools.',
+      linkedInPosts: generateLinkedInPosts(),
+      companyNews: generateCompanyNews('GrowthMarketing Co.'),
+      avatar: '/isabella.png',
+    },
+    {
+      id: '3',
+      name: 'Michael Chen',
+      company: 'DataDriven Corp',
+      title: 'CEO',
+      email: 'michael.chen@datadriven.com',
+      phone: '+1 (555) 345-6789',
+      linkedIn: 'https://www.linkedin.com/in/michaelchen',
+      location: 'Boston, MA',
+      industry: 'Data Analytics',
+      companySize: '100-500 employees',
+      revenue: '$10M - $50M',
+      notes: 'Exploring AI solutions for data analysis.',
+      linkedInPosts: generateLinkedInPosts(),
+      companyNews: generateCompanyNews('DataDriven Corp'),
+      avatar: '/frank.png',
+    },
+    {
+      id: '4',
+      name: 'Emily Rodriguez',
+      company: 'InnovateTech',
+      title: 'Chief Revenue Officer',
+      email: 'emily.rodriguez@innovatetech.com',
+      phone: '+1 (555) 456-7890',
+      linkedIn: 'https://www.linkedin.com/in/emilyrodriguez',
+      location: 'Austin, TX',
+      industry: 'Software',
+      companySize: '100-500 employees',
+      revenue: '$10M - $50M',
+      notes: 'Interested in AI-powered sales forecasting.',
+      linkedInPosts: generateLinkedInPosts(),
+      companyNews: generateCompanyNews('InnovateTech'),
+      avatar: '/grace.png',
+    },
+    {
+      id: '5',
+      name: 'David Kim',
+      company: 'SalesPro Solutions',
+      title: 'Head of Sales',
+      email: 'david.kim@salespro.com',
+      phone: '+1 (555) 567-8901',
+      linkedIn: 'https://www.linkedin.com/in/davidkim',
+      location: 'Chicago, IL',
+      industry: 'Sales',
+      companySize: '50-100 employees',
+      revenue: '$5M - $10M',
+      notes: 'Looking for AI tools to improve sales efficiency.',
+      linkedInPosts: generateLinkedInPosts(),
+      companyNews: generateCompanyNews('SalesPro Solutions'),
+      avatar: '/henry.png',
+    },
   ];
 }
