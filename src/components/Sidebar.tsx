@@ -35,8 +35,8 @@ const SidebarItem: React.FC<SidebarItemProps> = ({ icon, label, isActive, onClic
 
     return (
       <div className="w-60 bg-white shadow-lg flex flex-col h-screen">
-        <div className="pl-10 pr-10 pt-4 pb-4 flex items-center justify-between">
-          <img src="/june_new.png" alt="Logo" className="h-14" />
+        <div className="pl-10 pr-10 p-4  flex items-center justify-between">
+          <img src="/june_new.png" alt="Logo" className="h-10" />
         </div>
         <nav className="flex-grow overflow-y-auto ml-2">
           <SidebarItem icon={<BarChart2 />} label="Dashboard" isActive={activeTab === 'dashboard'} onClick={() => setActiveTab('dashboard')} />
