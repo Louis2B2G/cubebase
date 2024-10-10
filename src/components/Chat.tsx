@@ -64,7 +64,7 @@ const Chat: React.FC = () => {
             )}
             <div className={`flex ${message.sender !== 'June' ? 'justify-end' : 'justify-start'}`}>
               {message.sender === 'June' && (
-                <img src="./june.png" alt="June" className="w-8 h-8 rounded-full mr-2 mb-auto" />
+                <img src="./june_headshot.png" alt="June" className="w-8 h-8 rounded-full mr-2 mb-auto" />
               )}
               <div className={`flex flex-col ${message.sender !== 'June' ? 'items-end' : 'items-start'} max-w-[70%]`}>
                 {message.sender === 'June' && (

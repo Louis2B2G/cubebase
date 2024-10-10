@@ -82,7 +82,7 @@ const Pending: React.FC = () => {
 
   return (
     <div className="h-full bg-[#fcf9f8] p-4 flex">
-      <div className="w-1/3 pr-2">
+      <div className="w-1/2 pr-2">
         <div className="bg-white rounded-lg shadow-md overflow-hidden">
           <div className="p-3 bg-[#fff4e4] hover:bg-[#ffe8cc] text-[#fe5000] text-xs font-medium">
             Emails to Review: {pendingEmails.length}
@@ -177,7 +177,7 @@ const Pending: React.FC = () => {
           </div>
         </div>
       </div>
-      <div className="w-2/3 pl-4 mb-10">
+      <div className="w-1/2 pl-4 mb-10">
         {currentProspect && <ProspectDetails prospect={currentProspect} />}
       </div>
     </div>

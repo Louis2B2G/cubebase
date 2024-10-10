@@ -91,7 +91,7 @@ const Dashboard: React.FC = () => {
                   onClick={() => setActiveTab('chatJune')}
                 >
                   <div className="flex items-center">
-                    <img src="/june.png" alt="June" className="h-8 w-8 mr-2" />
+                    <img src="/june_headshot.png" alt="June" className="h-8 w-8 rounded-full mr-2" />
                     <div>
                       <span className="text-sm font-semibold">Hi Louis 👋</span>
                     </div>

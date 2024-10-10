@@ -7,7 +7,7 @@ const ChatJune: React.FC = () => {
       <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
         <div className="p-4 bg-white text-black flex items-center justify-between">
           <div className="flex items-center dh">
-            <img src="/june.png" alt="June" className="w-10 h-10 rounded-full mr-3" />
+            <img src="/june_headshot.png" alt="June" className="w-14 rounded-full mr-3" />
             <h2 className="text-xl font-bold">Chat with June</h2>
           </div>
           <div className="flex items-center rounded-full px-3 py-1 text-sm shadow">

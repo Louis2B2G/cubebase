@@ -10,7 +10,7 @@ interface ProspectDetailsProps {
 
 const ProspectDetails: React.FC<ProspectDetailsProps> = ({ prospect }) => {
   return (
-    <div className="bg-white rounded-lg shadow p-4 h-full overflow-y-auto text-xs">
+    <div className="bg-white rounded-lg shadow p-4 flex flex-col h-full overflow-hidden text-xs">
       <div className="flex items-center mb-4">
         <img src={prospect.avatar} alt={prospect.name} className="w-12 h-12 rounded-full mr-3" />
         <div>
@@ -62,17 +62,21 @@ const ProspectDetails: React.FC<ProspectDetailsProps> = ({ prospect }) => {
         </div>
       </div>
 
-      <div className="grid grid-cols-2 gap-3 mb-3">
-        <div className="flex flex-col h-56">
+      <div className="grid grid-cols-2 gap-3 mb-3 flex-grow overflow-hidden">
+        <div className="flex flex-col overflow-hidden">
           <h3 className="text-sm font-semibold mb-1.5">Recent LinkedIn Posts</h3>
-          <div className="bg-gray-50 rounded-lg p-3 flex-grow overflow-y-auto">
-            <LinkedInPosts posts={prospect.linkedInPosts} />
+          <div className="bg-gray-50 rounded-lg p-3 flex-grow overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
+            <div className="space-y-2">
+              <LinkedInPosts posts={prospect.linkedInPosts} />
+            </div>
           </div>
         </div>
-        <div className="flex flex-col h-56">
+        <div className="flex flex-col overflow-hidden">
           <h3 className="text-sm font-semibold mb-1.5">Company News</h3>
-          <div className="bg-gray-50 rounded-lg p-3 flex-grow overflow-y-auto">
-            <CompanyNews news={prospect.companyNews} />
+          <div className="bg-gray-50 rounded-lg p-3 flex-grow overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
+            <div className="space-y-2">
+              <CompanyNews news={prospect.companyNews} />
+            </div>
           </div>
         </div>
       </div>

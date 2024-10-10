@@ -83,7 +83,20 @@ interface CampaignData {
   keywords: string[];
   companyWebsite: string;
   supportingDocuments: SupportingDocument[];
-  customSignature?: string;
+  customSignature: string;
+  campaignName: string;
+  industries: string[];
+  exclusions: string[];
+  currentCustomers: string[];
+  idealCustomerWebsites: string[];
+  hiringIntent: boolean;
+  jobPostings: string[];
+  latestJobPostingPeriod: string;
+  monthlyEmployeeGrowth: string;
+  latestFundingRound: string;
+  latestFundingDate: string;
+  newsKeywords: string[];
+  earliestNewsDate: string;
 }
 
 const Campaigns: React.FC = () => {
@@ -119,9 +132,22 @@ const Campaigns: React.FC = () => {
     companyAgeMin: "",
     companyAgeMax: "",
     keywords: [],
-    companyWebsite: "",
+    companyWebsite: "www.hirejune.com",
     supportingDocuments: [],
     customSignature: '',
+    campaignName: '',
+    industries: [],
+    exclusions: [],
+    currentCustomers: [],
+    idealCustomerWebsites: [],
+    hiringIntent: false,
+    jobPostings: [],
+    latestJobPostingPeriod: '',
+    monthlyEmployeeGrowth: '',
+    latestFundingRound: '',
+    latestFundingDate: '',
+    newsKeywords: [],
+    earliestNewsDate: '',
   });
   const [prospects, setProspects] = useState<Prospect[]>([]);
   const [selectedProspect, setSelectedProspect] = useState<Prospect | null>(null);
@@ -143,17 +169,40 @@ const Campaigns: React.FC = () => {
   };
 
   const handleAddItem = (field: keyof CampaignData, item: string) => {
-    setCampaignData(prev => ({
-      ...prev,
-      [field]: [...(prev[field] as string[]), item]
-    }));
+    setCampaignData(prev => {
+      const currentValue = prev[field];
+      if (Array.isArray(currentValue)) {
+        return {
+          ...prev,
+          [field]: [...currentValue, item]
+        };
+      } else {
+        // If the field is not an array, initialize it as an array with the new item
+        return {
+          ...prev,
+          [field]: [item]
+        };
+      }
+    });
   };
 
+  function isStringArray(value: unknown): value is string[] {
+    return Array.isArray(value) && value.every(item => typeof item === 'string');
+  }
+
   const handleRemoveItem = (field: keyof CampaignData, index: number) => {
-    setCampaignData(prev => ({
-      ...prev,
-      [field]: (prev[field] as string[]).filter((_, i) => i !== index)
-    }));
+    setCampaignData(prev => {
+      const currentValue = prev[field];
+      if (isStringArray(currentValue)) {
+        return {
+          ...prev,
+          [field]: currentValue.filter((_, i) => i !== index)
+        };
+      } else {
+        // If the field is not a string array, return the previous state unchanged
+        return prev;
+      }
+    });
   };
 
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -181,16 +230,25 @@ const Campaigns: React.FC = () => {
   };
 
   const renderPersonaTab = () => (
-    <div className="space-y-4">
+    <div className="space-y-6">
       <div className="border rounded-md p-4">
         <div className="space-y-4">
           <div>
-            <label className="block mb-2 text-sm font-medium">Target Countries</label>
+            <label className="block mb-2 text-sm font-medium">Countries</label>
             <BubbleInput
               items={campaignData.targetCountries}
               onAdd={(item) => handleAddItem('targetCountries', item)}
               onRemove={(index) => handleRemoveItem('targetCountries', index)}
               placeholder="Add target countries..."
+            />
+          </div>
+          <div>
+            <label className="block mb-2 text-sm font-medium">Industries</label>
+            <BubbleInput
+              items={campaignData.industries || []}
+              onAdd={(item) => handleAddItem('industries', item)}
+              onRemove={(index) => handleRemoveItem('industries', index)}
+              placeholder="Add target industries..."
             />
           </div>
           <div>
@@ -200,15 +258,6 @@ const Campaigns: React.FC = () => {
               onAdd={(item) => handleAddItem('jobTitles', item)}
               onRemove={(index) => handleRemoveItem('jobTitles', index)}
               placeholder="Add job titles..."
-            />
-          </div>
-          <div>
-            <label className="block mb-2 text-sm font-medium">Sectors</label>
-            <BubbleInput
-              items={campaignData.sectors}
-              onAdd={(item) => handleAddItem('sectors', item)}
-              onRemove={(index) => handleRemoveItem('sectors', index)}
-              placeholder="Add sectors..."
             />
           </div>
           <div>
@@ -232,80 +281,216 @@ const Campaigns: React.FC = () => {
             </div>
           </div>
           <div>
-            <label className="block mb-2 text-sm font-medium">Company Revenue Range</label>
-            <div className="flex items-center space-x-2">
-              <input 
-                type="number"
-                value={campaignData.revenueMin} 
-                onChange={(e) => handleInputChange('revenueMin', e.target.value)}
-                placeholder="Min"
-                className="w-24 p-3 border rounded-md bg-[#fcf9f8] focus:border-[#fe5000] focus:outline-none"
+            <label className="block mb-2 text-sm font-medium">Target Customer Examples</label>
+            <div className="space-y-2">
+              <BubbleInput
+                items={campaignData.currentCustomers || []}
+                onAdd={(item) => handleAddItem('currentCustomers', item)}
+                onRemove={(index) => handleRemoveItem('currentCustomers', index)}
+                placeholder="Add current customer names..."
               />
-              <span>to</span>
-              <input 
-                type="number"
-                value={campaignData.revenueMax} 
-                onChange={(e) => handleInputChange('revenueMax', e.target.value)}
-                placeholder="Max"
-                className="w-24 p-3 border rounded-md bg-[#fcf9f8] focus:border-[#fe5000] focus:outline-none"
+              <BubbleInput
+                items={campaignData.idealCustomerWebsites || []}
+                onAdd={(item) => handleAddItem('idealCustomerWebsites', item)}
+                onRemove={(index) => handleRemoveItem('idealCustomerWebsites', index)}
+                placeholder="Add websites of ideal customers..."
               />
             </div>
-          </div>
-          <div>
-            <label className="block mb-2 text-sm font-medium">Technologies Used</label>
-            <BubbleInput
-              items={campaignData.technologies}
-              onAdd={(item) => handleAddItem('technologies', item)}
-              onRemove={(index) => handleRemoveItem('technologies', index)}
-              placeholder="Add technologies..."
-            />
-          </div>
-          <div>
-            <label className="block mb-2 text-sm font-medium">Funding Status</label>
-            <select
-              value={campaignData.fundingStatus}
-              onChange={(e) => handleInputChange('fundingStatus', e.target.value)}
-              className="w-full p-3 border rounded-md bg-[#fcf9f8] focus:border-[#fe5000] focus:outline-none"
-            >
-              <option value="">Any</option>
-              <option value="seed">Seed</option>
-              <option value="seriesA">Series A</option>
-              <option value="seriesB">Series B</option>
-              <option value="seriesC">Series C+</option>
-              <option value="public">Public</option>
-            </select>
-          </div>
-          <div>
-            <label className="block mb-2 text-sm font-medium">Company Age</label>
-            <div className="flex items-center space-x-2">
-              <input 
-                type="number"
-                value={campaignData.companyAgeMin} 
-                onChange={(e) => handleInputChange('companyAgeMin', e.target.value)}
-                placeholder="Min"
-                className="w-24 p-3 border rounded-md bg-[#fcf9f8] focus:border-[#fe5000] focus:outline-none"
-              />
-              <span>to</span>
-              <input 
-                type="number"
-                value={campaignData.companyAgeMax} 
-                onChange={(e) => handleInputChange('companyAgeMax', e.target.value)}
-                placeholder="Max"
-                className="w-24 p-3 border rounded-md bg-[#fcf9f8] focus:border-[#fe5000] focus:outline-none"
-              />
-            </div>
-          </div>
-          <div>
-            <label className="block mb-2 text-sm font-medium">Keywords</label>
-            <BubbleInput
-              items={campaignData.keywords}
-              onAdd={(item) => handleAddItem('keywords', item)}
-              onRemove={(index) => handleRemoveItem('keywords', index)}
-              placeholder="Add keywords..."
-            />
           </div>
         </div>
       </div>
+
+      <Collapsible title="Advanced Filters">
+        <div className="space-y-6 mt-4">
+          <Collapsible title="Company Information">
+            <div className="space-y-4 mt-4">
+              <div>
+                <label className="block mb-2 text-sm font-medium">Exclusions</label>
+                <BubbleInput
+                  items={campaignData.exclusions || []}
+                  onAdd={(item) => handleAddItem('exclusions', item)}
+                  onRemove={(index) => handleRemoveItem('exclusions', index)}
+                  placeholder="Add exclusions (e.g., industries, company types)..."
+                />
+              </div>
+              <div>
+                <label className="block mb-2 text-sm font-medium">Company Revenue Range</label>
+                <div className="flex items-center space-x-2">
+                  <input 
+                    type="number"
+                    value={campaignData.revenueMin} 
+                    onChange={(e) => handleInputChange('revenueMin', e.target.value)}
+                    placeholder="Min"
+                    className="w-24 p-3 border rounded-md bg-[#fcf9f8] focus:border-[#fe5000] focus:outline-none"
+                  />
+                  <span>to</span>
+                  <input 
+                    type="number"
+                    value={campaignData.revenueMax} 
+                    onChange={(e) => handleInputChange('revenueMax', e.target.value)}
+                    placeholder="Max"
+                    className="w-24 p-3 border rounded-md bg-[#fcf9f8] focus:border-[#fe5000] focus:outline-none"
+                  />
+                </div>
+              </div>
+              <div>
+                <label className="block mb-2 text-sm font-medium">Technologies Used</label>
+                <BubbleInput
+                  items={campaignData.technologies}
+                  onAdd={(item) => handleAddItem('technologies', item)}
+                  onRemove={(index) => handleRemoveItem('technologies', index)}
+                  placeholder="Add technologies..."
+                />
+              </div>
+              <div>
+                <label className="block mb-2 text-sm font-medium">Company Age</label>
+                <div className="flex items-center space-x-2">
+                  <input 
+                    type="number"
+                    value={campaignData.companyAgeMin} 
+                    onChange={(e) => handleInputChange('companyAgeMin', e.target.value)}
+                    placeholder="Min"
+                    className="w-24 p-3 border rounded-md bg-[#fcf9f8] focus:border-[#fe5000] focus:outline-none"
+                  />
+                  <span>to</span>
+                  <input 
+                    type="number"
+                    value={campaignData.companyAgeMax} 
+                    onChange={(e) => handleInputChange('companyAgeMax', e.target.value)}
+                    placeholder="Max"
+                    className="w-24 p-3 border rounded-md bg-[#fcf9f8] focus:border-[#fe5000] focus:outline-none"
+                  />
+                </div>
+              </div>
+              <div>
+                <label className="block mb-2 text-sm font-medium">Keywords</label>
+                <BubbleInput
+                  items={campaignData.keywords}
+                  onAdd={(item) => handleAddItem('keywords', item)}
+                  onRemove={(index) => handleRemoveItem('keywords', index)}
+                  placeholder="Add keywords..."
+                />
+              </div>
+            </div>
+          </Collapsible>
+
+          <Collapsible title="Funding Information">
+            <div className="space-y-4 mt-4">
+              <div>
+                <label className="block mb-2 text-sm font-medium">Funding Status</label>
+                <select
+                  value={campaignData.fundingStatus}
+                  onChange={(e) => handleInputChange('fundingStatus', e.target.value)}
+                  className="w-full p-3 border rounded-md bg-[#fcf9f8] focus:border-[#fe5000] focus:outline-none"
+                >
+                  <option value="">Any</option>
+                  <option value="seed">Pre-Seed</option>
+                  <option value="seed">Seed</option>
+                  <option value="seriesA">Series A</option>
+                  <option value="seriesB">Series B</option>
+                  <option value="seriesC">Series C+</option>
+                  <option value="public">Public</option>
+                </select>
+              </div>
+              <div>
+                <label className="block mb-2 text-sm font-medium">Latest Funding Round</label>
+                <select
+                  value={campaignData.latestFundingRound}
+                  onChange={(e) => handleInputChange('latestFundingRound', e.target.value)}
+                  className="w-full p-3 border rounded-md bg-[#fcf9f8] focus:border-[#fe5000] focus:outline-none"
+                >
+                  <option value="">Any</option>
+                  <option value="seed">Seed</option>
+                  <option value="seriesA">Series A</option>
+                  <option value="seriesB">Series B</option>
+                  <option value="seriesC">Series C+</option>
+                </select>
+              </div>
+              <div>
+                <label className="block mb-2 text-sm font-medium">Latest Funding Date</label>
+                <input 
+                  type="date"
+                  value={campaignData.latestFundingDate} 
+                  onChange={(e) => handleInputChange('latestFundingDate', e.target.value)}
+                  className="w-full p-3 border rounded-md bg-[#fcf9f8] focus:border-[#fe5000] focus:outline-none"
+                />
+              </div>
+            </div>
+          </Collapsible>
+
+          <Collapsible title="Hiring and Growth">
+            <div className="space-y-4 mt-4">
+              <div>
+                <label className="flex items-center space-x-2">
+                  <input 
+                    type="checkbox" 
+                    checked={campaignData.hiringIntent} 
+                    onChange={(e) => handleInputChange('hiringIntent', e.target.checked)}
+                    className="w-4 h-4 text-[#fe5000] focus:ring-[#fe5000] border-gray-300 rounded"
+                  />
+                  <span className="text-sm font-medium">Hiring Intent</span>
+                </label>
+              </div>
+              <div>
+                <label className="block mb-2 text-sm font-medium">Job Postings</label>
+                <BubbleInput
+                  items={campaignData.jobPostings}
+                  onAdd={(item) => handleAddItem('jobPostings', item)}
+                  onRemove={(index) => handleRemoveItem('jobPostings', index)}
+                  placeholder="Add job titles..."
+                />
+              </div>
+              <div>
+                <label className="block mb-2 text-sm font-medium">Latest Job Posting Period</label>
+                <select
+                  value={campaignData.latestJobPostingPeriod}
+                  onChange={(e) => handleInputChange('latestJobPostingPeriod', e.target.value)}
+                  className="w-full p-3 border rounded-md bg-[#fcf9f8] focus:border-[#fe5000] focus:outline-none"
+                >
+                  <option value="">Any</option>
+                  <option value="1w">Last week</option>
+                  <option value="1m">Last month</option>
+                  <option value="3m">Last 3 months</option>
+                  <option value="6m">Last 6 months</option>
+                </select>
+              </div>
+              <div>
+                <label className="block mb-2 text-sm font-medium">Monthly Employee Growth</label>
+                <input 
+                  type="text"
+                  value={campaignData.monthlyEmployeeGrowth} 
+                  onChange={(e) => handleInputChange('monthlyEmployeeGrowth', e.target.value)}
+                  placeholder="e.g., >5%"
+                  className="w-full p-3 border rounded-md bg-[#fcf9f8] focus:border-[#fe5000] focus:outline-none"
+                />
+              </div>
+            </div>
+          </Collapsible>
+
+          <Collapsible title="News and Events">
+            <div className="space-y-4 mt-4">
+              <div>
+                <label className="block mb-2 text-sm font-medium">News Keywords</label>
+                <BubbleInput
+                  items={campaignData.newsKeywords}
+                  onAdd={(item) => handleAddItem('newsKeywords', item)}
+                  onRemove={(index) => handleRemoveItem('newsKeywords', index)}
+                  placeholder="Add news keywords..."
+                />
+              </div>
+              <div>
+                <label className="block mb-2 text-sm font-medium">Earliest News Date</label>
+                <input 
+                  type="date"
+                  value={campaignData.earliestNewsDate} 
+                  onChange={(e) => handleInputChange('earliestNewsDate', e.target.value)}
+                  className="w-full p-3 border rounded-md bg-[#fcf9f8] focus:border-[#fe5000] focus:outline-none"
+                />
+              </div>
+            </div>
+          </Collapsible>
+        </div>
+      </Collapsible>
     </div>
   );
 
@@ -502,7 +687,7 @@ const Campaigns: React.FC = () => {
           </div>
           <div className="w-1/2 pl-10 flex flex-col h-full">
             <h2 className="text-xl font-semibold mb-4">
-              Found {campaignProspects.length} leads
+              Found 12.7K leads
             </h2>
             <div className="bg-blue-50 border border-blue-200 rounded-md p-4 mb-4">
               <p className="text-sm text-blue-800">
@@ -520,6 +705,23 @@ const Campaigns: React.FC = () => {
           </div>
         </div>
       </div>
+    </div>
+  );
+};
+
+const Collapsible: React.FC<{ title: string; children: React.ReactNode }> = ({ title, children }) => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <div className="border rounded-md">
+      <button
+        className="w-full p-4 text-left font-medium flex justify-between items-center"
+        onClick={() => setIsOpen(!isOpen)}
+      >
+        {title}
+        <span>{isOpen ? '▲' : '▼'}</span>
+      </button>
+      {isOpen && <div className="p-4 border-t">{children}</div>}
     </div>
   );
 };
