@@ -26,6 +26,7 @@ const Pending: React.FC = () => {
     setCurrentProspect(currentProspect || null);
     setCurrentActions(currentProspect?.actions || []);
   }, []);
+  
 
   const handleEdit = () => {
     setIsEditing(true);
