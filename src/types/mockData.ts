@@ -1,4 +1,4 @@
-import { KPI, Activity, Conversation, Prospect, LinkedInPost, NewsArticle } from '@/types/types';
+import { KPI, Activity, Conversation, Prospect, LinkedInPost, NewsArticle, Action, PendingMessage } from '@/types/types';
 
 export const generateKPIs = (): KPI => ({
   totalProspects: Math.floor(Math.random() * 10000),
@@ -35,8 +35,38 @@ export function generateProspects(): Prospect[] {
       avatar: '/frank.png',
       status: 'hot',
       reachedOn: 'linkedin',
-      messagesSent: 5,
+      messagesSent: 3,
       lastMessageSentAt: '2024-10-05',
+      actions: [
+        {
+          type: 'Added on Linkedin',
+          timestamp: '2024-10-01T10:00:00Z',
+        },
+        {
+          type: 'Accepted on Linkedin',
+          timestamp: '2024-10-02T09:15:00Z',
+        },
+        {
+          type: 'Message',
+          timestamp: '2024-10-02T14:30:00Z',
+          details: {
+            origin: 'Linkedin',
+            from: 'Louis',
+            to: 'Frank Wilson',
+            content: "Hi Frank, thanks for connecting! I noticed your work in AI-powered solutions. I'd love to share how we're using AI to transform product development. Would you be open to a brief chat?",
+          },
+        },
+        {
+          type: 'Message',
+          timestamp: '2024-10-03T11:00:00Z',
+          details: {
+            origin: 'Linkedin',
+            from: 'Frank Wilson',
+            to: 'Louis',
+            content: "Hi Louis, thanks for reaching out. Your work sounds interesting. Could you send me more details via email? My address is frank.wilson@techinnovators.com",
+          },
+        }
+      ],
     },
     {
       id: '2',
@@ -56,8 +86,38 @@ export function generateProspects(): Prospect[] {
       avatar: '/grace.png',
       status: 'warm',
       reachedOn: 'email',
-      messagesSent: 3,
+      messagesSent: 2,
       lastMessageSentAt: '2024-10-03',
+      actions: [
+        {
+          type: 'Message',
+          timestamp: '2024-10-01T10:00:00Z',
+          details: {
+            origin: 'Email',
+            from: 'Louis',
+            to: 'Grace Taylor',
+            content: "Hello Grace,\n\nI hope this email finds you well. I came across your profile and was impressed by your work in streamlining global operations at Global Solutions.\n\nI wanted to reach out because I believe our AI-powered solution could be a game-changer for your operations. We've helped companies like yours significantly improve their efficiency and achieve remarkable results.\n\nWould you be interested in a brief call to explore how AI could revolutionize your global operations?\n\nBest regards,\nLouis",
+          },
+        },
+        {
+          type: 'Added on Linkedin',
+          timestamp: '2024-10-01T10:05:00Z',
+        },
+        {
+          type: 'Message',
+          timestamp: '2024-10-02T14:30:00Z',
+          details: {
+            origin: 'Email',
+            from: 'Grace Taylor',
+            to: 'Louis',
+            content: "Hi Louis,\n\nThank you for reaching out. Your AI solution sounds intriguing, and I'm always on the lookout for ways to improve our operations.\n\nCould you provide more information about how your solution has helped similar companies in the consulting industry?\n\nBest,\nGrace",
+          },
+        },
+        {
+          type: 'Accepted on Linkedin',
+          timestamp: '2024-10-03T09:15:00Z',
+        },
+      ],
     },
     {
       id: '3',
@@ -75,10 +135,74 @@ export function generateProspects(): Prospect[] {
       linkedInPosts: generateLinkedInPosts(),
       companyNews: generateCompanyNews('Future Corp'),
       avatar: '/henry.png',
-      status: 'cold',
+      status: 'hot',
       reachedOn: 'linkedin',
-      messagesSent: 1,
-      lastMessageSentAt: '2024-09-28',
+      messagesSent: 4,
+      lastMessageSentAt: '2024-10-06',
+      actions: [
+        {
+          type: 'Added on Linkedin',
+          timestamp: '2024-10-01T10:00:00Z',
+        },
+        {
+          type: 'Accepted on Linkedin',
+          timestamp: '2024-10-02T09:15:00Z',
+        },
+        {
+          type: 'Message',
+          timestamp: '2024-10-02T14:30:00Z',
+          details: {
+            origin: 'Linkedin',
+            from: 'Louis',
+            to: 'Henry Davis',
+            content: "Hi Henry, thanks for connecting! I noticed your interest in AI for predictive analytics in finance. I'd love to share how our AI solutions are transforming financial forecasting and strategy. Would you be open to a quick chat?",
+          },
+        },
+        {
+          type: 'Message',
+          timestamp: '2024-10-03T11:00:00Z',
+          details: {
+            origin: 'Linkedin',
+            from: 'Henry Davis',
+            to: 'Louis',
+            content: "Hello Louis, I'm definitely interested in learning more. Could we set up a call next week?",
+          },
+        },
+        {
+          type: 'Message',
+          timestamp: '2024-10-04T10:00:00Z',
+          details: {
+            origin: 'Linkedin',
+            from: 'Louis',
+            to: 'Henry Davis',
+            content: "Absolutely, Henry! I'd be happy to schedule a call. How does next Tuesday at 2 PM EST work for you?",
+          },
+        },
+        {
+          type: 'Message',
+          timestamp: '2024-10-05T15:30:00Z',
+          details: {
+            origin: 'Linkedin',
+            from: 'Henry Davis',
+            to: 'Louis',
+            content: "Tuesday at 2 PM EST works perfectly. Looking forward to our call!",
+          },
+        },
+        {
+          type: 'Meeting Booked',
+          timestamp: '2024-10-05T16:00:00Z',
+          details: {
+            origin: 'Calendar',
+            from: 'Louis',
+            to: 'Henry Davis',
+            content: "Meeting scheduled: AI Solutions for Financial Predictive Analytics",
+            date: '2024-10-08', // Added date
+            time: '14:00', // Added time (2 PM EST)
+            duration: '30', // Added duration (in minutes)
+            platform: 'Zoom' // Optional: Added platform
+          },
+        },
+      ],
     },
     {
       id: '4',
@@ -100,6 +224,36 @@ export function generateProspects(): Prospect[] {
       reachedOn: 'email',
       messagesSent: 4,
       lastMessageSentAt: '2024-10-04',
+      actions: [
+        {
+          type: 'Added on Linkedin',
+          timestamp: '2024-10-01T10:00:00Z',
+        },
+        {
+          type: 'Message',
+          timestamp: '2024-10-02T14:30:00Z',
+          details: {
+            origin: 'Linkedin',
+            from: 'Louis',
+            to: 'Isabella Martinez',
+            content: "Hi Isabella, I noticed your work in biotechnology. I'd love to connect and share ideas about how AI is transforming the drug discovery industry.",
+          },
+        },
+        {
+          type: 'Accepted on Linkedin',
+          timestamp: '2024-10-03T09:15:00Z',
+        },
+        {
+          type: 'Message',
+          timestamp: '2024-10-03T11:00:00Z',
+          details: {
+            origin: 'Linkedin',
+            from: 'Isabella Martinez',
+            to: 'Louis',
+            content: "Thanks for reaching out, Louis! I'm always interested in discussing AI advancements. What specific area of AI are you working on?",
+          },
+        },
+      ],
     },
     {
       id: '5',
@@ -121,6 +275,36 @@ export function generateProspects(): Prospect[] {
       reachedOn: 'linkedin',
       messagesSent: 6,
       lastMessageSentAt: '2024-10-06',
+      actions: [
+        {
+          type: 'Added on Linkedin',
+          timestamp: '2024-10-01T10:00:00Z',
+        },
+        {
+          type: 'Message',
+          timestamp: '2024-10-02T14:30:00Z',
+          details: {
+            origin: 'Linkedin',
+            from: 'Louis',
+            to: 'Jack Thompson',
+            content: "Hi Jack, I noticed your work in software. I'd love to connect and share ideas about how AI is transforming the software industry.",
+          },
+        },
+        {
+          type: 'Accepted on Linkedin',
+          timestamp: '2024-10-03T09:15:00Z',
+        },
+        {
+          type: 'Message',
+          timestamp: '2024-10-03T11:00:00Z',
+          details: {
+            origin: 'Linkedin',
+            from: 'Jack Thompson',
+            to: 'Louis',
+            content: "Thanks for reaching out, Louis! I'm always interested in discussing AI advancements. What specific area of AI are you working on?",
+          },
+        },
+      ],
     },
   ];
 }
@@ -454,69 +638,46 @@ export function generateConversationHistory(): Conversation[] {
 }
 
 
-export interface PendingEmail {
-  id: string;
-  recipient: string;
-  subject: string;
-  body: string;
-  recipientCompany: string;
-  prospectId: string; // Add this line
-}
-
-export function generatePendingEmails(): PendingEmail[] {
-  const prospects = generateProspects();
+export function generatePendingMessages(): PendingMessage[] {
   return [
     {
       id: '1',
       recipient: 'frank.wilson@techinnovators.com',
-      subject: 'Revolutionize Your Sales Process with AI',
-      body: `Dear Frank,
+      subject: 'Following up on our LinkedIn conversation',
+      body: `Hi Frank,
 
-I hope this email finds you well. I recently came across Tech Innovators and was impressed by your innovative approach to software development.
+I hope this email finds you well. As we discussed on LinkedIn, I'd love to share more about our AI-powered solution for product development.
 
-I'm reaching out because I believe our AI-powered Sales Development Representative (SDR) solution at Wave AI could be a game-changer for your sales team. We've helped companies like yours increase their outreach efficiency by 300% while significantly reducing costs.
+Our system offers:
+- Predictive market trend analysis
+- Design process optimization
+- Significant reduction in time-to-market
 
-Would you be interested in a quick 15-minute call to discuss how we could potentially boost your sales performance?
+I believe this could be a game-changer for Tech Innovators. Would you be available for a 15-minute call next week to discuss how we could tailor this solution to your specific needs?
 
-Best regards,
-Louis de Benoist`,
+Looking forward to speaking with you,
+Louis`,
       recipientCompany: 'Tech Innovators',
-      prospectId: '1' // Add this line
+      prospectId: '1',
+      origin: 'Email'
     },
     {
       id: '2',
-      recipient: 'grace.taylor@globalsolutions.com',
-      subject: 'Enhance Your Sales Outreach with AI',
       body: `Hi Grace,
 
-I hope you're having a great week. I've been following Global Solutions' recent expansion into new markets and wanted to congratulate you on your success.
+I hope this message finds you well. I noticed your recent post about streamlining global operations and thought I'd reach out.
 
-Given your growth, I thought you might be interested in learning about how AI can supercharge your sales outreach efforts. At Wave AI, we've developed an AI-powered SDR solution that can handle personalized outreach at scale, freeing up your team to focus on closing deals.
+At Wave AI, we've developed an AI-powered solution that's helping companies like Global Solutions significantly improve their operational efficiency. I'd love to share how this could potentially benefit your team.
 
-Would you be open to a brief demo to see how this could work for Global Solutions?
-
-Looking forward to hearing from you,
-Louis de Benoist`,
-      recipientCompany: 'Global Solutions',
-      prospectId: '2' // Add this line
-    },
-    {
-      id: '3',
-      recipient: 'henry.davis@futurecorp.com',
-      subject: 'AI-Powered Sales Outreach for Future Corp',
-      body: `Hello Henry,
-
-I trust this email finds you in good spirits. I've been keeping an eye on Future Corp's innovative work in the finance sector and I'm truly impressed by your forward-thinking approach.
-
-I'm reaching out because I believe our AI-powered Sales Development Representative (SDR) solution at Wave AI could align perfectly with your innovative spirit. We've helped financial institutions like yours to streamline their sales processes and achieve remarkable results.
-
-Would you be interested in a short call to explore how AI could revolutionize your sales outreach?
+Would you be open to a brief conversation about this?
 
 Best regards,
-Louis de Benoist`,
-      recipientCompany: 'Future Corp',
-      prospectId: '3' // Add this line
-    }
+Louis`,
+      recipientCompany: 'Global Solutions',
+      prospectId: '2',
+      origin: 'Linkedin'
+    },
+    // ... other pending messages ...
   ];
 }
 
@@ -538,6 +699,30 @@ export function generateCampaignProspects(): Prospect[] {
       linkedInPosts: generateLinkedInPosts(),
       companyNews: generateCompanyNews('TechSolutions Inc.'),
       avatar: '/jack.png',
+      status: 'warm',
+      reachedOn: 'linkedin',
+      messagesSent: 2,
+      lastMessageSentAt: '2024-10-05',
+      actions: [
+        {
+          type: 'Added on Linkedin',
+          timestamp: '2024-10-01T10:00:00Z',
+        },
+        {
+          type: 'Message',
+          timestamp: '2024-10-02T14:30:00Z',
+          details: {
+            origin: 'Linkedin',
+            from: 'Louis',
+            to: 'Alex Johnson',
+            content: "Hi Alex, I noticed your work in AI-powered sales solutions. I'd love to connect and share ideas about how AI is transforming the sales industry.",
+          },
+        },
+        {
+          type: 'Accepted on Linkedin',
+          timestamp: '2024-10-03T09:15:00Z',
+        },
+      ],
     },
     {
       id: '2',
@@ -555,6 +740,26 @@ export function generateCampaignProspects(): Prospect[] {
       linkedInPosts: generateLinkedInPosts(),
       companyNews: generateCompanyNews('GrowthMarketing Co.'),
       avatar: '/isabella.png',
+      status: 'cold',
+      reachedOn: 'email',
+      messagesSent: 1,
+      lastMessageSentAt: '2024-10-04',
+      actions: [
+        {
+          type: 'Added on Linkedin',
+          timestamp: '2024-10-01T11:00:00Z',
+        },
+        {
+          type: 'Message',
+          timestamp: '2024-10-02T15:30:00Z',
+          details: {
+            origin: 'Email',
+            from: 'Louis',
+            to: 'Sarah Lee',
+            content: "Hello Sarah, I came across your profile and was impressed by your work in growth marketing. I'd love to discuss how AI can revolutionize marketing automation.",
+          },
+        },
+      ],
     },
     {
       id: '3',
@@ -572,6 +777,30 @@ export function generateCampaignProspects(): Prospect[] {
       linkedInPosts: generateLinkedInPosts(),
       companyNews: generateCompanyNews('DataDriven Corp'),
       avatar: '/frank.png',
+      status: 'warm',
+      reachedOn: 'linkedin',
+      messagesSent: 3,
+      lastMessageSentAt: '2024-10-03',
+      actions: [
+        {
+          type: 'Added on Linkedin',
+          timestamp: '2024-10-01T12:00:00Z',
+        },
+        {
+          type: 'Message',
+          timestamp: '2024-10-02T16:30:00Z',
+          details: {
+            origin: 'Linkedin',
+            from: 'Louis',
+            to: 'Michael Chen',
+            content: "Hi Michael, I noticed your work in data analysis. I'd love to connect and share ideas about how AI is transforming the data analytics industry.",
+          },
+        },
+        {
+          type: 'Accepted on Linkedin',
+          timestamp: '2024-10-03T10:15:00Z',
+        },
+      ],
     },
     {
       id: '4',
@@ -589,6 +818,30 @@ export function generateCampaignProspects(): Prospect[] {
       linkedInPosts: generateLinkedInPosts(),
       companyNews: generateCompanyNews('InnovateTech'),
       avatar: '/grace.png',
+      status: 'hot',
+      reachedOn: 'email',
+      messagesSent: 4,
+      lastMessageSentAt: '2024-10-02',
+      actions: [
+        {
+          type: 'Added on Linkedin',
+          timestamp: '2024-10-01T13:00:00Z',
+        },
+        {
+          type: 'Message',
+          timestamp: '2024-10-02T17:30:00Z',
+          details: {
+            origin: 'Email',
+            from: 'Louis',
+            to: 'Emily Rodriguez',
+            content: "Hello Emily, I came across your profile and was impressed by your work in sales forecasting. I'd love to discuss how AI can revolutionize sales forecasting.",
+          },
+        },
+        {
+          type: 'Accepted on Linkedin',
+          timestamp: '2024-10-03T11:15:00Z',
+        },
+      ],
     },
     {
       id: '5',
@@ -606,6 +859,33 @@ export function generateCampaignProspects(): Prospect[] {
       linkedInPosts: generateLinkedInPosts(),
       companyNews: generateCompanyNews('SalesPro Solutions'),
       avatar: '/henry.png',
+      status: 'cold',
+      reachedOn: 'linkedin',
+      messagesSent: 2,
+      lastMessageSentAt: '2024-10-01',
+      actions: [
+        {
+          type: 'Added on Linkedin',
+          timestamp: '2024-10-01T14:00:00Z',
+        },
+        {
+          type: 'Message',
+          timestamp: '2024-10-02T18:30:00Z',
+          details: {
+            origin: 'Linkedin',
+            from: 'Louis',
+            to: 'David Kim',
+            content: "Hi David, I noticed your work in sales. I'd love to connect and share ideas about how AI is transforming the sales industry.",
+          },
+        },
+        {
+          type: 'Accepted on Linkedin',
+          timestamp: '2024-10-03T12:15:00Z',
+        },
+      ],
     },
   ];
 }
+
+// Make sure to export PendingMessage type
+export type { PendingMessage };

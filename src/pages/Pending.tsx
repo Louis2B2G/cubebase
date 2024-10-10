@@ -1,178 +1,165 @@
-import React, { useState, useEffect } from 'react';
-import { PendingEmail, generatePendingEmails, generateProspects } from '@/types/mockData';
-import { Prospect } from '@/types/types';
+import React, { useState, useEffect, useRef } from 'react';
+import { PendingMessage, generatePendingMessages, generateProspects } from '@/types/mockData';
+import { Prospect, Action, MessageDetails } from '@/types/types';
 import { motion, AnimatePresence, PanInfo } from 'framer-motion';
 import ProspectDetails from '@/components/ProspectDetails';
-
+import {X, Edit2, Send, Check } from 'lucide-react';
+import { FaLinkedin } from 'react-icons/fa';
+import { MdEmail } from 'react-icons/md';
 
 const Pending: React.FC = () => {
-  const [pendingEmails, setPendingEmails] = useState<PendingEmail[]>([]);
-  const [currentEmail, setCurrentEmail] = useState<PendingEmail | null>(null);
+  const [pendingMessages, setPendingMessages] = useState<PendingMessage[]>([]);
+  const [currentMessage, setCurrentMessage] = useState<PendingMessage | null>(null);
   const [isEditing, setIsEditing] = useState(false);
   const [prospects, setProspects] = useState<Prospect[]>([]);
   const [currentProspect, setCurrentProspect] = useState<Prospect | null>(null);
+  const [currentActions, setCurrentActions] = useState<Action[]>([]);
+  const editableRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const emails = generatePendingEmails();
+    const messages = generatePendingMessages();
     const allProspects = generateProspects();
-    setPendingEmails(emails);
+    setPendingMessages(messages);
     setProspects(allProspects);
-    setCurrentEmail(emails[0]);
-    setCurrentProspect(allProspects.find(p => p.id === emails[0].prospectId) || null);
+    setCurrentMessage(messages[0]);
+    const currentProspect = allProspects.find(p => p.id === messages[0].prospectId);
+    setCurrentProspect(currentProspect || null);
+    setCurrentActions(currentProspect?.actions || []);
   }, []);
-
-  const handleDragEnd = (info: PanInfo) => {
-    if (info.offset.x > 100) {
-      handleApprove();
-    } else if (info.offset.x < -100) {
-      handleReject();
-    }
-  };
-
-  const handleApprove = () => {
-    setPendingEmails((prev) => prev.slice(1));
-    updateCurrentEmailAndProspect(pendingEmails[1] || null);
-  };
-
-  const handleReject = () => {
-    setPendingEmails((prev) => prev.slice(1));
-    updateCurrentEmailAndProspect(pendingEmails[1] || null);
-  };
 
   const handleEdit = () => {
     setIsEditing(true);
+    setTimeout(() => {
+      if (editableRef.current) {
+        editableRef.current.focus();
+      }
+    }, 0);
   };
 
   const handleSave = () => {
     setIsEditing(false);
-    // Here you would typically save the changes to your backend
-  };
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    if (currentEmail) {
-      setCurrentEmail({
-        ...currentEmail,
-        [e.target.name]: e.target.value,
+    if (currentMessage && editableRef.current) {
+      setCurrentMessage({
+        ...currentMessage,
+        body: editableRef.current.innerText,
       });
     }
   };
 
-  const updateCurrentEmailAndProspect = (email: PendingEmail | null) => {
-    setCurrentEmail(email);
-    if (email) {
-      const prospect = prospects.find(p => p.id === email.prospectId);
-      setCurrentProspect(prospect || null);
-    } else {
-      setCurrentProspect(null);
+  const handleSend = () => {
+    if (currentMessage) {
+      setPendingMessages((prev) => prev.filter(message => message.id !== currentMessage.id));
+      updateCurrentMessageAndProspect(pendingMessages[1] || null);
     }
   };
 
-  if (pendingEmails.length === 0) {
-    return (
-      <div className="h-full bg-[#fcf9f8] flex items-center justify-center">
-        <div className="max-w-md w-full bg-white rounded-lg shadow-md p-8 text-center">
-          <h1 className="text-2xl font-semibold mb-4 text-[#fe5000]">All Caught Up!</h1>
-          <p className="text-lg text-gray-600 mb-6">
-            There are no emails waiting for your review at the moment.
-          </p>
-        </div>
-      </div>
-    );
-  }
+  const updateCurrentMessageAndProspect = (message: PendingMessage | null) => {
+    setCurrentMessage(message);
+    if (message) {
+      const prospect = prospects.find(p => p.id === message.prospectId);
+      setCurrentProspect(prospect || null);
+      setCurrentActions(prospect?.actions || []);
+    } else {
+      setCurrentProspect(null);
+      setCurrentActions([]);
+    }
+  };
 
   return (
     <div className="h-full bg-[#fcf9f8] p-4 flex">
       <div className="w-1/2 pr-2">
         <div className="bg-white rounded-lg shadow-md overflow-hidden">
           <div className="p-3 bg-[#fff4e4] hover:bg-[#ffe8cc] text-[#fe5000] text-xs font-medium">
-            Emails to Review: {pendingEmails.length}
+            {pendingMessages.length} Messages to Review
           </div>
-          <div className="relative h-[calc(100vh-200px)] overflow-hidden">
-            <AnimatePresence>
-              {currentEmail && (
-                <motion.div
-                  key={currentEmail.id}
-                  initial={{ x: 300, opacity: 0 }}
-                  animate={{ x: 0, opacity: 1 }}
-                  exit={{ x: -300, opacity: 0 }}
-                  transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-                  drag={!isEditing ? "x" : false}
-                  dragConstraints={{ left: 0, right: 0 }}
-                  onDragEnd={(_, info) => handleDragEnd(info)}
-                  className="absolute top-0 left-0 right-0 p-4 bg-white"
-                >
-                  <div className="mb-2">
-                    <div className="text-sm font-semibold text-black">
-                      To: {isEditing ? (
-                        <input
-                          name="recipient"
-                          value={currentEmail.recipient}
-                          onChange={handleInputChange}
-                          className="border-b border-[#0077be] focus:outline-none"
-                        />
-                      ) : currentEmail.recipient}
-                    </div>
-                    <div className="text-sm font-medium text-black">
-                      Subject: {isEditing ? (
-                        <input
-                          name="subject"
-                          value={currentEmail.subject}
-                          onChange={handleInputChange}
-                          className="border-b border-[#0077be] focus:outline-none"
-                        />
-                      ) : currentEmail.subject}
+          <div className="h-[calc(100vh-200px)] overflow-y-auto p-4">
+            {currentActions.map((action, index) => (
+              <div key={index} className="mb-4">
+                {action.type === 'Message' ? (
+                  <div className={`flex ${action.details?.from === 'Louis' ? 'justify-end' : 'justify-start'}`}>
+                    <div className={`max-w-[70%] p-3 rounded-lg ${
+                      action.details?.from === 'Louis' ? 'bg-blue-100 ml-auto' : 'bg-gray-100'
+                    }`}>
+                      <div className="flex items-center justify-between mb-2">
+                        <p className="text-sm font-semibold">{action.details?.from}</p>
+                        {action.details?.origin === 'Linkedin' ? (
+                          <FaLinkedin className="text-blue-600 w-4 h-4" />
+                        ) : (
+                          <MdEmail className="text-gray-600 w-4 h-4" />
+                        )}
+                      </div>
+                      <p className="text-sm">{action.details?.content}</p>
+                      <p className="text-xs text-gray-500 mt-1">{new Date(action.timestamp).toLocaleString()}</p>
                     </div>
                   </div>
-                  <div className="h-[calc(100vh-300px)] mt-4 overflow-y-auto">
-                    {isEditing ? (
-                      <textarea
-                        name="body"
-                        value={currentEmail.body}
-                        onChange={handleInputChange}
-                        className="w-full h-full text-sm text-black resize-none focus:outline-none"
-                      />
+                ) : (
+                  <div className="text-center text-sm text-gray-500">
+                    {action.type} - {new Date(action.timestamp).toLocaleString()}
+                  </div>
+                )}
+              </div>
+            ))}
+            {currentMessage && (
+              <div className="flex justify-end">
+                <div className="max-w-[70%] p-3 rounded-lg bg-blue-100">
+                  <div className="flex items-center justify-between mb-2">
+                    <p className="text-sm font-semibold">June (Draft)</p>
+                    {currentMessage.origin === 'Linkedin' ? (
+                      <FaLinkedin className="text-blue-600 w-5 h-5" />
                     ) : (
-                      <p className="text-sm text-black whitespace-pre-wrap">{currentEmail.body}</p>
+                      <MdEmail className="text-gray-600 w-5 h-5" />
                     )}
                   </div>
-                </motion.div>
-              )}
-            </AnimatePresence>
+                  {currentMessage.recipient && (
+                    <p className="text-sm font-medium mb-2">To: {currentMessage.recipient}</p>
+                  )}
+                  {currentMessage.subject && (
+                    <p className="text-sm font-medium mb-2">Subject: {currentMessage.subject}</p>
+                  )}
+                  <div
+                    ref={editableRef}
+                    contentEditable={isEditing}
+                    suppressContentEditableWarning={true}
+                    className="text-sm whitespace-pre-wrap outline-none"
+                    style={{ minHeight: '1em' }}
+                  >
+                    {currentMessage.body}
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
           <div className="p-4 flex justify-center space-x-3">
             <button
-              onClick={handleReject}
+              onClick={() => updateCurrentMessageAndProspect(pendingMessages[1] || null)}
               className="text-[#fe5000] p-2 rounded-full hover:bg-[#fff4e4] transition-colors"
-              aria-label="Reject"
+              aria-label="Skip"
             >
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <line x1="18" y1="6" x2="6" y2="18"></line>
-                <line x1="6" y1="6" x2="18" y2="18"></line>
-              </svg>
+              <X className="w-6 h-6" />
             </button>
             {isEditing ? (
               <button
                 onClick={handleSave}
-                className="bg-green-500 text-white px-4 py-2 text-sm rounded-full hover:bg-green-600 transition-colors"
+                className="bg-white text-[#fe5000] px-4 py-2 text-sm rounded-full hover:bg-[#fff4e4] transition-colors flex items-center"
               >
+                <Check className="w-4 h-4 mr-2" />
                 Save
               </button>
             ) : (
               <button
                 onClick={handleEdit}
-                className="bg-white text-[#fe5000] px-4 py-2 text-sm rounded-full hover:bg-[#fff4e4] transition-colors"
+                className="bg-white text-[#fe5000] px-4 py-2 text-sm rounded-full hover:bg-[#fff4e4] transition-colors flex items-center"
               >
+                <Edit2 className="w-4 h-4 mr-2" />
                 Edit
               </button>
             )}
             <button
-              onClick={handleApprove}
-              className="text-[#fe5000] p-2 rounded-full hover:bg-[#fff4e4] transition-colors"
-              aria-label="Approve"
+              onClick={handleSend}
+              className="bg-[#fe5000] text-white px-4 py-2 text-sm rounded-full hover:bg-[#e64500] transition-colors flex items-center"
             >
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <polyline points="20 6 9 17 4 12"></polyline>
-              </svg>
+              <Send className="w-4 h-4 mr-2" />
+              Send
             </button>
           </div>
         </div>

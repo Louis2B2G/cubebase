@@ -39,10 +39,11 @@ export interface Prospect {
   linkedInPosts: LinkedInPost[];
   companyNews: NewsArticle[];
   avatar: string;
-  status?: 'warm' | 'hot' | 'cold';
-  reachedOn?: 'linkedin' | 'email';
-  messagesSent?: number;
-  lastMessageSentAt?: string;
+  status: 'cold' | 'warm' | 'hot';
+  reachedOn: 'linkedin' | 'email';
+  messagesSent: number;
+  lastMessageSentAt: string;
+  actions: Action[];
 }
 
 export interface LinkedInPost {
@@ -58,4 +59,54 @@ export interface NewsArticle {
   date: string;
   summary: string;
   url: string;
+}
+
+export type ActionType = 
+  | 'Added on Linkedin'
+  | 'Accepted on Linkedin'
+  | 'Message'
+  | 'Meeting Booked'
+  | 'Email Sent'
+  | 'Email Received'
+  | 'LinkedIn Message Sent'
+  | 'LinkedIn Message Received'
+  | 'Follow-up Email Sent'
+  | 'Meeting Scheduled'
+  | 'Meeting Completed'
+  | 'Call Scheduled'
+  | 'Call Completed';
+
+export interface Action {
+  type: ActionType;
+  timestamp: string;
+  details?: MessageDetails | MeetingDetails;
+}
+
+export interface MessageDetails {
+  origin: 'Linkedin' | 'Email';
+  from: string;
+  to: string;
+  content: string;
+  subject?: string;
+}
+
+export interface MeetingDetails {
+  origin: 'Calendar';
+  from: string;
+  to: string;
+  content: string;
+  date: string;
+  time: string;
+  duration: string;
+  platform?: string;
+}
+
+export interface PendingMessage {
+  id: string;
+  recipient?: string;  // Optional now
+  subject?: string;    // Optional now
+  body: string;
+  recipientCompany: string;
+  prospectId: string;
+  origin: 'Linkedin' | 'Email';
 }
