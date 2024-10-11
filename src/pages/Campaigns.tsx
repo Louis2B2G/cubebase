@@ -94,6 +94,7 @@ interface CampaignData {
   meetingUrl: string;
   senderName: string;
   toneOfVoice: string;
+  tipsForJune: string;
   autopilot: boolean;
   revenueMin: string;
   revenueMax: string;
@@ -146,6 +147,7 @@ const Campaigns: React.FC = () => {
     meetingUrl: "https://calendly.com/louis-cube/30min",
     senderName: "Louis",
     toneOfVoice: "Friendly and approachable",
+    tipsForJune: "",
     autopilot: true,
     revenueMin: "",
     revenueMax: "",
@@ -706,6 +708,15 @@ const Campaigns: React.FC = () => {
               value={campaignData.toneOfVoice} 
               onChange={(e) => handleInputChange('toneOfVoice', e.target.value)}
               className="w-full p-3 border rounded-md bg-[#fcf9f8] focus:border-[#fe5000] focus:outline-none"
+            />
+          </div>
+          <div>
+            <label className="block mb-2 text-sm font-medium">Tips for June</label>
+            <textarea
+              value={campaignData.tipsForJune || ''}
+              onChange={(e) => handleInputChange('tipsForJune', e.target.value)}
+              placeholder="Share some tips about how to represent the company..."
+              className="w-full p-3 border rounded-md bg-[#fcf9f8] focus:border-[#fe5000] focus:outline-none min-h-[100px] resize-y"
             />
           </div>
           <div>
