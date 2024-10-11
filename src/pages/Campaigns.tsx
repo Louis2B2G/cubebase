@@ -1,9 +1,10 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { X, Upload } from 'lucide-react';
+import { X, Upload, Plus, Trash2 } from 'lucide-react';
 import { Prospect } from '@/types/types';
 import { generateCampaignProspects } from '@/types/mockData';
 import ProspectList from '@/components/ProspectList';
 import SearchBar from '@/components/SearchBar';
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
 interface BubbleInputProps {
   items: string[];
@@ -61,6 +62,26 @@ interface SupportingDocument {
   url: string;
 }
 
+type BuildingBlockType = 
+  | 'add_on_linkedin'
+  | 'send_linkedin_message'
+  | 'linkedin_invite_accepted'
+  | 'send_personalized_observation_email'
+  | 'send_personalized_sales_email';
+
+interface BuildingBlock {
+  id: string;
+  type: BuildingBlockType;
+  label: string;
+}
+
+interface Playbook {
+  id: string;
+  droppableId: string;  // Add this line
+  name: string;
+  steps: BuildingBlock[];
+}
+
 interface CampaignData {
   targetCountries: string[];
   jobTitles: string[];
@@ -97,6 +118,7 @@ interface CampaignData {
   latestFundingDate: string;
   newsKeywords: string[];
   earliestNewsDate: string;
+  playbooks: Playbook[];
 }
 
 const Campaigns: React.FC = () => {
@@ -148,6 +170,7 @@ const Campaigns: React.FC = () => {
     latestFundingDate: '',
     newsKeywords: [],
     earliestNewsDate: '',
+    playbooks: [],
   });
   const [prospects, setProspects] = useState<Prospect[]>([]);
   const [selectedProspect, setSelectedProspect] = useState<Prospect | null>(null);
@@ -226,6 +249,94 @@ const Campaigns: React.FC = () => {
     setCampaignData(prev => ({
       ...prev,
       supportingDocuments: prev.supportingDocuments.filter((_, i) => i !== index),
+    }));
+  };
+
+  const addPlaybook = () => {
+    const newPlaybook: Playbook = {
+      id: `playbook-${Date.now()}`,
+      droppableId: `droppable-${Date.now()}`,  // Add this line
+      name: `New Playbook ${campaignData.playbooks.length + 1}`,
+      steps: [],
+    };
+    setCampaignData(prev => ({
+      ...prev,
+      playbooks: [...prev.playbooks, newPlaybook],
+    }));
+  };
+
+  const updatePlaybookName = (playbookId: string, newName: string) => {
+    setCampaignData(prev => ({
+      ...prev,
+      playbooks: prev.playbooks.map(playbook =>
+        playbook.id === playbookId ? { ...playbook, name: newName } : playbook
+      ),
+    }));
+  };
+
+  const deletePlaybook = (playbookId: string) => {
+    setCampaignData(prev => ({
+      ...prev,
+      playbooks: prev.playbooks.filter(playbook => playbook.id !== playbookId),
+    }));
+  };
+
+  const onDragEnd = (result: any) => {
+    const { source, destination } = result;
+
+    // If there's no destination, we don't need to do anything
+    if (!destination) return;
+
+    // If the item is dropped in the same position, we don't need to do anything
+    if (
+      source.droppableId === destination.droppableId &&
+      source.index === destination.index
+    ) {
+      return;
+    }
+
+    setCampaignData(prev => {
+      const updatedPlaybooks = [...prev.playbooks];
+
+      // Find the source and destination playbooks
+      const sourcePlaybookIndex = updatedPlaybooks.findIndex(p => p.droppableId === source.droppableId);
+      const destPlaybookIndex = updatedPlaybooks.findIndex(p => p.droppableId === destination.droppableId);
+
+      // Get the item that was dragged
+      const [movedItem] = updatedPlaybooks[sourcePlaybookIndex].steps.splice(source.index, 1);
+
+      // Insert the item in its new position
+      updatedPlaybooks[destPlaybookIndex].steps.splice(destination.index, 0, movedItem);
+
+      return { ...prev, playbooks: updatedPlaybooks };
+    });
+  };
+
+  const addBuildingBlock = (playbookId: string, blockType: BuildingBlockType) => {
+    const newBlock: BuildingBlock = {
+      id: `block-${Date.now()}`,
+      type: blockType,
+      label: blockType.split('_').join(' '),
+    };
+
+    setCampaignData(prev => ({
+      ...prev,
+      playbooks: prev.playbooks.map(playbook =>
+        playbook.id === playbookId
+          ? { ...playbook, steps: [...playbook.steps, newBlock] }
+          : playbook
+      ),
+    }));
+  };
+
+  const removeBuildingBlock = (playbookId: string, blockId: string) => {
+    setCampaignData(prev => ({
+      ...prev,
+      playbooks: prev.playbooks.map(playbook =>
+        playbook.id === playbookId
+          ? { ...playbook, steps: playbook.steps.filter(step => step.id !== blockId) }
+          : playbook
+      ),
     }));
   };
 
@@ -617,6 +728,118 @@ const Campaigns: React.FC = () => {
             <label htmlFor="autopilot" className="text-sm font-medium">Enable Autopilot</label>
           </div>
         </div>
+      </div>
+
+      <div className="border rounded-md p-4">
+        <h3 className="text-lg font-semibold mb-4">Playbooks</h3>
+        
+        {/* Updated information section */}
+        <div className="bg-blue-50 border border-blue-200 rounded-md p-4 mb-6">
+          <div className="flex justify-between items-center mb-4">
+            <h4 className="text-lg font-bold text-gray-900">What are Playbooks?</h4>
+          </div>
+          <p className="text-sm text-gray-600 mb-4">
+            Playbooks are sequences of actions that June can follow for outreach. They help structure and automate your prospecting process.
+          </p>
+          <h4 className="font-bold mb-2 text-sm text-gray-900">Key Points:</h4>
+          <ul className="space-y-2 mb-4">
+            <li className="flex items-start">
+              <div className="flex-shrink-0 w-5 h-5 rounded-full bg-[#fe5000] flex items-center justify-center mt-0.5">
+                <span className="text-white text-xs font-bold">1</span>
+              </div>
+              <span className="ml-2 text-sm text-gray-600">
+                <strong className="text-gray-900">Multiple Strategies:</strong> Create various playbooks for different scenarios or prospect types.
+              </span>
+            </li>
+            <li className="flex items-start">
+              <div className="flex-shrink-0 w-5 h-5 rounded-full bg-[#fe5000] flex items-center justify-center mt-0.5">
+                <span className="text-white text-xs font-bold">2</span>
+              </div>
+              <span className="ml-2 text-sm text-gray-600">
+                <strong className="text-gray-900">AI Selection:</strong> June can automatically choose the optimal playbook based on the prospect and campaign context.
+              </span>
+            </li>
+            <li className="flex items-start">
+              <div className="flex-shrink-0 w-5 h-5 rounded-full bg-[#fe5000] flex items-center justify-center mt-0.5">
+                <span className="text-white text-xs font-bold">3</span>
+              </div>
+              <span className="ml-2 text-sm text-gray-600">
+                <strong className="text-gray-900">Manual Assignment:</strong> You can also specify which playbooks to use and in what order.
+              </span>
+            </li>
+          </ul>
+          <p className="text-sm text-gray-600 mb-6">
+            Create your playbooks below by adding and arranging building blocks. June will use these to guide her outreach efforts, ensuring a consistent and effective approach to each prospect.
+          </p>
+        </div>
+
+        <DragDropContext onDragEnd={onDragEnd}>
+          {campaignData.playbooks.map(playbook => (
+            <div key={playbook.id} className="mb-6 p-4 border rounded-md">
+              <div className="flex justify-between items-center mb-4">
+                <input
+                  type="text"
+                  value={playbook.name}
+                  onChange={(e) => updatePlaybookName(playbook.id, e.target.value)}
+                  className="text-lg font-medium bg-transparent border-b border-gray-300 focus:border-[#fe5000] focus:outline-none"
+                />
+                <button
+                  onClick={() => deletePlaybook(playbook.id)}
+                  className="text-red-500 hover:text-red-700"
+                >
+                  <Trash2 size={20} />
+                </button>
+              </div>
+              <Droppable droppableId={playbook.droppableId}>
+                {(provided) => (
+                  <div {...provided.droppableProps} ref={provided.innerRef} className="space-y-2">
+                    {playbook.steps.map((step, index) => (
+                      <Draggable key={step.id} draggableId={step.id} index={index}>
+                        {(provided) => (
+                          <div
+                            ref={provided.innerRef}
+                            {...provided.draggableProps}
+                            {...provided.dragHandleProps}
+                            className="bg-gray-100 p-2 rounded-md flex justify-between items-center"
+                          >
+                            <span>{step.label}</span>
+                            <button
+                              onClick={() => removeBuildingBlock(playbook.id, step.id)}
+                              className="text-red-500 hover:text-red-700"
+                            >
+                              <Trash2 size={16} />
+                            </button>
+                          </div>
+                        )}
+                      </Draggable>
+                    ))}
+                    {provided.placeholder}
+                  </div>
+                )}
+              </Droppable>
+              <div className="mt-4">
+                <select
+                  onChange={(e) => addBuildingBlock(playbook.id, e.target.value as BuildingBlockType)}
+                  className="w-full p-2 border rounded-md"
+                >
+                  <option value="">Add a building block</option>
+                  <option value="add_on_linkedin">Add on LinkedIn</option>
+                  <option value="send_linkedin_message">Send LinkedIn Message</option>
+                  <option value="linkedin_invite_accepted">LinkedIn Invite Accepted</option>
+                  <option value="send_personalized_observation_email">Send Personalized Observation Email</option>
+                  <option value="send_personalized_sales_email">Send Personalized Sales Email</option>
+                </select>
+              </div>
+            </div>
+          ))}
+        </DragDropContext>
+        <button
+          onClick={addPlaybook}
+          className="mt-4 flex items-center text-[#fe5000] hover:text-[#ff7f3f]"
+        >
+          <Plus size={20} className="mr-2" />
+          Add New Playbook
+        </button>
       </div>
     </div>
   );

@@ -677,7 +677,72 @@ Louis`,
       prospectId: '2',
       origin: 'Linkedin'
     },
-    // ... other pending messages ...
+    {
+      id: '3',
+      recipient: 'henry.davis@futurecorp.com',
+      subject: 'AI for predictive analytics in finance',
+      body: `Hello Henry,
+
+I hope this email finds you well. I noticed your interest in AI for predictive analytics in finance, and I thought I'd reach out.
+
+At Cube AI, we've developed cutting-edge AI solutions that are transforming financial forecasting and strategy. Our tools have helped companies like Future Corp achieve:
+
+- More accurate financial predictions
+- Improved risk management
+- Data-driven decision making
+
+I'd love to schedule a brief call to discuss how our AI solutions could benefit Future Corp. Would you be available for a 15-minute chat next week?
+
+Looking forward to connecting,
+Louis`,
+      recipientCompany: 'Future Corp',
+      prospectId: '3',
+      origin: 'Email'
+    },
+    {
+      id: '4',
+      recipient: 'isabella.martinez@innovateinc.com',
+      subject: 'AI applications in drug discovery',
+      body: `Hi Isabella,
+
+I hope this message finds you well. I came across your profile and was impressed by your work in biotechnology research at Innovate Inc.
+
+At Cube AI, we've been working on AI applications that are revolutionizing drug discovery processes. Our solutions have helped research teams:
+
+- Accelerate candidate identification
+- Optimize clinical trial designs
+- Predict drug-target interactions with higher accuracy
+
+I believe our AI tools could significantly enhance your research efforts at Innovate Inc. Would you be interested in a brief call to explore how we could collaborate?
+
+Best regards,
+Louis`,
+      recipientCompany: 'Innovate Inc.',
+      prospectId: '4',
+      origin: 'Email'
+    },
+    {
+      id: '5',
+      recipient: 'jack.thompson@nextgensystems.com',
+      subject: 'Integrating AI into existing software platforms',
+      body: `Hello Jack,
+
+I hope this email finds you well. As the CTO of NextGen Systems, I thought you might be interested in how AI is transforming software integration.
+
+At Cube AI, we've developed solutions that seamlessly integrate AI capabilities into existing software platforms, helping companies like NextGen Systems to:
+
+- Enhance product functionality
+- Improve user experience
+- Stay ahead of market trends
+
+I'd love to schedule a brief call to discuss how our AI integration solutions could benefit NextGen Systems. Would you be available for a 15-minute chat next week?
+
+Looking forward to connecting,
+Louis`,
+      recipientCompany: 'NextGen Systems',
+      prospectId: '5',
+      origin: 'Email'
+    }
   ];
 }
 

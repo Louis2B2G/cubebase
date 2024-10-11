@@ -49,8 +49,11 @@ const Pending: React.FC = () => {
 
   const handleSend = () => {
     if (currentMessage) {
-      setPendingMessages((prev) => prev.filter(message => message.id !== currentMessage.id));
-      updateCurrentMessageAndProspect(pendingMessages[1] || null);
+      setPendingMessages((prev) => {
+        const updatedMessages = prev.filter(message => message.id !== currentMessage.id);
+        updateCurrentMessageAndProspect(updatedMessages[0] || null);
+        return updatedMessages;
+      });
     }
   };
 
@@ -132,7 +135,10 @@ const Pending: React.FC = () => {
           </div>
           <div className="p-4 flex justify-center space-x-3">
             <button
-              onClick={() => updateCurrentMessageAndProspect(pendingMessages[1] || null)}
+              onClick={() => {
+                const nextMessage = pendingMessages.find(m => m.id !== currentMessage?.id) || null;
+                updateCurrentMessageAndProspect(nextMessage);
+              }}
               className="text-[#fe5000] p-2 rounded-full hover:bg-[#fff4e4] transition-colors"
               aria-label="Skip"
             >
