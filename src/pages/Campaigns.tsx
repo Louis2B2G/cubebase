@@ -913,7 +913,7 @@ const Campaigns: React.FC = () => {
               Found 12.7K leads
             </h2>
             <div className="bg-blue-50 border border-blue-200 rounded-md p-4 mb-4">
-              <p className="text-sm text-blue-800">
+              <p className="text-sm text-gray-600">
                 Please review the following sample leads to ensure they align with your Ideal Customer Profile. 
                 June will use similar profiles for outreach in this campaign.
               </p>
