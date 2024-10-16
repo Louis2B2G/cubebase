@@ -1,9 +1,16 @@
 import React from 'react';
-import Dashboard from '@/pages/Dashboard';
+import Landing from '@/pages/Landing';
 
 function App() {
   return (
-    <Dashboard />
+    <>
+      <Landing />
+      <footer className="w-full bg-black text-white py-4">
+        <div className="max-w-4xl p-10 mx-auto text-center">
+          <p>&copy; {new Date().getFullYear()} Wave. All rights reserved.</p>
+        </div>
+      </footer>
+    </>
   );
 }
 
