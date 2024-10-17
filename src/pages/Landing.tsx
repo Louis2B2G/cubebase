@@ -374,6 +374,8 @@ const Landing = () => {
             <img src="/logos/teams.svg" alt="Microsoft Teams" className="h-8" />
             <img src="/logos/meet.svg" alt="Google Meet" className="h-8" />
             <img src="/logos/zoom.svg" alt="Zoom" className="h-8" />
+            <img src="/logos/notion.svg" alt="Notion" className="h-8" />
+            <img src="/logos/phone.svg" alt="Phone" className="h-8" />
             <div style={{ position: 'relative' }}>
               <img src="/logos/slack.svg" alt="Slack" className="h-8" />
               <div className="absolute top-8 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-gray-100 text-xs text-gray-500 px-1 py-0.5 rounded-full whitespace-nowrap" style={{ zIndex: 1 }}>
