@@ -392,7 +392,7 @@ const Landing = () => {
           <ArrowRight size={20} className="ml-2" />
         </button>
         <p className="text-gray-500 text-sm text-bold">
-          Join the waitlist to receive early access to Wave
+          Just have conversations. Let Wave do the rest.
         </p>
 
       </div>
@@ -400,7 +400,7 @@ const Landing = () => {
       <div className="p-6 flex flex-col items-center">
         <div className="flex items-center mb-10 mt-10">
           <p className="text-gray-500 mr-2">Backed by</p>
-          <img src="/logos/a16z.png" alt="a16z" className="h-14 align-middle" />
+          <img src="/logos/google.png" alt="google" className="h-8 align-middle" />
         </div>
 
         <PixelatedSection />

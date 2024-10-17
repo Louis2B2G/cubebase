@@ -7,7 +7,7 @@ function App() {
       <Landing />
       <footer className="w-full bg-black text-white py-4">
         <div className="max-w-4xl p-10 mx-auto text-center">
-          <p>&copy; {new Date().getFullYear()} Wave. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} Wave AI. All rights reserved.</p>
         </div>
       </footer>
     </>
