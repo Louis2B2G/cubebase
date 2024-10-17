@@ -1,6 +1,8 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { ArrowRight } from 'lucide-react';
 import Features from '@/components/Features';
+import EarlyAccessForm from '@/components/EarlyAccessForm';
+import PixelatedSection from '@/components/PixelatedSection';
 
 // In your parent component
 const peopleData = {
@@ -202,19 +204,92 @@ const Landing = () => {
   const artificialText = "Artificial";
   const customerText = "Customer";
   const totalSteps = artificialText.length + customerText.length + 25;
+  const [showForm, setShowForm] = useState(false);
+  const [userIp, setUserIp] = useState('');
+  const [pageLoadTime, setPageLoadTime] = useState<number>(Date.now());
 
   useEffect(() => {
     const timer = setInterval(() => {
       setAnimationStep((prev) => (prev < totalSteps) ? prev + 1 : prev);
     }, 80);
 
-    return () => clearInterval(timer);
-  }, []);
+    // Fetch IP and log "Opened website" action
+    fetch('https://api.ipify.org?format=json')
+      .then(response => response.json())
+      .then(data => {
+        setUserIp(data.ip);
+        logAction('opened_website', data.ip);
+      })
+      .catch(error => console.error('Error fetching IP:', error));
+
+    // Add event listener for when the user is about to leave the page
+    const handleBeforeUnload = () => {
+      const timeSpent = Math.round((Date.now() - pageLoadTime) / 1000); // Time spent in seconds
+      logAction('closed_website', userIp, timeSpent);
+    };
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+
+    return () => {
+      clearInterval(timer);
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+    };
+  }, [userIp, pageLoadTime]);
 
   const showStrikethrough = animationStep > artificialText.length + 10;
   const strikethroughProgress = Math.min(100, (animationStep - artificialText.length - 10) * 10);
   const showCustomer = animationStep > artificialText.length + 21;
 
+  const handleEarlyAccessClick = async () => {
+    setShowForm(true);
+    await logAction('button_click', userIp);
+  };
+
+  const handleFormClose = async () => {
+    setShowForm(false);
+    await logAction('form_close', userIp);
+  };
+
+  const handleFormSubmit = async (name: string, company: string, email: string) => {
+    try {
+      const response = await fetch('https://script.google.com/macros/s/AKfycbyZ0X854BH7SqRjkcN7k_FaN5eGAje4E_y1yqpkDol7wYW_AfBy7mxm4JqougoVZsKMTA/exec', {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ name, company, email, ip: userIp, action: 'form_submit' }),
+      });
+
+      console.log('Form submitted:', { name, company, email, ip: userIp }); // Add this line for debugging
+
+      setShowForm(false);
+      alert('Thank you for your interest! We will contact you soon.');
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      alert('There was an error submitting the form. Please try again.');
+    }
+  };
+
+  const logAction = async (action: string, ip: string, timeSpent?: number) => {
+    try {
+      const body: any = { ip, action };
+      if (timeSpent !== undefined) {
+        body.timeSpent = timeSpent;
+      }
+
+      await fetch('https://script.google.com/macros/s/AKfycbyZ0X854BH7SqRjkcN7k_FaN5eGAje4E_y1yqpkDol7wYW_AfBy7mxm4JqougoVZsKMTA/exec', {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(body),
+      });
+    } catch (error) {
+      console.error(`Error logging ${action}:`, error);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-[#fcf9f8] flex flex-col">
@@ -223,7 +298,7 @@ const Landing = () => {
           <img src="/logos/logo_ugly.png" alt="Wave logo" className="w-10 h-10" />
           <span className="text-xl font-bold">Wave</span>
         </div>
-        <button className="bg-gray-900 text-white px-4 py-2 rounded-full flex items-center">
+        <button className="bg-gray-900 text-white px-4 py-2 rounded-full flex items-center" onClick={handleEarlyAccessClick}>
           Get early access
           <ArrowRight size={16} className="ml-2" />
         </button>
@@ -307,7 +382,10 @@ const Landing = () => {
             </div>
           </div>
         </div>
-        <button className="bg-gray-900 text-white px-6 py-3 rounded-full text-lg flex items-center mb-4">
+        <button
+          className="bg-gray-900 text-white px-6 py-3 rounded-full text-lg flex items-center mb-4"
+          onClick={handleEarlyAccessClick}
+        >
           Get early access
           <ArrowRight size={20} className="ml-2" />
         </button>
@@ -323,19 +401,7 @@ const Landing = () => {
           <img src="/logos/a16z.png" alt="a16z" className="h-14 align-middle" />
         </div>
 
-        {/* Video placeholder */}
-        <div className="w-full max-w-4xl mx-auto mb-40">
-          <div className="aspect-w-16 aspect-h-9">
-            <iframe
-              src="https://www.youtube.com/embed/VTzWuWY33BI"
-              title="Wave CRM Demo"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-              className="w-full h-screen"
-              style={{ height: '50vh' }}
-            ></iframe>
-          </div>
-        </div>
+        <PixelatedSection />
 
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-6xl font-bold mb-4">Reimagining CRM for the AI Age</h2>
@@ -400,7 +466,7 @@ const Landing = () => {
                 <span className="absolute bottom-0 left-0 w-full h-0.5 bg-blue-500"></span>
             </span> way to grow your business?
             </h2>
-            <button className="bg-gray-900 text-white text-xl px-8 py-4 rounded-full flex items-center mx-auto mb-4">
+            <button className="bg-gray-900 text-white text-xl px-8 py-4 rounded-full flex items-center mx-auto mb-4" onClick={handleEarlyAccessClick}>
             Get early access
             <ArrowRight size={24} className="ml-2" />
             </button>
@@ -413,6 +479,7 @@ const Landing = () => {
       </div>
 
       <AnimatedCRM />
+      
       <Features {...peopleData} />
       <Features {...pipelinesData} />
       <Features {...pagesData} />
@@ -425,7 +492,7 @@ const Landing = () => {
                 <span className="absolute bottom-0 left-0 w-full h-0.5 bg-blue-500"></span>
             </span> way to grow your business?
             </h2>
-            <button className="bg-gray-900 text-white text-xl px-8 py-4 rounded-full flex items-center mx-auto mb-4">
+            <button className="bg-gray-900 text-white text-xl px-8 py-4 rounded-full flex items-center mx-auto mb-4" onClick={handleEarlyAccessClick}>
             Get early access
             <ArrowRight size={24} className="ml-2" />
             </button>
@@ -434,6 +501,10 @@ const Landing = () => {
         </p>
         </div>
         </div>
+
+      {showForm && (
+        <EarlyAccessForm onSubmit={handleFormSubmit} onClose={handleFormClose} />
+      )}
 
     </div>
   );
