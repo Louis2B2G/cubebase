@@ -295,7 +295,7 @@ const Landing = () => {
     <div className="min-h-screen bg-[#fcf9f8] flex flex-col">
       <header className="p-6 flex justify-between items-center">
         <div className="flex items-center space-x-2">
-          <img src="/logos/logo_ugly.png" alt="Wave logo" className="w-10 h-10" />
+          <img src="/logos/new_wave_logo.svg" alt="Wave logo" className="w-14 h-14" />
           <span className="text-xl font-bold">Wave</span>
         </div>
         <button className="bg-gray-900 text-white px-4 py-2 rounded-full flex items-center" onClick={handleEarlyAccessClick}>
@@ -391,7 +391,7 @@ const Landing = () => {
           Get early access
           <ArrowRight size={20} className="ml-2" />
         </button>
-        <p className="text-gray-500 text-sm text-bold">
+        <p className="text-gray-500 text-3xl text-medium">
           Just have conversations. Let Wave do the rest.
         </p>
 
