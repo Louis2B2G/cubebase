@@ -294,56 +294,37 @@ const Landing = () => {
   const [showForm, setShowForm] = useState(false);
   const [userIp, setUserIp] = useState('');
   const [pageLoadTime, setPageLoadTime] = useState<number>(Date.now());
-  const [lastActiveTime, setLastActiveTime] = useState<number>(Date.now());
   const [isChrome, setIsChrome] = useState(true);
-  const timeoutRef = useRef<number | null>(null);
 
   useEffect(() => {
-    setPageLoadTime(Date.now());
-    setLastActiveTime(Date.now());
+    const timer = setInterval(() => {
+      setAnimationStep((prev) => (prev < totalSteps) ? prev + 1 : prev);
+    }, 80);
 
-    const updateLastActiveTime = () => {
-      setLastActiveTime(Date.now());
-    };
+    // Fetch IP and log "Opened website" action
+    fetch('https://api.ipify.org?format=json')
+      .then(response => response.json())
+      .then(data => {
+        setUserIp(data.ip);
+        logAction('opened_website', data.ip);
+      })
+      .catch(error => console.error('Error fetching IP:', error));
 
-    const checkInactivity = () => {
-      const currentTime = Date.now();
-      const timeSpent = Math.round((currentTime - pageLoadTime) / 1000);
-      const inactiveTime = Math.round((currentTime - lastActiveTime) / 1000);
-
-      if (inactiveTime > 30) { // Consider user left after 30 seconds of inactivity
-        logAction('closed_website', userIp, timeSpent);
-        if (timeoutRef.current) {
-          clearTimeout(timeoutRef.current);
-        }
-      } else {
-        timeoutRef.current = window.setTimeout(checkInactivity, 5000);
-      }
-    };
-
-    // Desktop-specific event
+    // Add event listener for when the user is about to leave the page
     const handleBeforeUnload = () => {
-      const timeSpent = Math.round((Date.now() - pageLoadTime) / 1000);
+      const timeSpent = Math.round((Date.now() - pageLoadTime) / 1000); // Time spent in seconds
       logAction('closed_website', userIp, timeSpent);
     };
 
-    // Events that work on both desktop and mobile
-    const events = ['mousemove', 'keydown', 'touchstart', 'scroll'];
-    events.forEach(event => {
-      window.addEventListener(event, updateLastActiveTime);
-    });
-
     window.addEventListener('beforeunload', handleBeforeUnload);
-    timeoutRef.current = window.setTimeout(checkInactivity, 5000);
+
+    // Check if the browser is Chrome
+    const isChromeBrowser = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
+    setIsChrome(isChromeBrowser);
 
     return () => {
-      events.forEach(event => {
-        window.removeEventListener(event, updateLastActiveTime);
-      });
+      clearInterval(timer);
       window.removeEventListener('beforeunload', handleBeforeUnload);
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
-      }
     };
   }, [userIp, pageLoadTime]);
 
