@@ -626,7 +626,7 @@ const Landing = () => {
         </div>
 
         <div className="flex-grow flex flex-col items-center justify-center text-center px-4 mb-40">
-        <div className="w-full max-w-4xl mx-auto mt-20 mb-20">
+        <div className="w-full max-w-4xl mx-auto mt-20 mb-10md:mb-20">
             <h2 className="text-2xl font-normal mb-6">
             Looking for a <span className="relative font-extrabold">
                 faster, easier
