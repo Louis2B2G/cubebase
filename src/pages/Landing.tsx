@@ -294,6 +294,7 @@ const Landing = () => {
   const [showForm, setShowForm] = useState(false);
   const [userIp, setUserIp] = useState('');
   const [pageLoadTime, setPageLoadTime] = useState<number>(Date.now());
+  const [isChrome, setIsChrome] = useState(true);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -316,6 +317,10 @@ const Landing = () => {
     };
 
     window.addEventListener('beforeunload', handleBeforeUnload);
+
+    // Check if the browser is Chrome
+    const isChromeBrowser = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
+    setIsChrome(isChromeBrowser);
 
     return () => {
       clearInterval(timer);
@@ -382,7 +387,11 @@ const Landing = () => {
     <div className="min-h-screen bg-[#fcf9f8] flex flex-col">
       <header className="p-6 flex justify-between items-center">
         <div className="flex items-center space-x-2">
-          <img src="/logos/new_wave_logo.svg" alt="Wave logo" className="w-14 h-14" />
+          <img 
+            src={isChrome ? "/logos/new_wave_logo.svg" : "/logos/new_wave_logo.png"} 
+            alt="Wave logo" 
+            className="w-14 h-14" 
+          />
           <span className="text-xl font-bold">Wave</span>
         </div>
         <button className="bg-gray-900 text-white px-4 py-2 rounded-full flex items-center" onClick={handleEarlyAccessClick}>

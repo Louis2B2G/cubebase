@@ -117,7 +117,7 @@ const PixelatedSection: React.FC = () => {
   }, [text, showQuestion, questionText, currentPairIndex, isErasing]);
 
   return (
-    <div className="relative w-full md:w-1/2 aspect-square mb-10 md:mb-20 rounded-[20px] overflow-hidden" style={{backgroundColor: bgColor}}>
+    <div className="relative w-full md:w-2/5 aspect-square mb-10 md:mb-20 rounded-[20px] overflow-hidden" style={{backgroundColor: bgColor}}>
       <div className="absolute inset-0 grid grid-rows-[repeat(80,1fr)] grid-cols-[repeat(80,1fr)] gap-[1px]">
         {pixels.map((row, i) => 
           row.map((color, j) => (
