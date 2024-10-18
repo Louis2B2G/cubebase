@@ -27,6 +27,7 @@ const EarlyAccessForm: React.FC<EarlyAccessFormProps> = ({ onSubmit, onClose }) 
           <X size={24} />
         </button>
         <h2 className="text-3xl font-bold mb-6 text-center">Get Early Access</h2>
+        <p className="text-sm mb-6 text-center">Whether this is your first CRM or you're just looking to get away from Hubspot, we'll make the transition as easy as possible.</p>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
             <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
@@ -72,7 +73,7 @@ const EarlyAccessForm: React.FC<EarlyAccessFormProps> = ({ onSubmit, onClose }) 
           </div>
           <button
             type="submit"
-            className="w-full bg-blue-600 text-white py-3 px-4 rounded-md hover:bg-blue-700 transition duration-300 ease-in-out"
+            className="w-full bg-black text-white py-3 px-4 rounded-md hover:bg-gray-700 transition duration-300 ease-in-out"
           >
             Submit
           </button>

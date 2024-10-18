@@ -120,9 +120,10 @@ const AnimatedCRM = () => {
   const componentRef = useRef(null);
 
   const customerText = "Customer";
-  const relationshipManagementText = "Relationship Management";
+  const relationshipText = "Relationship";
+  const managementText = "Management";
   const intelligenceText = "Intelligence";
-  const totalSteps = relationshipManagementText.length + intelligenceText.length + 15;
+  const totalSteps = relationshipText.length + managementText.length + intelligenceText.length + 20;
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -157,18 +158,21 @@ const AnimatedCRM = () => {
     };
   }, [isVisible, totalSteps]);
 
-  const showStrikethrough = animationStep > relationshipManagementText.length + 5;
-  const strikethroughProgress = Math.min(100, (animationStep - relationshipManagementText.length - 5) * 10);
-  const showIntelligence = animationStep > relationshipManagementText.length + 10;
+  const showStrikethroughRelationship = animationStep > relationshipText.length + managementText.length + 5;
+  const showStrikethroughManagement = animationStep > relationshipText.length + managementText.length + 10;
+  const strikethroughProgressRelationship = Math.min(100, (animationStep - relationshipText.length - managementText.length - 5) * 10);
+  const strikethroughProgressManagement = Math.min(100, (animationStep - relationshipText.length - managementText.length - 10) * 10);
+  const showIntelligence = animationStep > relationshipText.length + managementText.length + 20;
 
   return (
     <div ref={componentRef} className="flex-grow flex flex-col items-center justify-center text-center px-4 mb-20">
-      <h1 className="text-5xl font-bold mb-4 relative">
+      {/* Desktop version */}
+      <h1 className="hidden md:block text-5xl font-bold mb-4 relative">
         <span className="text-black">{customerText}</span>{' '}
         <span className="relative inline-block">
-          <span className={`relative ${showStrikethrough ? 'text-gray-400' : 'text-blue-500'}`}>
-            {relationshipManagementText.slice(0, Math.min(animationStep, relationshipManagementText.length))}
-            {showStrikethrough && (
+          <span className={`relative ${showStrikethroughRelationship ? 'text-gray-400' : 'text-blue-500'}`}>
+            {relationshipText.slice(0, Math.min(animationStep, relationshipText.length))}
+            {showStrikethroughRelationship && (
               <span className="absolute inset-0 flex items-center overflow-hidden">
                 <svg className="absolute left-0 w-full h-6" viewBox="0 0 100 8" preserveAspectRatio="none">
                   <path
@@ -180,7 +184,7 @@ const AnimatedCRM = () => {
                     className="text-blue-500"
                     style={{
                       strokeDasharray: '100',
-                      strokeDashoffset: 100 - strikethroughProgress,
+                      strokeDashoffset: 100 - strikethroughProgressRelationship,
                       transition: 'stroke-dashoffset 0.1s ease-out'
                     }}
                   />
@@ -190,7 +194,90 @@ const AnimatedCRM = () => {
           </span>
           {showIntelligence && (
             <span className="text-blue-500 absolute text-5xl font-bold" style={{ top: '-1.2em', left: '2em', whiteSpace: 'nowrap' }}>
-              {intelligenceText.slice(0, animationStep - relationshipManagementText.length - 10)}
+              {intelligenceText.slice(0, animationStep - relationshipText.length - managementText.length - 20)}
+            </span>
+          )}
+        </span>
+        {' '} {/* Added space here */}
+        <span className="relative inline-block">
+          <span className={`relative ${showStrikethroughManagement ? 'text-gray-400' : 'text-blue-500'}`}>
+            {managementText.slice(0, Math.min(Math.max(0, animationStep - relationshipText.length), managementText.length))}
+          </span>
+          {showStrikethroughManagement && (
+            <span className="absolute inset-0 flex items-center overflow-hidden">
+              <svg className="absolute left-0 w-full h-6" viewBox="0 0 100 8" preserveAspectRatio="none">
+                <path
+                  d={`M0,4 Q25,8 50,4 T100,4`}
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1"
+                  strokeLinecap="round"
+                  className="text-blue-500"
+                  style={{
+                    strokeDasharray: '100',
+                    strokeDashoffset: 100 - strikethroughProgressManagement,
+                    transition: 'stroke-dashoffset 0.1s ease-out'
+                  }}
+                />
+              </svg>
+            </span>
+          )}
+        </span>
+      </h1>
+
+      {/* Mobile version */}
+      <h1 className="md:hidden text-6xl font-bold mb-4 relative flex flex-col items-center">
+        <span className="text-black mb-2">{customerText}</span>
+        {showIntelligence && (
+          <span className="text-blue-500 mb-2">
+            {intelligenceText.slice(0, animationStep - relationshipText.length - managementText.length - 20)}
+          </span>
+        )}
+        <span className="relative inline-block mb-2">
+          <span className={`relative ${showStrikethroughRelationship ? 'text-gray-400' : 'text-blue-500'}`}>
+            {relationshipText.slice(0, Math.min(animationStep, relationshipText.length))}
+          </span>
+          {showStrikethroughRelationship && (
+            <span className="absolute inset-0 flex items-center overflow-hidden">
+              <svg className="absolute left-0 w-full h-6" viewBox="0 0 100 8" preserveAspectRatio="none">
+                <path
+                  d={`M0,4 Q25,8 50,4 T100,4`}
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1"
+                  strokeLinecap="round"
+                  className="text-blue-500"
+                  style={{
+                    strokeDasharray: '100',
+                    strokeDashoffset: 100 - strikethroughProgressRelationship,
+                    transition: 'stroke-dashoffset 0.1s ease-out'
+                  }}
+                />
+              </svg>
+            </span>
+          )}
+        </span>
+        <span className="relative inline-block">
+          <span className={`relative ${showStrikethroughManagement ? 'text-gray-400' : 'text-blue-500'}`}>
+            {managementText.slice(0, Math.min(Math.max(0, animationStep - relationshipText.length), managementText.length))}
+          </span>
+          {showStrikethroughManagement && (
+            <span className="absolute inset-0 flex items-center overflow-hidden">
+              <svg className="absolute left-0 w-full h-6" viewBox="0 0 100 8" preserveAspectRatio="none">
+                <path
+                  d={`M0,4 Q25,8 50,4 T100,4`}
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1"
+                  strokeLinecap="round"
+                  className="text-blue-500"
+                  style={{
+                    strokeDasharray: '100',
+                    strokeDashoffset: 100 - strikethroughProgressManagement,
+                    transition: 'stroke-dashoffset 0.1s ease-out'
+                  }}
+                />
+              </svg>
             </span>
           )}
         </span>
@@ -305,8 +392,9 @@ const Landing = () => {
       </header>
 
       <div className="flex-grow flex flex-col items-center justify-center text-center px-4">
-        <h1 className="text-7xl font-bold mb-4 relative mt-48">
-          <span className="relative inline-block">
+        <h1 className="text-6xl md:text-7xl font-bold mb-4 relative mt-24 md:mt-48">
+          {/* Desktop version */}
+          <span className="hidden md:inline-block relative">
             <span className={`relative ${showStrikethrough ? 'text-gray-400' : 'text-blue-500'}`}>
               {artificialText.slice(0, Math.min(animationStep, artificialText.length))}
               {showStrikethrough && (
@@ -360,25 +448,53 @@ const Landing = () => {
               </span>
             )}
           </span>
-          {'    '}
-          {'\u00A0\u00A0\u00A0\u00A0\u00A0'}
-          Intelligence
+          {/* Mobile version */}
+          <span className="md:hidden flex flex-col items-center">
+            <span className={`relative ${showStrikethrough ? 'text-gray-400' : 'text-blue-500'}`}>
+              {artificialText.slice(0, Math.min(animationStep, artificialText.length))}
+              {showStrikethrough && (
+                <span className="absolute inset-0 flex items-center overflow-hidden">
+                  <svg className="absolute left-0 w-full h-8" viewBox="0 0 100 8" preserveAspectRatio="none">
+                    <path
+                      d={`M0,4 Q25,8 50,4 T100,4`}
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="1"
+                      strokeLinecap="round"
+                      className="text-blue-500"
+                      style={{
+                        strokeDasharray: '100',
+                        strokeDashoffset: 100 - strikethroughProgress,
+                        transition: 'stroke-dashoffset 0.1s ease-out'
+                      }}
+                    />
+                  </svg>
+                </span>
+              )}
+            </span>
+            {showCustomer && (
+              <span className="text-blue-500 text-6xl font-bold mt-2">
+                {customerText.slice(0, animationStep - artificialText.length - 21)}
+              </span>
+            )}
+          </span>
+          <span className="block mt-2">Intelligence</span>
         </h1>
         <p className="text-3xl text-gray-700 mb-10 font-bold">
           AI-native CRM that brings customers into every decision
         </p>
         <div className="mb-14">
           <p className="text-gray-500 mb-4 text-bold">Works seamlessly with:</p>
-          <div className="flex space-x-12 justify-center items-center">
-            <img src="/logos/gmail.svg" alt="Gmail" className="h-8" />
-            <img src="/logos/teams.svg" alt="Microsoft Teams" className="h-8" />
-            <img src="/logos/meet.svg" alt="Google Meet" className="h-8" />
-            <img src="/logos/zoom.svg" alt="Zoom" className="h-8" />
-            <img src="/logos/notion.svg" alt="Notion" className="h-8" />
-            <img src="/logos/phone.svg" alt="Phone" className="h-8" />
-            <div style={{ position: 'relative' }}>
-              <img src="/logos/slack.svg" alt="Slack" className="h-8" />
-              <div className="absolute top-8 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-gray-100 text-xs text-gray-500 px-1 py-0.5 rounded-full whitespace-nowrap" style={{ zIndex: 1 }}>
+          <div className="flex flex-wrap justify-center items-center gap-4 md:gap-8 lg:gap-12">
+            <img src="/logos/gmail.svg" alt="Gmail" className="h-6 md:h-8" />
+            <img src="/logos/teams.svg" alt="Microsoft Teams" className="h-6 md:h-8" />
+            <img src="/logos/meet.svg" alt="Google Meet" className="h-6 md:h-8" />
+            <img src="/logos/zoom.svg" alt="Zoom" className="h-6 md:h-8" />
+            <img src="/logos/notion.svg" alt="Notion" className="h-6 md:h-8" />
+            <img src="/logos/phone.svg" alt="Phone" className="h-6 md:h-8" />
+            <div className="relative">
+              <img src="/logos/slack.svg" alt="Slack" className="h-6 md:h-8" />
+              <div className="absolute top-full left-1/2 transform -translate-x-1/2 bg-gray-100 text-xs text-gray-500 px-1 py-0.5 rounded-full whitespace-nowrap mt-1">
                 coming soon
               </div>
             </div>
@@ -391,7 +507,7 @@ const Landing = () => {
           Get early access
           <ArrowRight size={20} className="ml-2" />
         </button>
-        <p className="text-gray-500 text-3xl text-medium">
+        <p className="text-gray-500 text-md text-medium">
           Just have conversations. Let Wave do the rest.
         </p>
 
@@ -406,17 +522,57 @@ const Landing = () => {
         <PixelatedSection />
 
         <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-6xl font-bold mb-4">Reimagining CRM for the AI Age</h2>
-          <p className="text-2xl mb-6">
+          <h2 className="md:text-6xl text-5xl font-bold mb-4">Reimagining CRM for the AI Age</h2>
+          <p className="md:text-2xl text-xl mb-6">
             It's never been easier to capture, organize, analyze and share the conversations
             that grow your business.
           </p>
-          <p className="text-2xl mb-12">
+          <p className="md:text-2xl text-xl mb-12">
             <strong>Wave</strong> eliminates the complicated, manual interfaces of Legacy CRM, and
             keeps you connected to what your customers want.
           </p>
 
-          <div className="flex justify-between items-start relative mb-40">
+          {/* Mobile layout */}
+          <div className="md:hidden flex flex-col items-center mb-20">
+            <h3 className="text-4xl font-bold text-gray-500 mb-4">Legacy CRM</h3>
+            <p className="mb-4 font-bold text-gray-500 text-lg">
+              Slows you down by forcing you to think the same way a computer thinks.
+            </p>
+            <p className="font-bold text-gray-500 text-lg mb-4">
+              Like a complex series of tables and fields.
+            </p>
+            <img src="/images/flow_legacy_1.png" alt="Legacy CRM Flow 1" className="w-full mb-4" />
+            <div className="flex justify-center mb-4">
+              <svg width="60" height="60" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg" transform="rotate(-30 0 0)">
+                <path d="M50 10C30 10 10 30 10 50" stroke="#3B82F6" strokeWidth="6" strokeLinecap="round"/>
+                <path d="M10 50L20 40" stroke="#3B82F6" strokeWidth="6" strokeLinecap="round"/>
+                <path d="M10 50L0 40" stroke="#3B82F6" strokeWidth="6" strokeLinecap="round"/>
+              </svg>
+            </div>
+            <img src="/images/flow_legacy_2.png" alt="Legacy CRM Flow 2" className="w-full mb-8" />
+            
+            <h3 className="text-5xl font-semibold text-blue-500 mb-8">Vs.</h3>
+            
+            <h3 className="text-4xl font-bold mb-4 text-black">Wave</h3>
+            <p className="mb-4 font-bold text-black text-lg">
+              Adapts to you. Your contacts and conversations are automatically synced to a new type of CRM.
+            </p>
+            <p className="text-black-600 font-semibold text-lg mb-4">
+              Have conversations, let Wave do the rest.
+            </p>
+            <img src="/images/flow_wave_1.png" alt="Wave Flow 1" className="w-full mb-4" />
+            <div className="flex justify-center mb-4">
+              <svg width="60" height="60" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg" transform="rotate(30 0 0)">
+                <path d="M10 10C30 10 50 30 50 50" stroke="#3B82F6" strokeWidth="6" strokeLinecap="round"/>
+                <path d="M50 50L40 40" stroke="#3B82F6" strokeWidth="6" strokeLinecap="round"/>
+                <path d="M50 50L60 40" stroke="#3B82F6" strokeWidth="6" strokeLinecap="round"/>
+              </svg>
+            </div>
+            <img src="/images/flow_wave_2.png" alt="Wave Flow 2" className="w-full" />
+          </div>
+
+          {/* Desktop layout */}
+          <div className="hidden md:flex justify-between items-start relative mb-40">
             <div className="w-[calc(50%-2rem)] pr-8">
               <h3 className="text-4xl font-bold text-gray-500 mb-4">Legacy CRM</h3>
               <p className="mb-4 font-bold text-gray-500 text-lg">
