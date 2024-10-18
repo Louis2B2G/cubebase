@@ -494,7 +494,7 @@ const Landing = () => {
             <img src="/logos/phone.svg" alt="Phone" className="h-6 md:h-8" />
             <div className="relative">
               <img src="/logos/slack.svg" alt="Slack" className="h-6 md:h-8" />
-              <div className="absolute top-full left-1/2 transform -translate-x-1/2 bg-gray-100 text-xs text-gray-500 px-1 py-0.5 rounded-full whitespace-nowrap mt-1">
+              <div className="absolute top-full left-1/2 transform -translate-x-1/2 md:text-xs bg-gray-100 text-[10px] text-gray-500 px-1 rounded-full whitespace-nowrap mt-0.5">
                 coming soon
               </div>
             </div>
