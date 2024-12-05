@@ -1,211 +1,346 @@
-import React from 'react';
-import { Heart, Brain, Book, Clock, Star, Shield } from 'lucide-react';
-import { useState, useEffect } from 'react';
-import { Link, Element } from 'react-scroll';
+import React, { useState, useEffect, useCallback } from 'react';
+import { ChevronRight, MapPin, Calendar, Users, Sparkles, Brain, Truck, Network } from 'lucide-react';
 
-const Logo = () => (
-  <div className="flex items-center gap-2">
-    <svg
-      viewBox="0 0 32 32"
-      className="w-8 h-8"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <circle cx="16" cy="16" r="12" stroke="currentColor" strokeWidth="2" className="text-blue-600"/>
-      <path
-        d="M16 4 L16 28"
-        stroke="currentColor"
-        strokeWidth="2"
-        className="text-blue-600"
-      />
-      <path
-        d="M10 10 L22 22"
-        stroke="currentColor"
-        strokeWidth="2"
-        className="text-blue-600"
-      />
-    </svg>
-    <span className="text-xl font-semibold text-gray-900">Heirloom</span>
-  </div>
-);
+interface Particle {
+  x: number;
+  y: number;
+  size: number;
+  speedX: number;
+  speedY: number;
+  opacity: number;
+}
 
+const CyberBackground = () => {
+  const canvasRef = useCallback((node: HTMLCanvasElement | null) => {
+    if (!node) return;
+    const ctx = node.getContext('2d');
+    if (!ctx) return;
 
-const Landing = () => {
-  const [videoError, setVideoError] = useState(false);
+    // Set canvas size
+    const resize = () => {
+      node.width = window.innerWidth;
+      node.height = window.innerHeight;
+    };
+    resize();
+    window.addEventListener('resize', resize);
 
-  useEffect(() => {
-    console.log("Attempting to load video from:", "/videos/old_people.mp4");
+    // Create particles
+    const particles: Particle[] = Array.from({ length: 100 }, () => ({
+      x: Math.random() * node.width,
+      y: Math.random() * node.height,
+      size: Math.random() * 10 + 1,
+      speedX: (Math.random() - 0.5) * 0.5,
+      speedY: (Math.random() - 0.5) * 0.5,
+      opacity: Math.random() * 0.5 + 0.2,
+    }));
+
+    // Animation loop
+    const animate = () => {
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
+      ctx.fillRect(0, 0, node.width, node.height);
+
+      particles.forEach((particle) => {
+        // Update position
+        particle.x += particle.speedX;
+        particle.y += particle.speedY;
+
+        // Wrap around edges
+        if (particle.x < 0) particle.x = node.width;
+        if (particle.x > node.width) particle.x = 0;
+        if (particle.y < 0) particle.y = node.height;
+        if (particle.y > node.height) particle.y = 0;
+
+        // Draw particle
+        ctx.beginPath();
+        ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(59, 130, 246, ${particle.opacity})`; // blue-500
+        ctx.fill();
+
+        // Draw connections
+        particles.forEach((otherParticle) => {
+          const dx = particle.x - otherParticle.x;
+          const dy = particle.y - otherParticle.y;
+          const distance = Math.sqrt(dx * dx + dy * dy);
+
+          if (distance < 150) {
+            ctx.beginPath();
+            ctx.strokeStyle = `rgba(59, 130, 246, ${0.1 * (1 - distance / 150)})`;
+            ctx.lineWidth = 0.5;
+            ctx.moveTo(particle.x, particle.y);
+            ctx.lineTo(otherParticle.x, otherParticle.y);
+            ctx.stroke();
+          }
+        });
+      });
+
+      requestAnimationFrame(animate);
+    };
+
+    animate();
+
+    return () => {
+      window.removeEventListener('resize', resize);
+    };
   }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
-      {/* Navigation */}
-      <nav className="fixed w-full bg-white/90 backdrop-blur-md z-50 shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-            <Logo />
-            <div className="hidden md:flex items-center gap-8">
-              <Link to="features" smooth={true} duration={500} className="text-gray-600 hover:text-gray-900 cursor-pointer">Features</Link>
-              <Link to="benefits" smooth={true} duration={500} className="text-gray-600 hover:text-gray-900 cursor-pointer">Benefits</Link>
-              <Link to="cta" smooth={true} duration={500} className="text-gray-600 hover:text-gray-900 cursor-pointer">Get Started</Link>
-              <button className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
-                Join Waitlist
-              </button>
-            </div>
-          </div>
-        </div>
-      </nav>
+    <div className="fixed inset-0 overflow-hidden z-0">
+      <canvas
+        ref={canvasRef}
+        className="absolute inset-0 bg-black"
+        style={{ filter: 'blur(1px)' }}
+      />
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/50 to-black" />
+    </div>
+  );
+};
 
-      {/* Hero Section */}
-      <div className="relative pt-24 pb-32">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 text-center">
-          <h1 className="text-5xl md:text-7xl font-bold text-gray-900 mb-8">
-            Preserve their independence today,
-            <span className="text-blue-600 block mt-2">and their wisdom forever</span>
-          </h1>
-          <p className="text-xl md:text-2xl text-gray-600 max-w-3xl mx-auto mb-12">
-            So your children can know their grandparents' stories long after they're gone.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-6 justify-center">
-            <button className="bg-blue-600 text-white px-8 py-4 rounded-full text-lg font-semibold hover:bg-blue-700 transition-colors shadow-lg hover:shadow-xl">
-              Request Early Access
-            </button>
-            <button className="border-2 border-blue-600 text-blue-600 px-8 py-4 rounded-full text-lg font-semibold hover:bg-blue-50 transition-colors">
-              Watch Demo
-            </button>
-          </div>
-        </div>
-      </div>
+interface GlowingTextProps {
+  children: React.ReactNode;
+  className?: string;
+}
 
-      {/* Video Section with Overlaid Quote and Feature Cards */}
-      <Element name="features" className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
-        <div className="relative w-full rounded-2xl overflow-hidden shadow-2xl" style={{ paddingTop: '56.25%' }}>
-          {!videoError ? (
-            <video
-              className="absolute top-0 left-0 w-full h-full object-cover"
-              autoPlay
-              loop
-              muted
-              playsInline
-              onError={() => {
-                console.error("Video failed to load");
-                setVideoError(true);
-              }}
-            >
-              <source src="/videos/old_people.mp4" type="video/mp4" />
-              Your browser does not support the video tag.
-            </video>
-          ) : (
-            <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center bg-gray-100">
-              <p className="text-gray-500">Video unavailable</p>
-            </div>
-          )}
+const GlowingText = ({ children, className = '' }: GlowingTextProps) => (
+  <span className={`relative inline-block ${className}`}>
+    <span className="relative z-10">{children}</span>
+    <span className="absolute inset-0 blur-xl bg-blue-500/20" />
+  </span>
+);
 
+interface FeatureCardProps {
+  icon: React.ElementType;
+  title: string;
+  description: string;
+}
 
-          {/* Overlaid Quote */}
-          <div className="absolute top-0 left-0 right-0 p-8 bg-gradient-to-b from-black/80 to-transparent rounded-t-2xl">
-            <div className="max-w-4xl mx-auto text-center">
-              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white leading-tight mb-4 drop-shadow-lg">
-                Turn Daily Care into Lasting Memories
-              </h2>
-              <p className="text-xl sm:text-2xl md:text-3xl text-white leading-snug drop-shadow-md">
-                The first senior care device that helps them live better and preserves their voice and stories.
-              </p>
-            </div>
-          </div>
+const FeatureCard = ({ icon: Icon, title, description }: FeatureCardProps) => {
+  const [isHovered, setIsHovered] = useState(false);
+  
+  return (
+    <div
+      className="relative p-8 rounded-xl bg-gradient-to-br from-white/5 to-white/0 border border-white/10 
+                 hover:border-blue-500/50 transition-all duration-500 transform hover:-translate-y-2 overflow-hidden"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      <div className={`absolute inset-0 bg-blue-500/5 transition-opacity duration-500 ${isHovered ? 'opacity-100' : 'opacity-0'}`} />
+      <Icon className={`w-12 h-12 text-blue-500 mb-6 transition-transform duration-500 ${isHovered ? 'scale-110' : 'scale-100'}`} />
+      <h3 className="text-2xl font-bold mb-4 text-white">{title}</h3>
+      <p className="text-gray-400 text-lg">{description}</p>
+    </div>
+  );
+};
 
-          {/* Overlaid Feature Cards */}
-          <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/70 to-transparent rounded-b-2xl">
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-5xl mx-auto">
-              <div className="bg-white/90 p-4 rounded-lg backdrop-blur-sm">
-                <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center mb-2">
-                  <Brain className="w-5 h-5 text-blue-600" />
-                </div>
-                <h3 className="text-lg font-semibold mb-1">Cognitive Support</h3>
-                <p className="text-sm text-gray-600">
-                  Real-time assistance with daily tasks and memories.
-                </p>
-              </div>
-              <div className="bg-white/90 p-4 rounded-lg backdrop-blur-sm">
-                <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center mb-2">
-                  <Book className="w-5 h-5 text-blue-600" />
-                </div>
-                <h3 className="text-lg font-semibold mb-1">Legacy Preservation</h3>
-                <p className="text-sm text-gray-600">
-                  Capture stories and wisdom for future generations.
-                </p>
-              </div>
-              <div className="bg-white/90 p-4 rounded-lg backdrop-blur-sm">
-                <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center mb-2">
-                  <Heart className="w-5 h-5 text-blue-600" />
-                </div>
-                <h3 className="text-lg font-semibold mb-1">Family Connection</h3>
-                <p className="text-sm text-gray-600">
-                  Keep loved ones close and preserve their stories.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </Element>
+const FuturisticSpeakerHighlight = () => {
+  return (
+    <div className="relative py-32 bg-black text-white overflow-hidden">
+      {/* Background effects */}
+      <div className="absolute inset-0 bg-gradient-to-r from-blue-900/20 via-purple-900/20 to-blue-900/20 opacity-50" />
+      <div className="absolute inset-0" 
+           style={{
+             backgroundImage: `url(${process.env.PUBLIC_URL}/grid.svg)`,
+             backgroundPosition: 'center',
+             maskImage: 'linear-gradient(180deg,white,rgba(255,255,255,0))',
+             WebkitMaskImage: 'linear-gradient(180deg,white,rgba(255,255,255,0))'
+           }} 
+      />
 
-      {/* Quote Section */}
-      <div className="bg-blue-100 py-24">
-        <div className="max-w-4xl mx-auto px-4 text-center">
-          <h2 className="text-4xl md:text-5xl font-bold mb-8 text-gray-900">
-            When remembering gets harder, Heirloom remembers everything
+      <div className="container mx-auto px-4 relative z-10">
+        {/* Section header */}
+        <div className="text-center mb-20">
+          <h2 className="text-7xl font-black mb-6">
+            <span className="bg-gradient-to-r from-blue-400 via-cyan-400 to-purple-500 text-transparent bg-clip-text">
+              Speakers d'Exception
+            </span>
           </h2>
-          <p className="text-2xl text-gray-700">So your family's stories and wisdom never fade away.</p>
+          <p className="text-xl text-gray-400 max-w-3xl mx-auto">
+            Rencontrez les visionnaires qui façonnent l'avenir du transport routier et de l'intelligence artificielle
+          </p>
+        </div>
+
+        {/* Speakers grid */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-16">
+          {[
+
+            {
+              name: "Thibaud Guedon",
+              title: "Leader en Transport",
+              role: "Directeur d'exploitation @ Groussard",
+              image: "/images/thibaud.png",
+              topics: ["Innovation", "Stratégie", "Leadership"]
+            },
+            {
+              name: "Sebastien Ruffle",
+              title: "Innovateur TMS",
+              role: "CEO @ Sinari",
+              image: "/images/seb.png",
+              topics: ["Tech", "Product", "Scale-up"]
+            }
+          ].map((speaker, i) => (
+            <div 
+              key={i} 
+              className="relative group bg-gradient-to-br from-white/5 to-transparent 
+                         border border-white/10 rounded-2xl p-1 hover:border-blue-500/50 
+                         transition-all duration-500"
+            >
+              <div className="relative overflow-hidden rounded-xl aspect-[3/4]">
+                {/* Speaker image */}
+                <img 
+                  src={speaker.image} 
+                  alt={speaker.name} 
+                  className="w-full h-full object-cover scale-100 group-hover:scale-110 
+                             transition-all duration-700 filter grayscale hover:grayscale-0" 
+                />
+                
+                {/* Overlay gradient */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent opacity-80" />
+                
+                {/* Content overlay */}
+                <div className="absolute inset-0 flex flex-col justify-end p-6">
+                  <h3 className="text-3xl font-bold mb-2 bg-gradient-to-r from-blue-400 to-purple-400 
+                               text-transparent bg-clip-text group-hover:scale-105 transition-transform">
+                    {speaker.name}
+                  </h3>
+                  <p className="text-xl font-medium text-white mb-1">{speaker.title}</p>
+                  <p className="text-blue-400 mb-4">{speaker.role}</p>
+                  
+                  {/* Topics */}
+                  <div className="flex flex-wrap gap-2">
+                    {speaker.topics.map((topic, j) => (
+                      <span 
+                        key={j}
+                        className="px-3 py-1 bg-blue-500/10 border border-blue-500/20 rounded-full 
+                                 text-sm text-blue-400 backdrop-blur-sm"
+                      >
+                        {topic}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const Landing = () => {
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 50);
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  return (
+    <div className="relative bg-black text-white overflow-hidden">
+      <CyberBackground />
+      
+      {/* Hero Section */}
+      <div className="relative min-h-[90vh] flex items-center pb-20 z-10">
+        <div className="container mx-auto px-4 relative z-10 pt-20">
+          <div className="inline-flex items-center space-x-3 bg-white/5 backdrop-blur-xl border border-white/10 rounded-full 
+                         px-6 py-3 mb-8 animate-pulse">
+            <Calendar className="w-5 h-5 text-blue-400" />
+            <span className="text-lg">25 janvier 2024</span>
+            <span className="text-blue-500">•</span>
+            <MapPin className="w-5 h-5 text-blue-400" />
+            <span className="text-lg">HEC Alumni, Paris</span>
+          </div>
+
+          <h1 className="text-5xl sm:text-6xl md:text-8xl font-black mb-8 leading-tight">
+          <GlowingText className="">Le Grand Meetup</GlowingText><br />
+          <span className="bg-gradient-to-r from-[#00FFFF] to-[#FF00FF] text-transparent bg-clip-text">
+            IA & Transport Routier
+          </span><br />
+          <span className="text-white/90">L'Avenir des TMS</span>
+          </h1>
+
+          <p className="text-2xl text-gray-300 max-w-3xl mb-12 leading-relaxed">
+            Un meetup exclusif réunissant les acteurs majeurs du transport routier et les experts en intelligence artificielle. 
+            Venez découvrir comment l'IA révolutionne déjà la gestion du transport et façonne l'avenir des TMS.
+          </p>
+
+          <button className="group relative px-12 py-6 bg-blue-500 hover:bg-blue-600 rounded-xl font-bold text-xl
+                           transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-blue-500/20">
+            <span className="relative z-10 flex items-center space-x-3">
+              <span>Réserver votre place</span>
+              <ChevronRight className="w-6 h-6 group-hover:translate-x-1 transition-transform" />
+            </span>
+            <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-blue-400 rounded-xl opacity-0 
+                          group-hover:opacity-100 transition-opacity duration-300 blur-xl" />
+          </button>
+
+          <div className="mt-12 flex items-center space-x-4 text-lg">
+            <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center">
+              <span className="font-bold">IA</span>
+            </div>
+            <span className="text-gray-400">Organisé par <span className="text-white font-semibold">Cube AI</span></span>
+          </div>
         </div>
       </div>
 
+      {/* Speakers Section */}
+      <section className="relative py-24 lg:py-32 z-10">
+        <FuturisticSpeakerHighlight />
+      </section>
 
-
-      {/* Benefits Section */}
-      <Element name="benefits" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
-        <h2 className="text-4xl font-bold text-center mb-16 text-gray-900">Why Choose Heirloom</h2>
-        <div className="grid md:grid-cols-2 gap-12">
-          <div className="flex items-start gap-4">
-            <Clock className="w-6 h-6 text-blue-600 flex-shrink-0 mt-1" />
-            <div>
-              <h3 className="text-xl font-semibold mb-2">24/7 Support</h3>
-              <p className="text-gray-600">Always-on assistance that helps maintain independence and dignity.</p>
-            </div>
+      {/* Features Section */}
+      <section className="relative py-24 lg:py-32 z-10">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-16">
+            <h2 className="text-5xl lg:text-6xl font-black mb-6">
+              <span className="bg-gradient-to-r from-blue-400 to-purple-500 text-transparent bg-clip-text">
+                Une Expérience Unique
+              </span>
+            </h2>
+            <p className="text-xl text-gray-400 max-w-3xl mx-auto">
+              Découvrez pourquoi cet événement est incontournable pour les professionnels du transport
+            </p>
           </div>
-          <div className="flex items-start gap-4">
-            <Star className="w-6 h-6 text-blue-600 flex-shrink-0 mt-1" />
-            <div>
-              <h3 className="text-xl font-semibold mb-2">Personalized Care</h3>
-              <p className="text-gray-600">AI that learns and adapts to individual needs and preferences.</p>
-            </div>
-          </div>
-          <div className="flex items-start gap-4">
-            <Shield className="w-6 h-6 text-blue-600 flex-shrink-0 mt-1" />
-            <div>
-              <h3 className="text-xl font-semibold mb-2">Privacy First</h3>
-              <p className="text-gray-600">Secure and ethical handling of personal stories and memories.</p>
-            </div>
-          </div>
-          <div className="flex items-start gap-4">
-            <Heart className="w-6 h-6 text-blue-600 flex-shrink-0 mt-1" />
-            <div>
-              <h3 className="text-xl font-semibold mb-2">Family Peace of Mind</h3>
-              <p className="text-gray-600">Know your loved ones are safe and their stories are preserved.</p>
-            </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <FeatureCard
+              icon={Brain}
+              title="La Pointe de l'Innovation"
+              description="Explorez les dernières avancées en IA appliquées au transport : elimination de la saisie manuelle, cotations automatiques, appels automatiques, etc."
+            />
+            <FeatureCard
+              icon={Network}
+              title="Échanges & Networking"
+              description="Rencontrez les decisionnaires qui transforment l'industrie du transport et créez des connexions stratégiques pour votre entreprise."
+            />
+            <FeatureCard
+              icon={Truck}
+              title="TMS Nouvelle Génération"
+              description="Quel est l'avenir du TMS ? Découvrez les solutions qui intègrent l'IA pour une gestion plus intelligente de votre roadmap produit."
+            />
           </div>
         </div>
-      </Element>
+      </section>
 
-      {/* CTA Section */}
-      <Element name="cta" className="bg-gradient-to-r from-blue-600 to-blue-800 text-white py-24">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-4xl md:text-5xl font-bold mb-8">Ready to preserve your family's legacy?</h2>
-          <p className="text-xl mb-12 max-w-2xl mx-auto">Join our waitlist and be among the first to experience the future of senior care and memory preservation.</p>
-          <button className="bg-white text-blue-600 px-10 py-4 rounded-full text-xl font-semibold hover:bg-blue-50 transition-colors shadow-lg hover:shadow-xl">
-            Join the Waitlist
-          </button>
+      {/* Stats Section */}
+      <section className="relative py-24 lg:py-32 z-10">
+        <div className="container mx-auto px-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+            {[
+              { number: "20+", label: "Experts & Intervenants" },
+              { number: "150+", label: "Professionnels du Transport" },
+              { number: "10+", label: "Solutions Innovantes" }
+            ].map((stat, i) => (
+              <div key={i} className="text-center group">
+                <div className="text-6xl font-black mb-4 bg-gradient-to-r from-blue-400 to-blue-600 
+                              text-transparent bg-clip-text group-hover:scale-110 transition-transform">
+                  {stat.number}
+                </div>
+                <div className="text-xl text-gray-400">{stat.label}</div>
+              </div>
+            ))}
+          </div>
         </div>
-      </Element>
+      </section>
     </div>
   );
 };
