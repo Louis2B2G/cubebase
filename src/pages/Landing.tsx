@@ -240,18 +240,18 @@ const Landing = () => {
       <CyberBackground />
       
       {/* Hero Section */}
-      <div className="relative min-h-[90vh] flex items-center pb-20 z-10">
-        <div className="container mx-auto px-4 relative z-10 pt-20">
+      <div className="relative min-h-[80vh] flex items-center pb-20 z-10">
+        <div className="container mx-auto px-8 relative z-10 pt-20">
           <div className="inline-flex items-center space-x-3 bg-white/5 backdrop-blur-xl border border-white/10 rounded-full 
                          px-6 py-3 mb-8 animate-pulse">
-            <Calendar className="w-5 h-5 text-blue-400" />
-            <span className="text-lg">25 janvier 2024</span>
+            <Calendar className="w-4 h-4 text-blue-400" />
+            <span className="text-base">25 janvier 2024</span>
             <span className="text-blue-500">•</span>
-            <MapPin className="w-5 h-5 text-blue-400" />
-            <span className="text-lg">HEC Alumni, Paris</span>
+            <MapPin className="w-4 h-4 text-blue-400" />
+            <span className="text-base">HEC Alumni, Paris</span>
           </div>
 
-          <h1 className="text-5xl sm:text-6xl md:text-8xl font-black mb-8 leading-tight">
+          <h1 className="text-4xl sm:text-5xl md:text-7xl font-black mb-8 leading-tight">
           <GlowingText className="">Le Grand Meetup</GlowingText><br />
           <span className="bg-gradient-to-r from-[#00FFFF] to-[#FF00FF] text-transparent bg-clip-text">
             IA & Transport Routier
@@ -259,23 +259,23 @@ const Landing = () => {
           <span className="text-white/90">L'Avenir des TMS</span>
           </h1>
 
-          <p className="text-2xl text-gray-300 max-w-3xl mb-12 leading-relaxed">
+          <p className="text-xl text-gray-300 max-w-2xl mb-12 leading-relaxed">
             Un meetup exclusif réunissant les acteurs majeurs du transport routier et les experts en intelligence artificielle. 
             Venez découvrir comment l'IA révolutionne déjà la gestion du transport et façonne l'avenir des TMS.
           </p>
 
-          <button className="group relative px-12 py-6 bg-blue-500 hover:bg-blue-600 rounded-xl font-bold text-xl
+          <button className="group relative px-10 py-5 bg-blue-500 hover:bg-blue-600 rounded-xl font-bold text-lg
                            transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-blue-500/20">
             <span className="relative z-10 flex items-center space-x-3">
               <span>Réserver votre place</span>
-              <ChevronRight className="w-6 h-6 group-hover:translate-x-1 transition-transform" />
+              <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
             </span>
             <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-blue-400 rounded-xl opacity-0 
                           group-hover:opacity-100 transition-opacity duration-300 blur-xl" />
           </button>
 
-          <div className="mt-12 flex items-center space-x-4 text-lg">
-            <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center">
+          <div className="mt-12 flex items-center space-x-4 text-base">
+            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center">
               <span className="font-bold">IA</span>
             </div>
             <span className="text-gray-400">Organisé par <span className="text-white font-semibold">Cube AI</span></span>
@@ -284,20 +284,20 @@ const Landing = () => {
       </div>
 
       {/* Speakers Section */}
-      <section className="relative py-24 lg:py-32 z-10">
+      <section className="relative py-20 lg:py-28 z-10">
         <FuturisticSpeakerHighlight />
       </section>
 
       {/* Features Section */}
-      <section className="relative py-24 lg:py-32 z-10">
-        <div className="container mx-auto px-4">
+      <section className="relative py-20 lg:py-28 z-10">
+        <div className="container mx-auto px-8">
           <div className="text-center mb-16">
-            <h2 className="text-5xl lg:text-6xl font-black mb-6">
+            <h2 className="text-4xl lg:text-5xl font-black mb-6">
               <span className="bg-gradient-to-r from-blue-400 to-purple-500 text-transparent bg-clip-text">
                 Une Expérience Unique
               </span>
             </h2>
-            <p className="text-xl text-gray-400 max-w-3xl mx-auto">
+            <p className="text-lg text-gray-400 max-w-2xl mx-auto">
               Découvrez pourquoi cet événement est incontournable pour les professionnels du transport
             </p>
           </div>
@@ -322,8 +322,8 @@ const Landing = () => {
       </section>
 
       {/* Stats Section */}
-      <section className="relative py-24 lg:py-32 z-10">
-        <div className="container mx-auto px-4">
+      <section className="relative py-20 lg:py-28 z-10">
+        <div className="container mx-auto px-8">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
             {[
               { number: "20+", label: "Experts & Intervenants" },
@@ -331,11 +331,13 @@ const Landing = () => {
               { number: "10+", label: "Solutions Innovantes" }
             ].map((stat, i) => (
               <div key={i} className="text-center group">
-                <div className="text-6xl font-black mb-4 bg-gradient-to-r from-blue-400 to-blue-600 
+                <div className="text-5xl font-black mb-4 bg-gradient-to-r from-blue-400 to-blue-600 
                               text-transparent bg-clip-text group-hover:scale-110 transition-transform">
                   {stat.number}
                 </div>
-                <div className="text-xl text-gray-400">{stat.label}</div>
+                <div className="text-lg text-gray-400">
+                  {stat.label}
+                </div>
               </div>
             ))}
           </div>
