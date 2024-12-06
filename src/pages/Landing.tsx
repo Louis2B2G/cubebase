@@ -166,17 +166,25 @@ const FuturisticSpeakerHighlight = () => {
           {[
             {
               name: "Thibaud Guedon",
-              title: "Leader en Transport",
-              role: "Directeur d'exploitation @ Groussard",
+              title: "Transports Groussard",
+              role: "Directeur d'exploitation",
               image: "/images/thibaud.png",
               topics: ["Innovation", "Stratégie", "Leadership"],
               linkedin: "#"
             },
             {
               name: "Sebastien Ruffle",
-              title: "Innovateur TMS",
-              role: "CEO @ Sinari",
+              title: "Groupe Sinari",
+              role: "Directeur Général",
               image: "/images/seb.png",
+              topics: ["Tech", "Product", "Scale-up"],
+              linkedin: "#"
+            },
+            {
+              name: "Antoine Sauvage",
+              title: "Ovrsea",
+              role: "CTO",
+              image: "/images/antoine.png",
               topics: ["Tech", "Product", "Scale-up"],
               linkedin: "#"
             }
@@ -213,7 +221,7 @@ const FuturisticSpeakerHighlight = () => {
                   <p className="text-lg font-medium text-white/90">{speaker.title}</p>
                   <p className="text-blue-400">{speaker.role}</p>
                   
-                  {/* Topics */}
+                  {/* Topics 
                   <div className="flex flex-wrap gap-2 justify-center mt-4">
                     {speaker.topics.map((topic, j) => (
                       <span 
@@ -225,8 +233,9 @@ const FuturisticSpeakerHighlight = () => {
                       </span>
                     ))}
                   </div>
+                  */}
 
-                  {/* LinkedIn button */}
+                  {/* LinkedIn button
                   <a 
                     href={speaker.linkedin}
                     className="inline-flex items-center space-x-2 mt-4 px-4 py-2 rounded-full
@@ -236,6 +245,7 @@ const FuturisticSpeakerHighlight = () => {
                     <span>LinkedIn</span>
                     <ChevronRight className="w-4 h-4" />
                   </a>
+                   */}
                 </div>
               </div>
             </div>
@@ -268,7 +278,7 @@ const Landing = () => {
             <span className="text-base">25 janvier 2024</span>
             <span className="text-blue-500">•</span>
             <MapPin className="w-4 h-4 text-blue-400" />
-            <span className="text-base">HEC Alumni, Paris</span>
+            <span className="text-base">Hôtel Le Marois, Paris</span>
           </div>
 
           <h1 className="text-4xl sm:text-5xl md:text-7xl font-black mb-8 leading-tight">
@@ -330,7 +340,7 @@ const Landing = () => {
             <FeatureCard
               icon={Network}
               title="Échanges & Networking"
-              description="Rencontrez les decisionnaires qui transforment l'industrie du transport et créez des connexions stratégiques pour votre entreprise."
+              description="Rencontrez ceux qui transforment l'industrie du transport et créez des connexions stratégiques pour votre entreprise."
             />
             <FeatureCard
               icon={Truck}
@@ -341,7 +351,7 @@ const Landing = () => {
         </div>
       </section>
 
-      {/* Stats Section */}
+      {/* Stats Section 
       <section className="relative py-20 lg:py-28 z-10">
         <div className="container mx-auto px-8">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
@@ -363,6 +373,7 @@ const Landing = () => {
           </div>
         </div>
       </section>
+      */}
     </div>
   );
 };
