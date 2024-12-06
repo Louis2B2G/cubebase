@@ -151,78 +151,92 @@ const FuturisticSpeakerHighlight = () => {
       <div className="container mx-auto px-4 relative z-10">
         {/* Section header */}
         <div className="text-center mb-20">
-          <h2 className="text-7xl font-black mb-6">
+          <h2 className="text-4xl md:text-5xl lg:text-7xl font-black mb-6">
             <span className="bg-gradient-to-r from-blue-400 via-cyan-400 to-purple-500 text-transparent bg-clip-text">
               Speakers d'Exception
             </span>
           </h2>
-          <p className="text-xl text-gray-400 max-w-3xl mx-auto">
+          <p className="text-base md:text-lg lg:text-xl text-gray-400 max-w-3xl mx-auto px-4">
             Rencontrez les visionnaires qui façonnent l'avenir du transport routier et de l'intelligence artificielle
           </p>
         </div>
 
         {/* Speakers grid */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 max-w-6xl mx-auto">
           {[
-
             {
               name: "Thibaud Guedon",
               title: "Leader en Transport",
               role: "Directeur d'exploitation @ Groussard",
               image: "/images/thibaud.png",
-              topics: ["Innovation", "Stratégie", "Leadership"]
+              topics: ["Innovation", "Stratégie", "Leadership"],
+              linkedin: "#"
             },
             {
               name: "Sebastien Ruffle",
               title: "Innovateur TMS",
               role: "CEO @ Sinari",
               image: "/images/seb.png",
-              topics: ["Tech", "Product", "Scale-up"]
+              topics: ["Tech", "Product", "Scale-up"],
+              linkedin: "#"
             }
           ].map((speaker, i) => (
             <div 
               key={i} 
-              className="relative group bg-gradient-to-br from-white/5 to-transparent 
-                         border border-white/10 rounded-2xl p-1 hover:border-blue-500/50 
-                         transition-all duration-500 max-w-[280px] mx-auto"
+              className="group relative bg-gradient-to-br from-white/10 to-transparent 
+                         rounded-2xl overflow-hidden hover:shadow-2xl hover:shadow-blue-500/20
+                         transition-all duration-500"
             >
-              <div className="relative overflow-hidden rounded-xl aspect-[4/5]">
-                {/* Speaker image */}
-                <img 
-                  src={speaker.image} 
-                  alt={speaker.name} 
-                  className="w-full h-full object-cover scale-100 group-hover:scale-110 
-                             transition-all duration-700 filter grayscale hover:grayscale-0" 
-                />
-                
-                {/* Overlay gradient */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent opacity-80" />
-                
-                {/* Content overlay */}
-                <div className="absolute inset-0 flex flex-col justify-end p-4">
-                  <h3 className="text-2xl font-bold mb-2 bg-gradient-to-r from-blue-400 to-purple-400 
+              {/* Glass effect background */}
+              <div className="absolute inset-0 backdrop-blur-sm bg-white/5 group-hover:bg-white/10 transition-colors duration-500" />
+              
+              <div className="relative p-6 flex flex-col items-center text-center">
+                {/* Image container */}
+                <div className="relative w-48 h-48 mb-6 rounded-full overflow-hidden border-2 border-white/10 
+                               group-hover:border-blue-500/50 transition-all duration-500">
+                  <img 
+                    src={speaker.image} 
+                    alt={speaker.name} 
+                    className="w-full h-full object-cover transform scale-100 group-hover:scale-110 
+                             transition-all duration-700 filter grayscale group-hover:grayscale-0" 
+                  />
+                  {/* Subtle overlay gradient */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-60" />
+                </div>
+
+                {/* Content */}
+                <div className="space-y-3">
+                  <h3 className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 
                                text-transparent bg-clip-text group-hover:scale-105 transition-transform">
                     {speaker.name}
                   </h3>
-                  <p className="text-lg font-medium text-white mb-1">{speaker.title}</p>
-                  <p className="text-blue-400 mb-3">{speaker.role}</p>
+                  <p className="text-lg font-medium text-white/90">{speaker.title}</p>
+                  <p className="text-blue-400">{speaker.role}</p>
                   
                   {/* Topics */}
-                  {/*
-                  <div className="flex flex-wrap gap-1.5">
+                  <div className="flex flex-wrap gap-2 justify-center mt-4">
                     {speaker.topics.map((topic, j) => (
                       <span 
                         key={j}
-                        className="px-2 py-0.5 bg-blue-500/10 border border-blue-500/20 rounded-full 
-                                 text-xs text-blue-400 backdrop-blur-sm"
+                        className="px-3 py-1 bg-blue-500/10 border border-blue-500/20 rounded-full 
+                                 text-sm text-blue-400 backdrop-blur-sm"
                       >
                         {topic}
                       </span>
                     ))}
                   </div>
-                  */}
+
+                  {/* LinkedIn button */}
+                  <a 
+                    href={speaker.linkedin}
+                    className="inline-flex items-center space-x-2 mt-4 px-4 py-2 rounded-full
+                             bg-white/5 hover:bg-blue-500/20 border border-white/10 hover:border-blue-500/50
+                             transition-all duration-300"
+                  >
+                    <span>LinkedIn</span>
+                    <ChevronRight className="w-4 h-4" />
+                  </a>
                 </div>
-                
               </div>
             </div>
           ))}
