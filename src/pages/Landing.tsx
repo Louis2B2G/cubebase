@@ -139,9 +139,12 @@ const FuturisticSpeakerHighlight = () => {
       <div className="absolute inset-0" 
            style={{
              backgroundImage: `url(${process.env.PUBLIC_URL}/grid.svg)`,
+             backgroundSize: '2000px 500px',
+             backgroundRepeat: 'repeat',
              backgroundPosition: 'center',
-             maskImage: 'linear-gradient(180deg,white,rgba(255,255,255,0))',
-             WebkitMaskImage: 'linear-gradient(180deg,white,rgba(255,255,255,0))'
+             maskImage: 'linear-gradient(180deg, rgba(255,255,255,0), white, rgba(255,255,255,0))',
+             WebkitMaskImage: 'linear-gradient(180deg, rgba(255,255,255,0), white, rgba(255,255,255,0))',
+             animation: 'pulse 15s ease-in-out infinite',
            }} 
       />
 
@@ -159,7 +162,7 @@ const FuturisticSpeakerHighlight = () => {
         </div>
 
         {/* Speakers grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-16">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {[
 
             {
@@ -181,9 +184,9 @@ const FuturisticSpeakerHighlight = () => {
               key={i} 
               className="relative group bg-gradient-to-br from-white/5 to-transparent 
                          border border-white/10 rounded-2xl p-1 hover:border-blue-500/50 
-                         transition-all duration-500"
+                         transition-all duration-500 max-w-[280px] mx-auto"
             >
-              <div className="relative overflow-hidden rounded-xl aspect-[3/4]">
+              <div className="relative overflow-hidden rounded-xl aspect-[4/5]">
                 {/* Speaker image */}
                 <img 
                   src={speaker.image} 
@@ -196,27 +199,30 @@ const FuturisticSpeakerHighlight = () => {
                 <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent opacity-80" />
                 
                 {/* Content overlay */}
-                <div className="absolute inset-0 flex flex-col justify-end p-6">
-                  <h3 className="text-3xl font-bold mb-2 bg-gradient-to-r from-blue-400 to-purple-400 
+                <div className="absolute inset-0 flex flex-col justify-end p-4">
+                  <h3 className="text-2xl font-bold mb-2 bg-gradient-to-r from-blue-400 to-purple-400 
                                text-transparent bg-clip-text group-hover:scale-105 transition-transform">
                     {speaker.name}
                   </h3>
-                  <p className="text-xl font-medium text-white mb-1">{speaker.title}</p>
-                  <p className="text-blue-400 mb-4">{speaker.role}</p>
+                  <p className="text-lg font-medium text-white mb-1">{speaker.title}</p>
+                  <p className="text-blue-400 mb-3">{speaker.role}</p>
                   
                   {/* Topics */}
-                  <div className="flex flex-wrap gap-2">
+                  {/*
+                  <div className="flex flex-wrap gap-1.5">
                     {speaker.topics.map((topic, j) => (
                       <span 
                         key={j}
-                        className="px-3 py-1 bg-blue-500/10 border border-blue-500/20 rounded-full 
-                                 text-sm text-blue-400 backdrop-blur-sm"
+                        className="px-2 py-0.5 bg-blue-500/10 border border-blue-500/20 rounded-full 
+                                 text-xs text-blue-400 backdrop-blur-sm"
                       >
                         {topic}
                       </span>
                     ))}
                   </div>
+                  */}
                 </div>
+                
               </div>
             </div>
           ))}
