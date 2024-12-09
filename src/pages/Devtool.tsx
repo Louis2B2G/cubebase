@@ -421,7 +421,7 @@ const CubeElements = () => {
         </div>
 
          {/* Form Demo Section */}
-         <div className="flex flex-col lg:flex-row gap-12 lg:gap-80 py-10 lg:py-20 mb-24 lg:mb-48">
+         <div className="flex flex-col lg:flex-row gap-12 lg:gap-40 py-10 lg:py-20 mb-24 lg:mb-48 px-4 lg:px-24">
           <div className="flex-1">
             <h2 className="text-4xl font-bold mb-6">
               Create the perfect data entry experience, wherever you need it
