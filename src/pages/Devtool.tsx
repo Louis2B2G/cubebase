@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react';
-import { ChevronRight, FileText, Shield, Zap, Mail, Plus, Upload, Download, Menu, X } from 'lucide-react';
+import { ChevronRight, FileText, Shield, Zap, Mail, Plus, Upload, Download, Menu, X, Check } from 'lucide-react';
 import * as THREE from 'three';
 
 type FormData = {
@@ -18,6 +18,15 @@ type InvestorLogo = {
   alt: string;
 };
 
+type PricingTier = {
+  name: string;
+  price: string;
+  description: string;
+  features: string[];
+  buttonText: string;
+  isPopular?: boolean;
+};
+
 const INVESTOR_LOGOS: InvestorLogo[] = [
     { src: '/investors/k5.png', alt: 'K5 Global' },
     { src: '/investors/vf.png', alt: 'Venture Friends' },
@@ -31,6 +40,55 @@ const INVESTOR_LOGOS: InvestorLogo[] = [
     { src: '/investors/manish.png', alt: 'Manish Kothari' },
     { src: '/investors/ketan.png', alt: 'Ketan Kothari' },
   ];
+
+const PRICING_TIERS: PricingTier[] = [
+  {
+    name: "Developer",
+    price: "Free",
+    description: "Perfect for testing and small projects",
+    features: [
+      "1,000 extractions/month",
+      "Basic document types",
+      "Community support",
+      "API access",
+      "Standard OCR"
+    ],
+    buttonText: "Start Free"
+  },
+  {
+    name: "Business",
+    price: "$299",
+    description: "For growing businesses and teams",
+    features: [
+      "10,000 extractions/month",
+      "All document types",
+      "Priority support",
+      "API access",
+      "Advanced OCR",
+      "MatcherDB access",
+      "Custom integrations"
+    ],
+    buttonText: "Start Trial",
+    isPopular: true
+  },
+  {
+    name: "Enterprise",
+    price: "Custom",
+    description: "For large organizations with custom needs",
+    features: [
+      "Unlimited extractions",
+      "All document types",
+      "24/7 dedicated support",
+      "API access",
+      "Advanced OCR",
+      "MatcherDB access",
+      "Custom integrations",
+      "SLA guarantees",
+      "Custom AI model training"
+    ],
+    buttonText: "Contact Sales"
+  }
+];
 
 const initialFormData: FormData = {
   bookingId: '',
@@ -61,6 +119,8 @@ const CubeElements = () => {
   const formRef = useRef<HTMLDivElement>(null);
   const cursorLightRef = useRef<THREE.PointLight | null>(null);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [showContactModal, setShowContactModal] = useState(false);
+  const [showGetStartedModal, setShowGetStartedModal] = useState(false);
 
   useEffect(() => {
     // Helper function to check if an element is visible
@@ -267,11 +327,107 @@ const CubeElements = () => {
       <div className="flex flex-col items-center gap-8 pt-12">
         <a href="#features" className="text-xl text-gray-400 hover:text-white">Features</a>
         <a href="#company" className="text-xl text-gray-400 hover:text-white">Company</a>
-        <a href="#pricing" className="text-xl text-gray-400 hover:text-white">Pricing</a>
-        <button className="text-xl text-gray-400 hover:text-white">Sign in</button>
-        <button className="w-64 px-6 py-3 bg-white text-black rounded-full hover:bg-gray-200">
+        <button 
+          onClick={() => setShowGetStartedModal(true)} 
+          className="text-xl text-gray-400 hover:text-white"
+        >
+          Pricing
+        </button>
+        <button 
+          onClick={() => setShowGetStartedModal(true)} 
+          className="w-64 px-6 py-3 bg-white text-black rounded-full hover:bg-gray-200"
+        >
           Get Started
         </button>
+      </div>
+    </div>
+  );
+
+  const handleDocumentationClick = () => {
+    window.location.href = 'https://cube.docs.buildwithfern.com/getting-started/introduction';
+  };
+
+  const handleAPIClick = () => {
+    window.location.href = 'https://cube.docs.buildwithfern.com/getting-started/introduction';
+  };
+
+  const GetStartedModal = () => (
+    <div className={`fixed inset-0 bg-black/80 backdrop-blur-sm z-50 ${showGetStartedModal ? 'flex' : 'hidden'} items-center justify-center`}>
+      <div className="bg-gray-900 p-8 rounded-xl max-w-xl w-full mx-4">
+        <div className="flex justify-between items-center mb-8">
+          <h2 className="text-3xl font-bold">Get in touch with us</h2>
+          <button onClick={() => setShowGetStartedModal(false)} className="text-gray-400 hover:text-white">
+            <X className="h-6 w-6" />
+          </button>
+        </div>
+        
+        <form className="space-y-6">
+          <div>
+            <label className="block text-sm mb-2">Company Name</label>
+            <input 
+              type="text" 
+              className="w-full bg-black border border-gray-800 rounded p-3 focus:border-white focus:outline-none"
+              placeholder="Enter your company name"
+            />
+          </div>
+          
+          <div>
+            <label className="block text-sm mb-2">Work Email</label>
+            <input 
+              type="email" 
+              className="w-full bg-black border border-gray-800 rounded p-3 focus:border-white focus:outline-none"
+              placeholder="you@company.com"
+            />
+          </div>
+          
+          <div>
+            <label className="block text-sm mb-2">Password</label>
+            <input 
+              type="password" 
+              className="w-full bg-black border border-gray-800 rounded p-3 focus:border-white focus:outline-none"
+              placeholder="Create a secure password"
+            />
+          </div>
+          
+          <div>
+            <label className="block text-sm mb-2">Expected Monthly Extractions</label>
+            <select className="w-full bg-black border border-gray-800 rounded p-3 focus:border-white focus:outline-none">
+              <option value="">Select volume</option>
+              <option value="1000">Up to 1,000</option>
+              <option value="10000">1,000 - 10,000</option>
+              <option value="50000">10,000 - 50,000</option>
+              <option value="unlimited">50,000+</option>
+            </select>
+          </div>
+
+          <div>
+            <label className="block text-sm mb-2">Use Case</label>
+            <textarea 
+              className="w-full bg-black border border-gray-800 rounded p-3 focus:border-white focus:outline-none h-24"
+              placeholder="Brief description of your use case"
+            />
+          </div>
+
+          <div className="flex items-center gap-2">
+            <input type="checkbox" id="terms" className="rounded bg-black border-gray-800" />
+            <label htmlFor="terms" className="text-sm text-gray-400">
+              I agree to the <a href="#" className="text-white hover:underline">Terms of Service</a> and{' '}
+              <a href="#" className="text-white hover:underline">Privacy Policy</a>
+            </label>
+          </div>
+
+          <button 
+            type="submit" 
+            className="w-full bg-white text-black rounded-full py-3 font-medium hover:bg-gray-200 transition-colors"
+          >
+            Create Account
+          </button>
+
+          <p className="text-center text-sm text-gray-400">
+            Already have an account?{' '}
+            <button className="text-white hover:underline">Sign in</button>
+          </p>
+        </form>
       </div>
     </div>
   );
@@ -287,11 +443,24 @@ const CubeElements = () => {
           <div className="hidden lg:flex flex-1 justify-center gap-8">
             <a href="#features" className="text-gray-400 hover:text-white">Features</a>
             <a href="#company" className="text-gray-400 hover:text-white">Company</a>
-            <a href="#pricing" className="text-gray-400 hover:text-white">Pricing</a>
+            <button 
+              onClick={() => setShowGetStartedModal(true)} 
+              className="text-gray-400 hover:text-white"
+            >
+              Pricing
+            </button>
           </div>
           <div className="hidden lg:flex gap-4">
-            <button className="text-gray-400 hover:text-white">Sign in</button>
-            <button className="px-4 py-2 bg-white text-black rounded-full hover:bg-gray-200 flex items-center gap-2">
+            <button 
+              onClick={() => window.location.href = 'https://dashboard.getcube.ai'} 
+              className="text-gray-400 hover:text-white"
+            >
+              Sign in
+            </button>
+            <button 
+              onClick={() => setShowGetStartedModal(true)} 
+              className="px-4 py-2 bg-white text-black rounded-full hover:bg-gray-200 flex items-center gap-2"
+            >
               Get Started <ChevronRight className="h-4 w-4" />
             </button>
           </div>
@@ -309,8 +478,8 @@ const CubeElements = () => {
       {/* Mobile Menu */}
       <MobileMenu />
 
-      <main className="container mx-auto px-4 pt-20">
-        <div className="flex flex-col lg:flex-row justify-between items-center py-20 gap-12 mt-8 lg:mt-24 mb-48 px-4 lg:px-24">
+      <main className="container mx-auto px-4 pt-0 lg:pt-20">
+        <div className="flex flex-col lg:flex-row justify-between items-center py-20 gap-12 lg:mt-24 lg:mb-48 mb-16 px-4 lg:px-24">
           {/* Mobile cube - only shows on small screens */}
           <div 
             className="block lg:hidden w-full h-[200px]" 
@@ -323,7 +492,7 @@ const CubeElements = () => {
               Announcing our Pre-Seed<ChevronRight className="inline h-4 w-4" />
             </div>
             
-            <h1 className="text-5xl lg:text-6xl font-bold mb-6">
+            <h1 className="text-5xl lg:text-6xl font-bold mb-6 gradient-text">
               Data entry, reimagined with AI
             </h1>
             
@@ -333,10 +502,16 @@ const CubeElements = () => {
             </p>
             
             <div className="flex flex-col lg:flex-row gap-4">
-              <button className="w-full lg:w-auto px-6 py-3 bg-white text-black rounded-full hover:bg-gray-200 flex items-center justify-center gap-2">
+              <button 
+                onClick={() => setShowGetStartedModal(true)} 
+                className="w-full lg:w-auto px-6 py-3 bg-white text-black rounded-full hover:bg-gray-200 flex items-center justify-center gap-2"
+              >
                 Get Started <ChevronRight className="h-4 w-4" />
               </button>
-              <button className="w-full lg:w-auto px-6 py-3 border border-gray-700 rounded-full hover:bg-gray-900 flex items-center justify-center gap-2">
+              <button 
+                onClick={handleDocumentationClick} 
+                className="w-full lg:w-auto px-6 py-3 border border-gray-700 rounded-full hover:bg-gray-900 flex items-center justify-center gap-2"
+              >
                 Documentation <ChevronRight className="h-4 w-4" />
               </button>
             </div>
@@ -350,7 +525,7 @@ const CubeElements = () => {
           ></div>
         </div>
 
-        <div className="mb-48">
+        <div className="lg:mb-48 mb-16">
           <div className="text-center mb-8">
             <p className="text-gray-400 text-lg">Backed by</p>
           </div>
@@ -360,7 +535,7 @@ const CubeElements = () => {
               className="flex animate-scroll"
               style={{
                 '--total-logos': `${INVESTOR_LOGOS.length}`,
-                animationDuration: '40s',
+                animationDuration: '10s',
               } as React.CSSProperties}
             >
               {/* Quadruple the logos for even smoother infinite scroll */}
@@ -381,7 +556,7 @@ const CubeElements = () => {
         </div>
 
         {/* Features Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 py-20  mb-48">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 py-20  lg:mb-48 mb-16">
           <div className="bg-gray-900 border border-gray-800 rounded-lg">
             <div className="p-6">
               <FileText className="h-8 w-8 mb-4" />
@@ -421,7 +596,7 @@ const CubeElements = () => {
         </div>
 
          {/* Form Demo Section */}
-         <div className="flex flex-col lg:flex-row gap-12 lg:gap-40 py-10 lg:py-20 mb-24 lg:mb-48 px-4 lg:px-24">
+         <div className="flex flex-col lg:flex-row gap-12 lg:gap-40 py-10 lg:py-20 mb-32 lg:mb-48 px-4 lg:px-24">
           <div className="flex-1">
             <h2 className="text-4xl font-bold mb-6">
               Create the perfect data entry experience, wherever you need it
@@ -605,7 +780,7 @@ const CubeElements = () => {
         </div>
 
          {/* Form Builder Section */}
-         <div className="py-20 rounded-lg bg-gray-800 text-white  mb-80">
+         <div className="py-20 rounded-lg bg-gray-800 text-white  mb-48">
           <div className="container mx-auto px-4">
             <h2 className="text-4xl font-bold mb-8 text-center">Built by developers, for developers</h2>
             <p className="text-center text-gray-400 mb-12">
@@ -636,21 +811,21 @@ const appearance = { /* appearance */ }; // Theme, variables, titles...
 const rules = {/* rules */ }; // -> Required fields, logical relationships, autocomplete, etc...
 
 const options = {
-  schema: schema, // OpenAPI compatible JSON Schema
-  layout: layout, // Same structure as the schema
-  inference: {
+schema: schema, // OpenAPI compatible JSON Schema
+layout: layout, // Same structure as the schema
+inference: {
     extraction: true, /* Upload your LLM API key in Cube dashboard to start use the AI fill feature */
     streaming: true,
     model: {
-      provider: 'openai',
-      model: 'gpt-4o-mini',
+    provider: 'openai',
+    model: 'gpt-4o-mini',
     },
     temperature: 0.5,
     uncertainties: {
-      is_displayed: true,
-      style: 'left-bar',
+    is_displayed: true,
+    style: 'left-bar',
     },
-  },
+},
 };
 
 const elements = cube.elements({ clientSecret, appearance });
@@ -671,8 +846,32 @@ dataEntryElement.mount('#dataEntry-element');`}
             </div>
           </div>
         </div>
+
+        {/* Bottom Content */}
+        <div className="flex-1 max-w-2xl text-center mx-auto lg:mb-80 mb-48">            
+            <h1 className="text-5xl lg:text-6xl font-bold mb-6 gradient-text">
+              Data entry, reimagined with AI
+            </h1>
+            
+            <div className="flex flex-col lg:flex-row gap-4 justify-center">
+              <button 
+                onClick={() => setShowGetStartedModal(true)} 
+                className="w-full lg:w-auto px-6 py-3 bg-white text-black rounded-full hover:bg-gray-200 flex items-center justify-center gap-2"
+              >
+                Get Started <ChevronRight className="h-4 w-4" />
+              </button>
+              <button 
+                onClick={handleDocumentationClick} 
+                className="w-full lg:w-auto px-6 py-3 border border-gray-700 rounded-full hover:bg-gray-900 flex items-center justify-center gap-2"
+              >
+                Documentation <ChevronRight className="h-4 w-4" />
+              </button>
+            </div>
+          </div>
        
       </main>
+
+      <GetStartedModal />
     </div>
   );
 };

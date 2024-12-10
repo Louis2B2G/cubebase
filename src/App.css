@@ -151,6 +151,19 @@ body {
 }
 
 .animate-scroll {
-  animation: scroll 40s linear infinite;
+  animation: scroll 20s linear infinite;
+}
+
+.gradient-text {
+  background: linear-gradient(to bottom, 
+    rgba(255,255,255,1) 0%,
+    rgba(255,255,255,0.9) 30%,
+    rgba(200,200,200,0.8) 70%,
+    rgba(96,96,96,0.8) 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: 0 0 20px rgba(255,255,255,0.1);
 }
 
