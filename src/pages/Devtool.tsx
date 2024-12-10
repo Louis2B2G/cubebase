@@ -27,6 +27,11 @@ type PricingTier = {
   isPopular?: boolean;
 };
 
+type AnnouncementModalProps = {
+  isOpen: boolean;
+  onClose: () => void;
+};
+
 const INVESTOR_LOGOS: InvestorLogo[] = [
     { src: '/investors/k5.png', alt: 'K5 Global' },
     { src: '/investors/vf.png', alt: 'Venture Friends' },
@@ -41,54 +46,6 @@ const INVESTOR_LOGOS: InvestorLogo[] = [
     { src: '/investors/ketan.png', alt: 'Ketan Kothari' },
   ];
 
-const PRICING_TIERS: PricingTier[] = [
-  {
-    name: "Developer",
-    price: "Free",
-    description: "Perfect for testing and small projects",
-    features: [
-      "1,000 extractions/month",
-      "Basic document types",
-      "Community support",
-      "API access",
-      "Standard OCR"
-    ],
-    buttonText: "Start Free"
-  },
-  {
-    name: "Business",
-    price: "$299",
-    description: "For growing businesses and teams",
-    features: [
-      "10,000 extractions/month",
-      "All document types",
-      "Priority support",
-      "API access",
-      "Advanced OCR",
-      "MatcherDB access",
-      "Custom integrations"
-    ],
-    buttonText: "Start Trial",
-    isPopular: true
-  },
-  {
-    name: "Enterprise",
-    price: "Custom",
-    description: "For large organizations with custom needs",
-    features: [
-      "Unlimited extractions",
-      "All document types",
-      "24/7 dedicated support",
-      "API access",
-      "Advanced OCR",
-      "MatcherDB access",
-      "Custom integrations",
-      "SLA guarantees",
-      "Custom AI model training"
-    ],
-    buttonText: "Contact Sales"
-  }
-];
 
 const initialFormData: FormData = {
   bookingId: '',
@@ -121,6 +78,7 @@ const CubeElements = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [showContactModal, setShowContactModal] = useState(false);
   const [showGetStartedModal, setShowGetStartedModal] = useState(false);
+  const [showAnnouncementModal, setShowAnnouncementModal] = useState(false);
 
   useEffect(() => {
     // Helper function to check if an element is visible
@@ -432,6 +390,73 @@ const CubeElements = () => {
     </div>
   );
 
+  const AnnouncementModal = ({ isOpen, onClose }: AnnouncementModalProps) => (
+    <div className={`fixed inset-0 bg-black/80 backdrop-blur-sm z-50 ${isOpen ? 'flex' : 'hidden'} items-center justify-center`}>
+      <div className="bg-gray-900 p-8 rounded-xl max-w-3xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+        <div className="flex justify-between items-center mb-4">
+          <h2 className="text-3xl font-bold">Cube Raises $3.5M Pre-Seed Round</h2>
+          <button onClick={onClose} className="text-gray-400 hover:text-white">
+            <X className="h-6 w-6" />
+          </button>
+        </div>
+
+        
+        <div className="prose prose-invert max-w-none">
+          <p className="text-lg text-gray-300 mb-6">
+            We're excited to announce that Cube has raised $3.5M in pre-seed funding to revolutionize data entry with AI. 
+            The round was led by K5 Global, with participation from Venture Friends, Kima Ventures, and notable angel investors 
+            including Olivier Pomel (Datadog), Florian Douetteau (Dataiku), and other industry leaders.
+          </p>
+
+          {/* Add team image */}
+        <img 
+          src="/images/team.png" 
+          alt="Cube Team" 
+          className="w-1/2 rounded-lg mb-8 object-cover"
+        />
+
+          <h3 className="text-xl font-bold mb-4">The Vision</h3>
+          <p className="text-gray-300 mb-6">
+            Cube is building the future of data entry by combining powerful AI with intuitive UI components. Our platform 
+            enables developers to create fluid, fast data entry experiences that reduce input time by up to 80%. We're 
+            reimagining how businesses handle document processing, email parsing, and form automation through our 
+            developer-first approach.
+          </p>
+
+          <h3 className="text-xl font-bold mb-4">The Team</h3>
+          <p className="text-gray-300 mb-6">
+            Founded by Louis de Benoist, Victor Plaisance, and Sacha Ichbiah, Cube brings together expertise in AI, 
+            product development, and enterprise software. The founding team's background spans prestigious institutions 
+            including École Polytechnique, Cambridge, HEC, and ESCP. Based in San Francisco, the team has already grown 
+            to more than 10 members and is actively expanding.
+          </p>
+
+          <h3 className="text-xl font-bold mb-4">What's Next</h3>
+          <p className="text-gray-300 mb-6">
+            This funding will accelerate our product development, expand our team, and strengthen our market presence. 
+            We're actively hiring across engineering, sales, and product roles as we build the next generation of 
+            data entry solutions.
+          </p>
+
+          <div className="flex flex-wrap gap-4 mt-8">
+            <button 
+              onClick={() => window.location.href = 'https://cube.docs.buildwithfern.com'} 
+              className="px-6 py-3 bg-white text-black rounded-full hover:bg-gray-200"
+            >
+              View Documentation
+            </button>
+            <button 
+              onClick={() => window.location.href = 'https://getcube.ai/careers'} 
+              className="px-6 py-3 border border-gray-700 rounded-full hover:bg-gray-900"
+            >
+              View Open Positions
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
   return (
     <div className="min-h-screen bg-black text-white relative">
       {/* Top navigation bar */}
@@ -488,7 +513,10 @@ const CubeElements = () => {
           
           {/* Content */}
           <div className="flex-1 max-w-2xl text-center lg:text-left">
-            <div className="text-sm bg-gray-800 px-4 py-1 rounded-full mb-6 inline-flex items-center">
+            <div 
+              className="text-sm bg-gray-800 px-4 py-1 rounded-full mb-6 inline-flex items-center cursor-pointer hover:bg-gray-700"
+              onClick={() => setShowAnnouncementModal(true)}
+            >
               Announcing our Pre-Seed<ChevronRight className="inline h-4 w-4" />
             </div>
             
@@ -872,6 +900,10 @@ dataEntryElement.mount('#dataEntry-element');`}
       </main>
 
       <GetStartedModal />
+      <AnnouncementModal 
+        isOpen={showAnnouncementModal} 
+        onClose={() => setShowAnnouncementModal(false)} 
+      />
     </div>
   );
 };
