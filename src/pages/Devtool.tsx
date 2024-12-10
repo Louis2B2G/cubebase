@@ -268,23 +268,39 @@ const CubeElements = () => {
 
   const supportedFormats = ['PDF', 'JPG', 'PNG', 'XLSX', 'DOC', 'EML', 'MSG', 'CSV', 'RTF'];
   
+  // Add this function to handle smooth scrolling
+  const scrollToFeatures = () => {
+    const featuresSection = document.querySelector('#features');
+    if (featuresSection) {
+      featuresSection.scrollIntoView({ behavior: 'smooth' });
+    }
+    // Close mobile menu if open
+    setIsMobileMenuOpen(false);
+  };
+
+  // Update MobileMenu component
   const MobileMenu = () => (
-    <div 
-      className={`fixed inset-0 bg-black z-50 transform transition-transform duration-300 ease-in-out ${
-        isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
-      }`}
-    >
+    <div className={`fixed inset-0 bg-black z-50 transform transition-transform duration-300 ease-in-out ${
+      isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
+    }`}>
       <div className="flex justify-end p-4">
-        <button 
-          onClick={() => setIsMobileMenuOpen(false)} 
-          className="p-2"
-        >
+        <button onClick={() => setIsMobileMenuOpen(false)} className="p-2">
           <X className="h-6 w-6" />
         </button>
       </div>
       <div className="flex flex-col items-center gap-8 pt-12">
-        <a href="#features" className="text-xl text-gray-400 hover:text-white">Features</a>
-        <a href="#company" className="text-xl text-gray-400 hover:text-white">Company</a>
+        <button onClick={scrollToFeatures} className="text-xl text-gray-400 hover:text-white">
+          Features
+        </button>
+        <button 
+          onClick={() => {
+            setShowAnnouncementModal(true);
+            setIsMobileMenuOpen(false);
+          }} 
+          className="text-xl text-gray-400 hover:text-white"
+        >
+          Company
+        </button>
         <button 
           onClick={() => setShowGetStartedModal(true)} 
           className="text-xl text-gray-400 hover:text-white"
@@ -459,15 +475,21 @@ const CubeElements = () => {
 
   return (
     <div className="min-h-screen bg-black text-white relative">
-      {/* Top navigation bar */}
+      {/* Update desktop navigation */}
       <div className="fixed top-0 left-0 right-0 backdrop-blur-md bg-black/50 z-10 border-b border-transparent transition-all duration-300">
         <div className="container mx-auto flex justify-between items-center p-4">
           <img src="/logos/cube_white.png" alt="Cube Logo" className="h-4 ml-4" />
           
-          {/* Desktop menu */}
           <div className="hidden lg:flex flex-1 justify-center gap-8">
-            <a href="#features" className="text-gray-400 hover:text-white">Features</a>
-            <a href="#company" className="text-gray-400 hover:text-white">Company</a>
+            <button onClick={scrollToFeatures} className="text-gray-400 hover:text-white">
+              Features
+            </button>
+            <button 
+              onClick={() => setShowAnnouncementModal(true)} 
+              className="text-gray-400 hover:text-white"
+            >
+              Company
+            </button>
             <button 
               onClick={() => setShowGetStartedModal(true)} 
               className="text-gray-400 hover:text-white"
@@ -584,7 +606,7 @@ const CubeElements = () => {
         </div>
 
         {/* Features Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 py-20  lg:mb-48 mb-16">
+        <div id="features" className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 py-20 lg:mb-48 mb-16">
           <div className="bg-gray-900 border border-gray-800 rounded-lg">
             <div className="p-6">
               <FileText className="h-8 w-8 mb-4" />
