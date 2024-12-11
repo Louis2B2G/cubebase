@@ -346,20 +346,11 @@ const CubeElements = () => {
           </div>
           
           <div>
-            <label className="block text-sm mb-2">Work Email</label>
+            <label className="block text-sm mb-2">Email</label>
             <input 
               type="email" 
               className="w-full bg-black border border-gray-800 rounded p-3 focus:border-white focus:outline-none"
               placeholder="you@company.com"
-            />
-          </div>
-          
-          <div>
-            <label className="block text-sm mb-2">Password</label>
-            <input 
-              type="password" 
-              className="w-full bg-black border border-gray-800 rounded p-3 focus:border-white focus:outline-none"
-              placeholder="Create a secure password"
             />
           </div>
           
