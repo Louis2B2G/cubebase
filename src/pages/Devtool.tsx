@@ -663,7 +663,6 @@ const CubeElements = () => {
                     <div className="font-medium">Document Processing</div>
                     <div className="text-sm text-gray-400">Extract data from any file format</div>
                   </div>
-                  <ChevronRight className="h-5 w-5 ml-auto" />
                 </div>
               </div>
               <div className="p-4 bg-gray-900 rounded-lg border border-gray-800 hover:border-gray-700 cursor-pointer">
@@ -673,7 +672,6 @@ const CubeElements = () => {
                     <div className="font-medium">Email Body Processing</div>
                     <div className="text-sm text-gray-400">Extract data from any email</div>
                   </div>
-                  <ChevronRight className="h-5 w-5 ml-auto" />
                 </div>
               </div>
               <div className="p-4 bg-gray-900 rounded-lg border border-gray-800 hover:border-gray-700 cursor-pointer">
@@ -695,7 +693,6 @@ const CubeElements = () => {
                         </div>
                     </div>
                   </div>
-                  <ChevronRight className="h-5 w-5 ml-auto" />
                 </div>
               </div>
             </div>

@@ -15,7 +15,7 @@ function App() {
           </div>
 
           {/* Grid container - stack on mobile, 4 columns on desktop */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 md:gap-8 mb-10 lg:mb-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 md:gap-8 mb-10 lg:mb-8">
             {/* Company */}
             <div>
               <h3 className="text-purple-400 font-semibold uppercase tracking-wider mb-4 text-center md:text-left">
@@ -50,24 +50,6 @@ function App() {
                 <li><a href="/terms" className="text-gray-400 hover:text-purple-400 transition-colors">Terms of Service</a></li>
                 <li><a href="/security" className="text-gray-400 hover:text-purple-400 transition-colors">Security</a></li>
               </ul>
-            </div>
-
-            {/* Social */}
-            <div>
-              <h3 className="text-purple-400 font-semibold uppercase tracking-wider mb-4 text-center md:text-left">
-                Connect
-              </h3>
-              <div className="flex justify-center md:justify-start space-x-6">
-                <a href="https://twitter.com" className="text-gray-400 hover:text-purple-400 transition-colors">
-                  <i className="fab fa-twitter text-2xl"></i>
-                </a>
-                <a href="https://github.com" className="text-gray-400 hover:text-purple-400 transition-colors">
-                  <i className="fab fa-github text-2xl"></i>
-                </a>
-                <a href="https://linkedin.com" className="text-gray-400 hover:text-purple-400 transition-colors">
-                  <i className="fab fa-linkedin text-2xl"></i>
-                </a>
-              </div>
             </div>
           </div>
 
