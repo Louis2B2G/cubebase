@@ -1,6 +1,10 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { ChevronRight, FileText, Shield, Zap, Mail, Plus, Upload, Download, Menu, X, Check } from 'lucide-react';
 import * as THREE from 'three';
+import { createRoot } from 'react-dom/client';
+import DashboardMetrics from '../components/Metrics';
+import Form from '../components/Form';
+import Cube from '../components/Cube';
 
 type FormData = {
   bookingId: string;
@@ -464,6 +468,41 @@ const CubeElements = () => {
     </div>
   );
 
+  // Add this custom hook for counting animation
+  const useCountAnimation = (end: number, duration: number = 1000, containerId: string) => {
+    const [count, setCount] = useState(0);
+    const countRef = useRef(false);
+
+    useEffect(() => {
+      if (countRef.current) return; // Only run once
+      
+      const observer = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting && !countRef.current) {
+          countRef.current = true; // Mark as animated
+          observer.disconnect();
+          
+          const startTime = Date.now();
+          const timer = setInterval(() => {
+            const timePassed = Date.now() - startTime;
+            if (timePassed >= duration) {
+              setCount(end);
+              clearInterval(timer);
+            } else {
+              setCount(Math.floor((timePassed / duration) * end));
+            }
+          }, 16);
+        }
+      });
+
+      const element = document.getElementById(containerId);
+      if (element) observer.observe(element);
+      
+      return () => observer.disconnect();
+    }, [end, duration, containerId]);
+
+    return count;
+  };
+
   return (
     <div className="min-h-screen bg-black text-white relative">
       {/* Update desktop navigation */}
@@ -519,10 +558,9 @@ const CubeElements = () => {
       <main className="container mx-auto px-4 pt-0 lg:pt-20">
         <div className="flex flex-col lg:flex-row justify-between items-center py-20 gap-12 lg:mt-24 lg:mb-48 mb-16 px-4 lg:px-24">
           {/* Mobile cube - only shows on small screens */}
-          <div 
-            className="block lg:hidden w-full h-[200px]" 
-            ref={mobileMountRef}
-          ></div>
+          <div className="block lg:hidden w-full h-[300px] flex justify-center items-center">
+            <Cube width={300} height={300} />
+          </div>
           
           {/* Content */}
           <div className="flex-1 max-w-2xl text-center lg:text-left">
@@ -559,11 +597,9 @@ const CubeElements = () => {
           </div>
 
           {/* Desktop cube - only shows on large screens */}
-          <div 
-            className="hidden lg:block flex-1" 
-            ref={desktopMountRef} 
-            style={{ width: '400px', height: '400px' }}
-          ></div>
+          <div className="hidden lg:block flex-1 pl-20">
+            <Cube width={400} height={400} />
+          </div>
         </div>
 
         <div className="lg:mb-48 mb-16">
@@ -689,131 +725,7 @@ const CubeElements = () => {
             </div>
           </div>
           <div className="flex-1">
-            <div ref={formRef} className="bg-gray-900 p-6 rounded-lg border border-gray-800">
-              <div className="flex justify-between items-center mb-6">
-                <h3 className="font-medium">New Shipment</h3>
-                <button className="text-sm text-gray-400 hover:text-white">
-                  <Plus className="h-4 w-4" />
-                </button>
-              </div>
-              <div className="space-y-4">
-                <div className="relative">
-                  <label className="block text-sm mb-1">Booking ID</label>
-                  <div className="relative flex items-center">
-                    <div className="absolute left-0 top-0 bottom-0 w-1 bg-green-400"></div>
-                    <input 
-                      type="text" 
-                      value={formData.bookingId}
-                      readOnly
-                      className="w-full bg-black border border-gray-800 rounded p-2 text-sm pl-3"
-                    />
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="relative">
-                    <label className="block text-sm mb-1">Total Price</label>
-                    <div className="relative flex items-center">
-                      <div className="absolute left-0 top-0 bottom-0 w-1 bg-green-400"></div>
-                      <input 
-                        type="text" 
-                        value={formData.totalPrice}
-                        readOnly
-                        className="w-full bg-black border border-gray-800 rounded p-2 text-sm pl-3"
-                      />
-                    </div>
-                  </div>
-                  <div className="relative">
-                    <label className="block text-sm mb-1">Currency</label>
-                    <div className="relative flex items-center">
-                      <div className="absolute left-0 top-0 bottom-0 w-1 bg-green-400"></div>
-                      <input 
-                        type="text" 
-                        value={formData.currency}
-                        readOnly
-                        className="w-full bg-black border border-gray-800 rounded p-2 text-sm"
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                <div className="mt-6">
-                  <h4 className="text-lg mb-4">Client</h4>
-                  
-                  <div className="space-y-4">
-                    <div className="relative">
-                      <label className="block text-sm mb-1">Company Name</label>
-                      <div className="relative flex items-center">
-                        <div className="absolute left-0 top-0 bottom-0 w-1 bg-green-400"></div>
-                        <input 
-                          type="text" 
-                          value={formData.companyName}
-                          readOnly
-                          className="w-full bg-black border border-gray-800 rounded p-2 text-sm"
-                        />
-                      </div>
-                    </div>
-
-                    <div className="relative">
-                      <label className="block text-sm mb-1">Address Line 1</label>
-                      <div className="relative flex items-center">
-                        <div className="absolute left-0 top-0 bottom-0 w-1 bg-green-400"></div>
-                        <input 
-                          type="text" 
-                          value={formData.addressLine1}
-                          readOnly
-                          className="w-full bg-black border border-gray-800 rounded p-2 text-sm"
-                        />
-                      </div>
-                    </div>
-
-                    <div className="relative">
-                      <label className="block text-sm mb-1">Address Line 2</label>
-                      <div className="relative flex items-center">
-                        <div className="absolute left-0 top-0 bottom-0 w-1 bg-green-400"></div>
-                        <input 
-                          type="text" 
-                          value={formData.addressLine2}
-                          readOnly
-                          className="w-full bg-black border border-gray-800 rounded p-2 text-sm"
-                        />
-                      </div>
-                    </div>
-
-                    <div className="grid grid-cols-2 gap-4">
-                      <div className="relative">
-                        <label className="block text-sm mb-1">Postal Code *</label>
-                        <div className="relative flex items-center">
-                          <div className="absolute left-0 top-0 bottom-0 w-1 bg-green-400"></div>
-                          <input 
-                            type="text" 
-                            value={formData.postalCode}
-                            readOnly
-                            className="w-full bg-black border border-gray-800 rounded p-2 text-sm"
-                          />
-                        </div>
-                      </div>
-                      <div className="relative">
-                        <label className="block text-sm mb-1">City *</label>
-                        <div className="relative flex items-center">
-                          <div className="absolute left-0 top-0 bottom-0 w-1 bg-green-400"></div>
-                          <input 
-                            type="text" 
-                            value={formData.city}
-                            readOnly
-                            className="w-full bg-black border border-gray-800 rounded p-2 text-sm"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <button className="w-full bg-white text-black rounded p-2 hover:bg-gray-200 mt-6">
-                  Send to ERP
-                </button>
-              </div>
-            </div>
+            <Form />
           </div>
         </div>
 
@@ -843,25 +755,25 @@ const CubeElements = () => {
                 </p>
                 <div className="bg-black rounded p-4">
                   <pre className="text-sm text-purple-400 overflow-x-auto">
-                    {`const cube = Cube('pk_test_51OjO2sDwO2fI4pI6rPXDYrM8aiCy3mDVx8FKjJArk1PptUBL7vVowCmVYj40822meVsj9eTbg7isP8W1lEFIHQxU00nAwOM5AA');
+                    {`const cube = Cube('YOUR_KEY');
 
-const appearance = { /* appearance */ }; // Theme, variables, titles...
-const rules = {/* rules */ }; // -> Required fields, logical relationships, autocomplete, etc...
+const appearance = { /* appearance */ };
+const rules = {/* rules */ };
 
 const options = {
-schema: schema, // OpenAPI compatible JSON Schema
-layout: layout, // Same structure as the schema
+schema: schema, 
+layout: layout,
 inference: {
-    extraction: true, /* Upload your LLM API key in Cube dashboard to start use the AI fill feature */
+    extraction: true,
     streaming: true,
     model: {
-    provider: 'openai',
-    model: 'gpt-4o-mini',
+        provider: 'openai',
+        model: 'gpt-4o-mini',
     },
     temperature: 0.5,
     uncertainties: {
-    is_displayed: true,
-    style: 'left-bar',
+        is_displayed: true,
+        style: 'left-bar',
     },
 },
 };
@@ -879,7 +791,7 @@ dataEntryElement.mount('#dataEntry-element');`}
                 <p className="text-gray-400 mb-4">
                   Track data entry performance, run A/B tests on prompts to increase accuracy, and analyze user behavior through our Dashboard.
                 </p>
-                <img src="/images/analytics.png" alt="Generate Schema & Layout" className="rounded-lg shadow-lg" />
+                <DashboardMetrics />
               </div>
             </div>
           </div>
