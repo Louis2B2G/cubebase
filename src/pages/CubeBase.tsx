@@ -551,7 +551,6 @@ const Landing = () => {
   );
 
   const GetStartedModal = () => {
-    console.log('Modal rendering, showGetStartedModal:', showGetStartedModal);
     return (
       <div 
         className={`fixed inset-0 bg-black/80 backdrop-blur-sm z-[100] transition-all duration-300 ${
@@ -559,12 +558,20 @@ const Landing = () => {
         }`}
       >
         <div className="flex items-center justify-center min-h-screen p-4">
-          <div className="bg-[#0B0F17] p-8 rounded-2xl max-w-xl w-full mx-4 relative">
+          <div className={`${
+            theme === 'dark' 
+              ? 'bg-[#0B0F17]' 
+              : 'bg-white shadow-2xl'
+          } p-8 rounded-2xl max-w-xl w-full mx-4 relative`}>
             <div className="flex justify-between items-center mb-8">
-              <h2 className="text-4xl font-bold">Get in touch with us</h2>
+              <h2 className={`text-4xl font-bold ${
+                theme === 'dark' ? 'text-white' : 'text-gray-900'
+              }`}>Get in touch with us</h2>
               <button 
                 onClick={() => setShowGetStartedModal(false)} 
-                className="text-gray-400 hover:text-white"
+                className={`${
+                  theme === 'dark' ? 'text-gray-400 hover:text-white' : 'text-gray-500 hover:text-gray-900'
+                }`}
               >
                 <X className="h-6 w-6" />
               </button>
@@ -572,26 +579,44 @@ const Landing = () => {
             
             <form className="space-y-6">
               <div>
-                <label className="block text-lg mb-2">Company Name</label>
+                <label className={`block text-lg mb-2 ${
+                  theme === 'dark' ? 'text-white' : 'text-gray-700'
+                }`}>Company Name</label>
                 <input 
                   type="text" 
-                  className="w-full bg-black border border-gray-800 rounded-lg p-3 focus:border-white focus:outline-none text-gray-300"
+                  className={`w-full rounded-lg p-3 focus:outline-none ${
+                    theme === 'dark'
+                      ? 'bg-black border border-gray-800 focus:border-white text-gray-300'
+                      : 'bg-gray-50 border border-gray-200 focus:border-purple-500 text-gray-900'
+                  }`}
                   placeholder="Enter your company name"
                 />
               </div>
               
               <div>
-                <label className="block text-lg mb-2">Email</label>
+                <label className={`block text-lg mb-2 ${
+                  theme === 'dark' ? 'text-white' : 'text-gray-700'
+                }`}>Email</label>
                 <input 
                   type="email" 
-                  className="w-full bg-black border border-gray-800 rounded-lg p-3 focus:border-white focus:outline-none text-gray-300"
+                  className={`w-full rounded-lg p-3 focus:outline-none ${
+                    theme === 'dark'
+                      ? 'bg-black border border-gray-800 focus:border-white text-gray-300'
+                      : 'bg-gray-50 border border-gray-200 focus:border-purple-500 text-gray-900'
+                  }`}
                   placeholder="you@company.com"
                 />
               </div>
               
               <div>
-                <label className="block text-lg mb-2">Expected Monthly Extractions</label>
-                <select className="w-full bg-black border border-gray-800 rounded-lg p-3 focus:border-white focus:outline-none text-gray-300 appearance-none">
+                <label className={`block text-lg mb-2 ${
+                  theme === 'dark' ? 'text-white' : 'text-gray-700'
+                }`}>Expected Monthly Extractions</label>
+                <select className={`w-full rounded-lg p-3 focus:outline-none appearance-none ${
+                  theme === 'dark'
+                    ? 'bg-black border border-gray-800 focus:border-white text-gray-300'
+                    : 'bg-gray-50 border border-gray-200 focus:border-purple-500 text-gray-900'
+                }`}>
                   <option value="">Select volume</option>
                   <option value="1000">Up to 1,000</option>
                   <option value="10000">1,000 - 10,000</option>
@@ -601,9 +626,15 @@ const Landing = () => {
               </div>
 
               <div>
-                <label className="block text-lg mb-2">Use Case</label>
+                <label className={`block text-lg mb-2 ${
+                  theme === 'dark' ? 'text-white' : 'text-gray-700'
+                }`}>Use Case</label>
                 <textarea 
-                  className="w-full bg-black border border-gray-800 rounded-lg p-3 focus:border-white focus:outline-none text-gray-300 h-24"
+                  className={`w-full rounded-lg p-3 focus:outline-none h-24 ${
+                    theme === 'dark'
+                      ? 'bg-black border border-gray-800 focus:border-white text-gray-300'
+                      : 'bg-gray-50 border border-gray-200 focus:border-purple-500 text-gray-900'
+                  }`}
                   placeholder="Brief description of your use case"
                 />
               </div>
@@ -612,26 +643,42 @@ const Landing = () => {
                 <input 
                   type="checkbox" 
                   id="terms" 
-                  className="rounded bg-black border-gray-800"
+                  className={`rounded ${
+                    theme === 'dark'
+                      ? 'bg-black border-gray-800'
+                      : 'bg-gray-50 border-gray-200'
+                  }`}
                 />
-                <label htmlFor="terms" className="text-gray-400">
+                <label htmlFor="terms" className={
+                  theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
+                }>
                   I agree to the{' '}
-                  <a href="#" className="text-white hover:underline">Terms of Service</a>
+                  <a href="#" className={`hover:underline ${
+                    theme === 'dark' ? 'text-white' : 'text-gray-900'
+                  }`}>Terms of Service</a>
                   {' '}and{' '}
-                  <a href="#" className="text-white hover:underline">Privacy Policy</a>
+                  <a href="#" className={`hover:underline ${
+                    theme === 'dark' ? 'text-white' : 'text-gray-900'
+                  }`}>Privacy Policy</a>
                 </label>
               </div>
 
               <button 
                 type="submit" 
-                className="w-full bg-white text-black rounded-full py-4 font-medium hover:bg-gray-200 transition-colors text-lg"
+                className={`w-full rounded-full py-4 font-medium transition-colors text-lg ${
+                  theme === 'dark'
+                    ? 'bg-white text-black hover:bg-gray-200'
+                    : 'bg-purple-600 text-white hover:bg-purple-700'
+                }`}
               >
                 Create Account
               </button>
 
-              <p className="text-center text-gray-400">
+              <p className="text-center">
                 Already have an account?{' '}
-                <button className="text-white hover:underline">Sign in</button>
+                <button className={`hover:underline ${
+                  theme === 'dark' ? 'text-white' : 'text-purple-600'
+                }`}>Sign in</button>
               </p>
             </form>
           </div>
