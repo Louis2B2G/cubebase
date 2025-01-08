@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState, useMemo } from 'react';
-import { ChevronRight, FileText, Shield, Zap, Mail, Plus, Upload, Download, Menu, X, Check, Puzzle, Scale, Eye, Ghost, Code, Terminal, ArrowLeft, ArrowRight } from 'lucide-react';
+import { ChevronRight, FileText, Shield, Zap, Mail, Plus, Upload, Download, Menu, X, Check, Puzzle, Scale, Eye, Ghost, Code, Terminal, ArrowLeft, ArrowRight, Sun, Moon } from 'lucide-react';
 import * as THREE from 'three';
 import { createRoot } from 'react-dom/client';
 import DashboardMetrics from '../components/Metrics';
@@ -36,6 +36,8 @@ type ScrollSection = {
   text: string[];
   isSmall: boolean;
 };
+
+type Theme = 'dark' | 'light';
 
 const INVESTOR_LOGOS: InvestorLogo[] = [
   { src: '/investors/k5.png', alt: 'K5 Global' },
@@ -174,7 +176,7 @@ const MouseTracker = () => {
   );
 };
 
-const ScrollSections = () => {
+const ScrollSections = ({ theme }: { theme: Theme }) => {
   const { scrollYProgress } = useScroll();
   
   const heroScale = useSpring(useTransform(scrollYProgress, [0, 0.2], [1, 0.7]), {
@@ -221,7 +223,7 @@ const ScrollSections = () => {
                 {(index === 1 || index === 2) ? (
                   <div className="flex flex-col items-center">
                     <div className="mb-20">
-                      <Cube width={300} height={300} />
+                      <Cube width={300} height={300} theme={theme} />
                     </div>
                     <h2 className={`${section.isSmall ? 'text-2xl lg:text-4xl' : 'text-5xl lg:text-8xl'} font-bold text-center`}>
                       {section.text.map((line: string, i: number) => (
@@ -296,7 +298,8 @@ const Landing = () => {
   const cursorLightRef = useRef<THREE.PointLight | null>(null);
   const { scrollYProgress } = useScroll();
   const [showScrolling, setShowScrolling] = useState(true);
-  
+  const [theme, setTheme] = useState<Theme>('dark');
+
   const heroScale = useSpring(useTransform(scrollYProgress, [0, 0.2], [1, 0.7]), {
     stiffness: 200,
     damping: 20
@@ -713,15 +716,27 @@ const Landing = () => {
   const UseCasesSection = () => {
     return (
       <div className="container mx-auto px-4 py-24">
-        <h2 className="text-4xl font-bold mb-16 text-center">Use Cases</h2>
+        <h2 className={`text-4xl font-bold mb-16 text-center ${
+          theme === 'dark' ? 'text-white' : 'text-gray-900'
+        }`}>
+          Use Cases
+        </h2>
         <div className="space-y-12">
-          <div className="bg-black p-8 rounded-xl border border-white/10 hover:border-white/20 transition-colors">
+          <div className={`${
+            theme === 'dark'
+              ? 'bg-black border-white/10'
+              : 'bg-white border-gray-200 shadow-lg'
+          } p-8 rounded-xl border hover:border-white/20 transition-colors`}>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
               <div className="space-y-6">
-                <h3 className="text-3xl font-bold mb-4">
+                <h3 className={`text-3xl font-bold mb-4 ${
+                  theme === 'dark' ? 'text-white' : 'text-gray-900'
+                }`}>
                   Give your AI Agents a Browser
                 </h3>
-                <p className="text-gray-400 text-lg">
+                <p className={
+                  theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
+                }>
                   Real-time human-in-the-loop controls using our Live View feature for enhanced oversight and flexibility. Integrations with all major AI SDKs that work right out of the box.
                 </p>
               </div>
@@ -749,19 +764,31 @@ const Landing = () => {
                   <source src="videobrowsing.mp4" type="video/mp4" />
                   Your browser does not support the video tag.
                 </video>
-                <div className="absolute inset-0 bg-gradient-to-r from-purple-500/20 to-blue-500/20" />
+                <div className={`absolute inset-0 ${
+                  theme === 'dark'
+                    ? 'bg-gradient-to-r from-purple-500/20 to-blue-500/20'
+                    : 'bg-gradient-to-r from-purple-500/10 to-blue-500/10'
+                }`} />
               </div>
             </div>
           </div>
 
           {/* Second Card - Image */}
-          <div className="bg-black p-8 rounded-xl border border-white/10 hover:border-white/20 transition-colors">
+          <div className={`${
+            theme === 'dark'
+              ? 'bg-black border-white/10'
+              : 'bg-white border-gray-200 shadow-lg'
+          } p-8 rounded-xl border hover:border-white/20 transition-colors`}>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
               <div className="space-y-6">
-                <h3 className="text-3xl font-bold mb-4">
+                <h3 className={`text-3xl font-bold mb-4 ${
+                  theme === 'dark' ? 'text-white' : 'text-gray-900'
+                }`}>
                   Automate Web Workflows
                 </h3>
-                <p className="text-gray-400 text-lg">
+                <p className={
+                  theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
+                }>
                   Convert manual web tasks into automated code. Navigate complex web flows programmatically, fill forms with precision, and handle file operations automatically.
                 </p>
               </div>
@@ -771,19 +798,31 @@ const Landing = () => {
                   alt="Automate Web Workflows"
                   className="absolute inset-0 w-full h-full object-cover"
                 />
-                <div className="absolute inset-0 bg-gradient-to-r from-purple-500/20 to-blue-500/20" />
+                <div className={`absolute inset-0 ${
+                  theme === 'dark'
+                    ? 'bg-gradient-to-r from-purple-500/20 to-blue-500/20'
+                    : 'bg-gradient-to-r from-purple-500/10 to-blue-500/10'
+                }`} />
               </div>
             </div>
           </div>
 
           {/* Third Card - Image */}
-          <div className="bg-black p-8 rounded-xl border border-white/10 hover:border-white/20 transition-colors">
+          <div className={`${
+            theme === 'dark'
+              ? 'bg-black border-white/10'
+              : 'bg-white border-gray-200 shadow-lg'
+          } p-8 rounded-xl border hover:border-white/20 transition-colors`}>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
               <div className="space-y-6">
-                <h3 className="text-3xl font-bold mb-4">
+                <h3 className={`text-3xl font-bold mb-4 ${
+                  theme === 'dark' ? 'text-white' : 'text-gray-900'
+                }`}>
                   Reliable, Adaptive Web Scraping
                 </h3>
-                <p className="text-gray-400 text-lg">
+                <p className={
+                  theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
+                }>
                   Extract data reliably from any website, including dynamic pages requiring user interaction. Automate data collection at scale with built-in error handling.
                 </p>
               </div>
@@ -793,7 +832,11 @@ const Landing = () => {
                   alt="Web Scraping"
                   className="absolute p-5 inset-0 h-full w-full"
                 />
-                <div className="absolute inset-0 bg-gradient-to-r from-purple-500/20 to-blue-500/20" />
+                <div className={`absolute inset-0 ${
+                  theme === 'dark'
+                    ? 'bg-gradient-to-r from-purple-500/20 to-blue-500/20'
+                    : 'bg-gradient-to-r from-purple-500/10 to-blue-500/10'
+                }`} />
               </div>
             </div>
           </div>
@@ -819,41 +862,78 @@ const Landing = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Add theme toggle handler
+  const toggleTheme = () => {
+    setTheme(prevTheme => prevTheme === 'dark' ? 'light' : 'dark');
+  };
+
   return (
-    <>
-      {/* Nav bar moved outside of everything else */}
+    <motion.div 
+      className={`min-h-screen ${
+        theme === 'dark' 
+          ? 'bg-black text-white' 
+          : 'bg-white text-gray-900'
+      } relative transition-colors duration-300`}
+    >
+      {/* Navigation */}
       <nav className="fixed top-0 left-0 right-0 w-full z-[9999] px-4 py-4">
-        <div className="max-w-6xl mx-auto">
-          <div className="backdrop-blur-xl bg-white/[0.02] rounded-full px-6 py-3 border border-white/10 shadow-lg">
+        <div className="max-w-6xl mx-auto relative">
+          <div className={`backdrop-blur-xl ${
+            theme === 'dark' 
+              ? 'bg-black/40 border-white/10' 
+              : 'bg-white/60 border-gray-200'
+          } rounded-full px-6 py-3 border shadow-lg`}>
             <div className="flex justify-between items-center">
               {/* Logo */}
               <div className="flex-shrink-0">
-                <img src="logos/cube_white.png" alt="Cube" className="h-4 w-auto" />
+                <img 
+                  src="logos/cube_white.png"
+                  alt="Cube" 
+                  className={`h-4 w-auto ${
+                    theme === 'light' ? 'invert' : ''
+                  }`}
+                />
               </div>
 
               {/* Desktop Navigation */}
               <div className="hidden md:flex items-center space-x-8">
                 <button 
                   onClick={handleDocumentationClick}
-                  className="text-gray-200 hover:text-white transition-colors"
+                  className={`${
+                    theme === 'dark' 
+                      ? 'text-gray-300 hover:text-white' 
+                      : 'text-gray-600 hover:text-gray-900'
+                  } transition-colors`}
                 >
                   Documentation
                 </button>
                 <button 
                   onClick={() => scrollToSection('features')}
-                  className="text-gray-200 hover:text-white transition-colors"
+                  className={`${
+                    theme === 'dark' 
+                      ? 'text-gray-300 hover:text-white' 
+                      : 'text-gray-600 hover:text-gray-900'
+                  } transition-colors`}
                 >
                   Features
                 </button>
                 <button 
                   onClick={() => scrollToSection('use-cases')}
-                  className="text-gray-200 hover:text-white transition-colors"
+                  className={`${
+                    theme === 'dark' 
+                      ? 'text-gray-300 hover:text-white' 
+                      : 'text-gray-600 hover:text-gray-900'
+                  } transition-colors`}
                 >
                   Use Cases
                 </button>
                 <button 
                   onClick={() => setShowGetStartedModal(true)}
-                  className="px-6 py-2 bg-white text-black rounded-full hover:bg-gray-200 transition-colors"
+                  className={`px-6 py-2 ${
+                    theme === 'dark'
+                      ? 'bg-white text-black'
+                      : 'bg-gray-900 text-white'
+                  } rounded-full hover:bg-opacity-90 transition-colors`}
                 >
                   Get Started
                 </button>
@@ -863,23 +943,43 @@ const Landing = () => {
               <div className="md:hidden">
                 <button 
                   onClick={() => setIsMobileMenuOpen(true)}
-                  className="p-2 text-gray-300 hover:text-white"
+                  className={`p-2 ${
+                    theme === 'dark' 
+                      ? 'text-gray-300 hover:text-white' 
+                      : 'text-gray-600 hover:text-gray-900'
+                  }`}
                 >
                   <Menu className="h-6 w-6" />
                 </button>
               </div>
             </div>
           </div>
+
+          {/* Theme toggle button */}
+          <button
+            onClick={toggleTheme}
+            className={`absolute right-[-60px] top-1/2 -translate-y-1/2 p-3 rounded-full ${
+              theme === 'dark' 
+                ? 'bg-black/40 border-white/10 hover:bg-black/60' 
+                : 'bg-white/60 border-gray-200 hover:bg-white/80'
+            } border backdrop-blur-xl transition-colors`}
+          >
+            {theme === 'dark' ? (
+              <Sun className="h-5 w-5 text-white" />
+            ) : (
+              <Moon className="h-5 w-5 text-gray-800" />
+            )}
+          </button>
         </div>
       </nav>
 
-      {/* Only show FloatingKeywords when we're at index 1 */}
-      {scrollProgress.currentIndex === 1 && <FloatingKeywords />}
-
-      <motion.div className="min-h-screen bg-black text-white relative">
+      {/* Main content */}
+      <main className="relative">
         {/* Hero Section */}
         <motion.section 
-          className="relative min-h-screen flex items-center justify-center z-[2]"
+          className={`relative min-h-screen flex items-center justify-center z-[2] ${
+            theme === 'light' ? 'bg-white' : ''
+          }`}
           style={{ scale: heroScale }}
         >
           {/* Grid Background - Lowest z-index */}
@@ -932,16 +1032,29 @@ const Landing = () => {
             <div className="flex flex-col lg:flex-row justify-between items-center py-20 gap-12 lg:mt-24 lg:mb-48 mb-16 px-4 lg:px-24">
               <div className="flex-1 max-w-2xl text-center lg:text-left">
                 <div 
-                  className="text-sm bg-gray-800 px-4 py-1 rounded-full mb-6 inline-flex items-center cursor-pointer hover:bg-gray-700"
+                  className={`text-sm ${
+                    theme === 'dark' 
+                      ? 'bg-gray-800 hover:bg-gray-700' 
+                      : 'bg-gray-100 hover:bg-gray-200'
+                  } px-4 py-1 rounded-full mb-6 inline-flex items-center cursor-pointer transition-colors`}
                   onClick={() => setShowAnnouncementModal(true)}
                 >
-                  Announcing Cube <ChevronRight className="inline h-4 w-4" />
+                  <span className={theme === 'dark' ? 'text-white' : 'text-gray-900'}>
+                    Announcing Cube
+                  </span>
+                  <ChevronRight className={`inline h-4 w-4 ${
+                    theme === 'dark' ? 'text-white' : 'text-gray-900'
+                  }`} />
                 </div>
                 
                 <h1 className="text-5xl lg:text-8xl font-bold mb-6 relative group">
                   <span className="relative inline-block">
-                    <span className="absolute -inset-x-20 -inset-y-10 bg-gradient-to-r from-blue-600/20 via-purple-600/20 to-blue-600/20 blur-[100px] opacity-70 group-hover:opacity-100 transition-opacity duration-500" />
-                    <span className="relative bg-clip-text text-transparent bg-gradient-to-r from-blue-500 via-purple-500 to-blue-500 animate-gradient-x">
+                    <span className={`absolute -inset-x-20 -inset-y-10 ${
+                      theme === 'dark'
+                        ? 'bg-gradient-to-r from-blue-600/20 via-purple-600/20 to-blue-600/20'
+                        : 'bg-gradient-to-r from-blue-600/10 via-purple-600/10 to-blue-600/10'
+                    } blur-[100px] opacity-70 group-hover:opacity-100 transition-opacity duration-500`} />
+                    <span className="relative bg-clip-text text-transparent bg-gradient-to-r from-blue-600 via-purple-600 to-blue-600 animate-gradient-x">
                       A Web Browser for Your AI
                     </span>
                   </span>
@@ -955,16 +1068,36 @@ const Landing = () => {
                       setShowGetStartedModal(true);
                       console.log('New modal state:', true);
                     }}
-                    className="relative group px-8 py-4 bg-transparent overflow-hidden rounded-full border border-purple-500 hover:border-purple-400 transition-colors"
+                    className={`relative group px-8 py-4 bg-transparent overflow-hidden rounded-full ${
+                      theme === 'dark'
+                        ? 'border-purple-500 hover:border-purple-400'
+                        : 'border-purple-600 hover:border-purple-500'
+                    } border transition-colors`}
                   >
-                    <div className="absolute inset-0 bg-gradient-to-r from-purple-600/20 to-blue-600/20 group-hover:opacity-75 transition-opacity" />
+                    <div className={`absolute inset-0 ${
+                      theme === 'dark'
+                        ? 'bg-gradient-to-r from-purple-600/20 to-blue-600/20'
+                        : 'bg-gradient-to-r from-purple-600/30 to-blue-600/30'
+                    } group-hover:opacity-75 transition-opacity`} />
                     <div className="relative flex items-center justify-center gap-2">
-                      <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-blue-400">
+                      <span className={`${
+                        theme === 'dark'
+                          ? 'text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-blue-400'
+                          : 'text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-blue-600'
+                      }`}>
                         Get Started
                       </span>
-                      <ChevronRight className="h-4 w-4 text-purple-400" />
+                      <ChevronRight className={`h-4 w-4 ${
+                        theme === 'dark'
+                          ? 'text-purple-400'
+                          : 'text-purple-600'
+                      }`} />
                     </div>
-                    <div className="absolute -inset-1 bg-gradient-to-r from-purple-600 to-blue-600 blur-xl opacity-25 group-hover:opacity-50 transition-opacity" />
+                    <div className={`absolute -inset-1 ${
+                      theme === 'dark'
+                        ? 'bg-gradient-to-r from-purple-600 to-blue-600 blur-xl opacity-25'
+                        : 'bg-gradient-to-r from-purple-600 to-blue-600 blur-xl opacity-40'
+                    } group-hover:opacity-50 transition-opacity`} />
                   </button>
                   <button 
                     onClick={handleDocumentationClick} 
@@ -977,7 +1110,7 @@ const Landing = () => {
 
               {/* Desktop Cube */}
               <div className="hidden lg:block flex-1 pl-20">
-                <Cube width={500} height={500} />
+                <Cube width={500} height={500} theme={theme} />
               </div>
             </div>
           </div>
@@ -1008,7 +1141,9 @@ const Landing = () => {
                       <img 
                         src={logo.src} 
                         alt={logo.alt}
-                        className="h-8 w-auto grayscale hover:grayscale-0 transition"
+                        className={`h-8 w-auto grayscale hover:grayscale-0 transition ${
+                          theme === 'light' ? 'invert' : ''
+                        }`}
                       />
                     </div>
                   ))}
@@ -1027,7 +1162,9 @@ const Landing = () => {
                     <img 
                       src={logo.src} 
                       alt={logo.alt}
-                      className="h-8 w-auto grayscale hover:grayscale-0 transition"
+                      className={`h-8 w-auto grayscale hover:grayscale-0 transition ${
+                        theme === 'light' ? 'invert' : ''
+                      }`}
                     />
                   </div>
                 ))}
@@ -1038,14 +1175,20 @@ const Landing = () => {
 
         {/* Scroll Sections */}
         <div className="relative z-10">
-          <ScrollSections />
+          <ScrollSections theme={theme} />
         </div>
 
         {/* How it Works Section */}
         <div className="relative mb-64 z-10">
           <div className="max-w-4xl mx-auto px-4">
-            <h2 className="text-5xl font-bold mb-12 text-left">How it Works</h2>
-            <p className="text-xl text-gray-400 text-left leading-relaxed">
+            <h2 className={`text-5xl font-bold mb-12 text-left ${
+              theme === 'dark' ? 'text-white' : 'text-gray-900'
+            }`}>
+              How it Works
+            </h2>
+            <p className={`text-xl text-left leading-relaxed ${
+              theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
+            }`}>
               Managing headless browsers shouldn't be your concern.
               Cube provides enterprise-grade infrastructure to run and monitor browser automation at any scale. 
               We handle the complex infrastructure so you can focus on building your applications.
@@ -1055,27 +1198,49 @@ const Landing = () => {
 
         {/* Features Section */}
         <div id="features" className="relative mb-16 px-4 lg:px-8 z-10">
-          <h2 className="text-4xl font-bold mb-16 text-center">Features</h2>
+          <h2 className={`text-4xl font-bold mb-16 text-center ${
+            theme === 'light' ? 'text-gray-900' : ''
+          }`}>
+            Features
+          </h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {CORE_FEATURES.map(feature => (
               <motion.div
                 key={feature.title}
-                className="group relative bg-gradient-to-br from-gray-900 to-black border border-white/10 rounded-lg overflow-hidden"
+                className={`group relative ${
+                  theme === 'dark'
+                    ? 'bg-gradient-to-br from-gray-900 to-black border-white/10'
+                    : 'bg-white border-gray-200 shadow-sm'
+                } border rounded-lg overflow-hidden`}
                 whileHover={{ scale: 1.02 }}
                 transition={{ type: "spring", stiffness: 300 }}
               >
-                <div className="absolute inset-0 bg-gradient-to-r from-blue-500/10 to-purple-500/10 opacity-0 group-hover:opacity-100 transition-opacity" />
+                <div className={`absolute inset-0 ${
+                  theme === 'dark'
+                    ? 'bg-gradient-to-r from-blue-500/10 to-purple-500/10'
+                    : 'bg-gradient-to-r from-blue-500/5 to-purple-500/5'
+                } opacity-0 group-hover:opacity-100 transition-opacity`} />
                 <div className="relative p-6">
-                  {feature.icon === 'Puzzle' && <Puzzle className="h-6 w-6 mb-4 text-white" />}
-                  {feature.icon === 'Scale' && <Scale className="h-6 w-6 mb-4 text-white" />}
-                  {feature.icon === 'Zap' && <Zap className="h-6 w-6 mb-4 text-white" />}
-                  {feature.icon === 'Shield' && <Shield className="h-6 w-6 mb-4 text-white" />}
-                  {feature.icon === 'Eye' && <Eye className="h-6 w-6 mb-4 text-white" />}
-                  {feature.icon === 'Ghost' && <Ghost className="h-6 w-6 mb-4 text-white" />}
-                  {feature.icon === 'Code' && <Code className="h-6 w-6 mb-4 text-white" />}
-                  {feature.icon === 'Terminal' && <Terminal className="h-6 w-6 mb-4 text-white" />}
-                  <h3 className="text-xl font-bold mb-2">{feature.title}</h3>
-                  <p className="text-gray-400">{feature.description}</p>
+                  <div className={theme === 'dark' ? 'text-white' : 'text-blue-600'}>
+                    {feature.icon === 'Puzzle' && <Puzzle className="h-6 w-6 mb-4 text-white" />}
+                    {feature.icon === 'Scale' && <Scale className="h-6 w-6 mb-4 text-white" />}
+                    {feature.icon === 'Zap' && <Zap className="h-6 w-6 mb-4 text-white" />}
+                    {feature.icon === 'Shield' && <Shield className="h-6 w-6 mb-4 text-white" />}
+                    {feature.icon === 'Eye' && <Eye className="h-6 w-6 mb-4 text-white" />}
+                    {feature.icon === 'Ghost' && <Ghost className="h-6 w-6 mb-4 text-white" />}
+                    {feature.icon === 'Code' && <Code className="h-6 w-6 mb-4 text-white" />}
+                    {feature.icon === 'Terminal' && <Terminal className="h-6 w-6 mb-4 text-white" />}
+                  </div>
+                  <h3 className={`text-xl font-bold mb-2 ${
+                    theme === 'dark' ? 'text-white' : 'text-gray-900'
+                  }`}>
+                    {feature.title}
+                  </h3>
+                  <p className={
+                    theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
+                  }>
+                    {feature.description}
+                  </p>
                 </div>
               </motion.div>
             ))}
@@ -1086,42 +1251,65 @@ const Landing = () => {
         <div id="use-cases" className="relative z-10">
           <UseCasesSection />
         </div>
-      </motion.div>
+      </main>
 
-      {/* Mobile menu and modals */}
-      <MobileMenu />
-      <GetStartedModal />
-      <AnnouncementModal isOpen={showAnnouncementModal} onClose={() => setShowAnnouncementModal(false)} />
-
-      {/* Footer */}
+      {/* Footer - moved inside main wrapper */}
       <footer className="relative z-10 mt-32 pb-8">
         <div className="max-w-6xl mx-auto px-4">
-          <div className="backdrop-blur-xl bg-white/[0.02] rounded-2xl px-8 py-12 border border-white/10">
+          <div className={`backdrop-blur-xl ${
+            theme === 'dark' 
+              ? 'bg-white/[0.02] border-white/10' 
+              : 'bg-white/80 border-gray-200 shadow-lg'
+          } rounded-2xl px-8 py-12 border`}>
             <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
               {/* Logo and Description */}
               <div className="col-span-1 md:col-span-2">
-                <img src="logos/cube_white.png" alt="Cube" className="h-4 w-auto mb-6" />
-                <p className="text-gray-400 max-w-sm">
+                <img 
+                  src="logos/cube_white.png"
+                  alt="Cube" 
+                  className={`h-4 w-auto mb-6 ${
+                    theme === 'light' ? 'invert' : ''
+                  }`}
+                />
+                <p className={
+                  theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
+                }>
                   Deploy virtual browsers at scale. Built for developers, by developers.
                 </p>
               </div>
 
               {/* Product Links */}
               <div>
-                <h3 className="text-sm font-semibold text-white mb-4">Product</h3>
+                <h3 className={`text-sm font-semibold mb-4 ${
+                  theme === 'dark' ? 'text-white' : 'text-gray-900'
+                }`}>
+                  Product
+                </h3>
                 <ul className="space-y-3">
                   <li>
-                    <button onClick={handleDocumentationClick} className="text-gray-400 hover:text-white transition-colors">
+                    <button className={`${
+                      theme === 'dark' 
+                        ? 'text-gray-400 hover:text-white' 
+                        : 'text-gray-600 hover:text-gray-900'
+                    } transition-colors`}>
                       Documentation
                     </button>
                   </li>
                   <li>
-                    <button onClick={() => scrollToSection('features')} className="text-gray-400 hover:text-white transition-colors">
+                    <button className={`${
+                      theme === 'dark' 
+                        ? 'text-gray-400 hover:text-white' 
+                        : 'text-gray-600 hover:text-gray-900'
+                    } transition-colors`}>
                       Features
                     </button>
                   </li>
                   <li>
-                    <button onClick={() => scrollToSection('use-cases')} className="text-gray-400 hover:text-white transition-colors">
+                    <button className={`${
+                      theme === 'dark' 
+                        ? 'text-gray-400 hover:text-white' 
+                        : 'text-gray-600 hover:text-gray-900'
+                    } transition-colors`}>
                       Use Cases
                     </button>
                   </li>
@@ -1130,20 +1318,41 @@ const Landing = () => {
 
               {/* Company Links */}
               <div>
-                <h3 className="text-sm font-semibold text-white mb-4">Company</h3>
+                <h3 className={`text-sm font-semibold mb-4 ${
+                  theme === 'dark' ? 'text-white' : 'text-gray-900'
+                }`}>
+                  Company
+                </h3>
                 <ul className="space-y-3">
                   <li>
-                    <button onClick={() => setShowGetStartedModal(true)} className="text-gray-400 hover:text-white transition-colors">
+                    <button className={`${
+                      theme === 'dark' 
+                        ? 'text-gray-400 hover:text-white' 
+                        : 'text-gray-600 hover:text-gray-900'
+                    } transition-colors`}>
                       Get Started
                     </button>
                   </li>
                   <li>
-                    <a href="https://github.com/cubebase" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors">
+                    <a 
+                      href="https://github.com/cubebase" 
+                      target="_blank" 
+                      rel="noopener noreferrer" 
+                      className={`${
+                        theme === 'dark' 
+                          ? 'text-gray-400 hover:text-white' 
+                          : 'text-gray-600 hover:text-gray-900'
+                      } transition-colors text-sm`}
+                    >
                       GitHub
                     </a>
                   </li>
                   <li>
-                    <button onClick={() => setShowContactModal(true)} className="text-gray-400 hover:text-white transition-colors">
+                    <button className={`${
+                      theme === 'dark' 
+                        ? 'text-gray-400 hover:text-white' 
+                        : 'text-gray-600 hover:text-gray-900'
+                    } transition-colors`}>
                       Contact
                     </button>
                   </li>
@@ -1152,16 +1361,28 @@ const Landing = () => {
             </div>
 
             {/* Bottom Section */}
-            <div className="mt-12 pt-8 border-t border-white/10">
+            <div className={`mt-12 pt-8 border-t ${
+              theme === 'dark' ? 'border-gray-800' : 'border-gray-200'
+            }`}>
               <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-                <div className="text-gray-400 text-sm">
+                <div className={
+                  theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
+                }>
                   © {new Date().getFullYear()} Cube. All rights reserved.
                 </div>
                 <div className="flex space-x-6">
-                  <a href="#" className="text-gray-400 hover:text-white transition-colors text-sm">
+                  <a href="#" className={`${
+                    theme === 'dark' 
+                      ? 'text-gray-400 hover:text-white' 
+                      : 'text-gray-600 hover:text-gray-900'
+                  } transition-colors text-sm`}>
                     Privacy Policy
                   </a>
-                  <a href="#" className="text-gray-400 hover:text-white transition-colors text-sm">
+                  <a href="#" className={`${
+                    theme === 'dark' 
+                      ? 'text-gray-400 hover:text-white' 
+                      : 'text-gray-600 hover:text-gray-900'
+                  } transition-colors text-sm`}>
                     Terms of Service
                   </a>
                 </div>
@@ -1170,7 +1391,12 @@ const Landing = () => {
           </div>
         </div>
       </footer>
-    </>
+
+      {/* Modals */}
+      <MobileMenu />
+      <GetStartedModal />
+      <AnnouncementModal isOpen={showAnnouncementModal} onClose={() => setShowAnnouncementModal(false)} />
+    </motion.div>
   );
 };
 

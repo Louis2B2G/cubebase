@@ -5,9 +5,14 @@ import * as THREE from 'three';
 type CubeProps = {
   width?: number;
   height?: number;
+  theme?: 'dark' | 'light';
 };
 
-const Cube: React.FC<CubeProps> = ({ width = 400, height = 400 }) => {
+const Cube: React.FC<CubeProps> = ({ 
+  width = 400, 
+  height = 400, 
+  theme = 'dark'
+}) => {
   const mountRef = useRef<HTMLDivElement>(null);
   const cursorLightRef = useRef<THREE.PointLight | null>(null);
 
@@ -15,10 +20,8 @@ const Cube: React.FC<CubeProps> = ({ width = 400, height = 400 }) => {
     const mount = mountRef.current;
     if (!mount) return;
 
-    // Scene setup - REMOVED background and fog
     const scene = new THREE.Scene();
 
-    // Camera adjustment for better perspective
     const camera = new THREE.PerspectiveCamera(
       45,
       mount.clientWidth / mount.clientHeight,
@@ -27,100 +30,121 @@ const Cube: React.FC<CubeProps> = ({ width = 400, height = 400 }) => {
     );
     camera.position.z = 7;
 
-    // Renderer setup - ensure transparent background
     const renderer = new THREE.WebGLRenderer({
       antialias: true,
-      alpha: true // This makes the background transparent
+      alpha: true
     });
-    renderer.setClearColor(0x000000, 0); // Set clear color to transparent
+    renderer.setClearColor(0x000000, 0);
     renderer.setSize(mount.clientWidth, mount.clientHeight);
     renderer.setPixelRatio(window.devicePixelRatio);
     mount.appendChild(renderer.domElement);
 
-    // Create a bigger geometry from the start
     const geometry = new THREE.BoxGeometry(3, 3, 3);
-    const material = new THREE.MeshPhysicalMaterial({
-      color: 0x000000,
-      metalness: 1,
-      roughness: 0.1,
-      clearcoat: 1.0,
-      clearcoatRoughness: 0.4,
-      fog: true
-    });
+    
+    // Material changes only for light mode, keeping dark mode exactly the same
+    const material = new THREE.MeshPhysicalMaterial(
+      theme === 'dark' 
+        ? {
+            color: 0x000000,
+            metalness: 1,
+            roughness: 0.1,
+            clearcoat: 1.0,
+            clearcoatRoughness: 0.4,
+            fog: true
+          }
+        : {
+            color: 0x9333EA,         // purple-600 from Tailwind color palette
+            metalness: 0.7,
+            roughness: 0.0,
+            clearcoat: 1.0,
+            clearcoatRoughness: 0.0,
+            fog: true,
+            reflectivity: 1,
+            transmission: 0,
+            transparent: false,
+            envMapIntensity: 2
+          }
+    );
+    
     const cube = new THREE.Mesh(geometry, material);
     scene.add(cube);
 
-    // Add white edges to the cube at the same scale
     const edges = new THREE.EdgesGeometry(geometry);
     const lineMaterial = new THREE.LineBasicMaterial({ 
-      color: 0x000000,
+      color: theme === 'dark' ? 0x000000 : 0xffffff,  // Pure white edges in light mode
       linewidth: 0,
+      transparent: theme === 'dark' ? false : true,
+      opacity: theme === 'dark' ? 1 : 0.2,  // Very subtle edges in light mode
       fog: true
     });
     const wireframe = new THREE.LineSegments(edges, lineMaterial);
     cube.add(wireframe);
 
-    // Light setup from top-right
-    const mainLight = new THREE.PointLight(0x6366f1, 300, 100);
+    // Light setup - keep dark mode exactly the same, make light mode bright with more purple
+    const mainLight = new THREE.PointLight(
+      theme === 'dark' ? 0x6366f1 : 0xffffff,  // More noticeable purple
+      theme === 'dark' ? 300 : 500,
+      100
+    );
     mainLight.position.set(5, 5, 3);
     scene.add(mainLight);
 
-    // Add volumetric light effect
     const lightGeometry = new THREE.SphereGeometry(0.5, 16, 16);
     const lightMaterial = new THREE.MeshBasicMaterial({
-      color: 0x6366f1,
+      color: theme === 'dark' ? 0x6366f1 : 0xe2d9ff,  // More noticeable purple
       transparent: true,
-      opacity: 0.5,
+      opacity: theme === 'dark' ? 0.5 : 0.2,
       fog: true
     });
     const lightSphere = new THREE.Mesh(lightGeometry, lightMaterial);
     lightSphere.position.copy(mainLight.position);
     scene.add(lightSphere);
 
-    // Subtle secondary light for balance (blue tint)
-    const secondaryLight = new THREE.PointLight(0x6366f1, 100, 100);
+    const secondaryLight = new THREE.PointLight(
+      theme === 'dark' ? 0x6366f1 : 0xe2d9ff,  // More noticeable purple
+      theme === 'dark' ? 100 : 300,
+      100
+    );
     secondaryLight.position.set(-3, 2, 3);
     scene.add(secondaryLight);
 
-    // Ambient light with slight purple tint
-    const ambientLight = new THREE.AmbientLight(0x6366f1, 0.3);
+    const ambientLight = new THREE.AmbientLight(
+      theme === 'dark' ? 0x6366f1 : 0xe2d9ff,  // More noticeable purple
+      theme === 'dark' ? 0.3 : 0.6
+    );
     scene.add(ambientLight);
 
-    // Add cursor light with gradient effect
-    const cursorLight = new THREE.PointLight(0x6366f1, 150, 10);
+    const cursorLight = new THREE.PointLight(
+      theme === 'dark' ? 0x6366f1 : 0xe2d9ff,  // More noticeable purple
+      theme === 'dark' ? 150 : 250,
+      10
+    );
     cursorLight.position.set(0, 0, 5);
     scene.add(cursorLight);
     cursorLightRef.current = cursorLight;
 
-    // Add mouse move handler
+    // Rest of the existing code remains exactly the same
     const handleMouseMove = (event: MouseEvent) => {
       if (!cursorLightRef.current || !mount) return;
 
-      // Convert mouse position to normalized device coordinates (-1 to +1)
       const rect = mount.getBoundingClientRect();
       const x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
       const y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
 
-      // Update light position
       cursorLightRef.current.position.set(x * 5, y * 5, 5);
     };
 
     mount.addEventListener('mousemove', handleMouseMove);
 
-    // Animation loop with fixed rotation axis
     const animate = () => {
       requestAnimationFrame(animate);
-      
-      // Use quaternion for smoother rotation
       cube.rotation.x += 0.005;
       cube.rotation.y += 0.005;
-      
       renderer.render(scene, camera);
     };
 
     animate();
 
-    // Handle window resize
     const handleResize = () => {
       const width = mount.clientWidth;
       const height = mount.clientHeight;
@@ -132,7 +156,6 @@ const Cube: React.FC<CubeProps> = ({ width = 400, height = 400 }) => {
 
     window.addEventListener('resize', handleResize);
 
-    // Cleanup
     return () => {
       window.removeEventListener('resize', handleResize);
       mount.removeEventListener('mousemove', handleMouseMove);
@@ -143,7 +166,7 @@ const Cube: React.FC<CubeProps> = ({ width = 400, height = 400 }) => {
       lineMaterial.dispose();
       renderer.dispose();
     };
-  }, []);
+  }, [theme, width, height]);
 
   return (
     <div 
