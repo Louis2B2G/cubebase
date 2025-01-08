@@ -15,10 +15,8 @@ const Cube: React.FC<CubeProps> = ({ width = 400, height = 400 }) => {
     const mount = mountRef.current;
     if (!mount) return;
 
-    // Scene setup with fog for light diffusion
+    // Scene setup - REMOVED background and fog
     const scene = new THREE.Scene();
-    scene.background = new THREE.Color(0x000000);
-    scene.fog = new THREE.FogExp2(0x000000, 0.05);
 
     // Camera adjustment for better perspective
     const camera = new THREE.PerspectiveCamera(
@@ -29,11 +27,12 @@ const Cube: React.FC<CubeProps> = ({ width = 400, height = 400 }) => {
     );
     camera.position.z = 7;
 
-    // Renderer setup
+    // Renderer setup - ensure transparent background
     const renderer = new THREE.WebGLRenderer({
       antialias: true,
-      alpha: true
+      alpha: true // This makes the background transparent
     });
+    renderer.setClearColor(0x000000, 0); // Set clear color to transparent
     renderer.setSize(mount.clientWidth, mount.clientHeight);
     renderer.setPixelRatio(window.devicePixelRatio);
     mount.appendChild(renderer.domElement);
@@ -62,14 +61,14 @@ const Cube: React.FC<CubeProps> = ({ width = 400, height = 400 }) => {
     cube.add(wireframe);
 
     // Light setup from top-right
-    const mainLight = new THREE.PointLight(0xffffff, 300, 100);
+    const mainLight = new THREE.PointLight(0x6366f1, 300, 100);
     mainLight.position.set(5, 5, 3);
     scene.add(mainLight);
 
     // Add volumetric light effect
     const lightGeometry = new THREE.SphereGeometry(0.5, 16, 16);
     const lightMaterial = new THREE.MeshBasicMaterial({
-      color: 0xffffff,
+      color: 0x6366f1,
       transparent: true,
       opacity: 0.5,
       fog: true
@@ -78,17 +77,17 @@ const Cube: React.FC<CubeProps> = ({ width = 400, height = 400 }) => {
     lightSphere.position.copy(mainLight.position);
     scene.add(lightSphere);
 
-    // Subtle secondary light for balance
-    const secondaryLight = new THREE.PointLight(0xffffff, 100, 100);
+    // Subtle secondary light for balance (blue tint)
+    const secondaryLight = new THREE.PointLight(0x6366f1, 100, 100);
     secondaryLight.position.set(-3, 2, 3);
     scene.add(secondaryLight);
 
-    // Ambient light for overall visibility
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.3);
+    // Ambient light with slight purple tint
+    const ambientLight = new THREE.AmbientLight(0x6366f1, 0.3);
     scene.add(ambientLight);
 
-    // Add cursor light
-    const cursorLight = new THREE.PointLight(0xffffff, 150, 10);
+    // Add cursor light with gradient effect
+    const cursorLight = new THREE.PointLight(0x6366f1, 150, 10);
     cursorLight.position.set(0, 0, 5);
     scene.add(cursorLight);
     cursorLightRef.current = cursorLight;

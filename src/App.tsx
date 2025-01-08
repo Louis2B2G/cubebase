@@ -1,14 +1,12 @@
 import React from 'react';
-import Landing from '@/pages/Landing';
-import CubeElements from '@/pages/Devtool';
+import Landing from '@/pages/CubeBase';
 import Footer from '@/components/Footer';
 import './App.css';
 
 function App() {
   return (
     <>
-      <CubeElements />
-      <Footer />
+      <Landing />
     </>
   );
 }
